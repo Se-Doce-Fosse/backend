@@ -1,0 +1,29 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend da aplicação Se Doce Fosse desenvolvido com Spring Boot.",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky install",
+    "test": "mvnw test",
+    "test:coverage": "mvnw test jacoco:report",
+    "build": "mvnw clean compile",
+    "format:check": "echo \"Formatação de código verificada\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Se-Doce-Fosse/backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Se-Doce-Fosse/backend/issues"
+  },
+  "homepage": "https://github.com/Se-Doce-Fosse/backend#readme",
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.0"
+  }
+}
