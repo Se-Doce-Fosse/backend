@@ -8,24 +8,38 @@ Backend da aplicação Se Doce Fosse desenvolvido com Spring Boot.
 - Maven 3.6+
 - Git
 
-## Instalação
+## Como rodar o projeto
+
+Opção 1 — Rodar com Docker (desenvolvimento)
 
 Clone o repositório:
 ```bash
 git clone https://github.com/Se-Doce-Fosse/backend.git
 cd backend
 ```
+Suba o backend em modo desenvolvimento com:
+```bash
+docker-compose up --build backend-dev
+```
+O Docker vai baixar as dependências e iniciar o backend.
 
+Acesse a aplicação em `http://localhost:8080/api/hello`
+
+Opção 2 — Rodar sem Docker (manual)
+
+Clone o repositório:
+```bash
+git clone https://github.com/Se-Doce-Fosse/backend.git
+cd backend
+```
 Compilar o projeto:
 ```bash
 mvn clean compile
 ```
-
 Executar o projeto:
 ```bash
 mvn spring-boot:run
 ```
-
 Acesse a aplicação em `http://localhost:8080/api/hello`
 
 ## Arquitetura
