@@ -20,6 +20,7 @@ services:
       - SPRING_PROFILES_ACTIVE=default
     depends_on:
       - postgres
+      - mongo
 
   postgres:
     image: postgres:15
@@ -33,5 +34,17 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  mongo:
+    image: mongo:6
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongouser
+      MONGO_INITDB_ROOT_PASSWORD: mongopassword
+    volumes:
+      - mongodata:/data/db
+
 volumes:
   pgdata:
+  mongodata:
