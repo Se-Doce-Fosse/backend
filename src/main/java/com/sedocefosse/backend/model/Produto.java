@@ -42,7 +42,7 @@ public class Produto {
         this.ativo = ativo;
     }
     
-    // Getters and Setters
+    // Getters and Setters 
     public Long getId() {
         return id;
     }
