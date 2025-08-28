@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "produto")
-public class Produto {
+@Table(name = "product")
+public class Product {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,8 +14,8 @@ public class Produto {
     @Column(name = "sku", nullable = false, unique = true, length = 100)
     private String sku;
     
-    @Column(name = "home", length = 200)
-    private String home;
+    @Column(name = "nome", length = 200)
+    private String nome;
     
     @Column(name = "descricao", length = 500)
     private String descricao;
@@ -30,12 +30,12 @@ public class Produto {
     private Boolean ativo;
     
     // Constructors
-    public Produto() {
+    public Product() {
     }
     
-    public Produto(String sku, String home, String descricao, BigDecimal valor, String imagemUrl, Boolean ativo) {
+    public Product(String sku, String nome, String descricao, BigDecimal valor, String imagemUrl, Boolean ativo) {
         this.sku = sku;
-        this.home = home;
+        this.nome = nome;
         this.descricao = descricao;
         this.valor = valor;
         this.imagemUrl = imagemUrl;
@@ -59,12 +59,12 @@ public class Produto {
         this.sku = sku;
     }
     
-    public String getHome() {
-        return home;
+    public String getnome() {
+        return nome;
     }
     
-    public void setHome(String home) {
-        this.home = home;
+    public void setnome(String nome) {
+        this.nome = nome;
     }
     
     public String getDescricao() {
@@ -102,10 +102,10 @@ public class Produto {
     // toString method
     @Override
     public String toString() {
-        return "Produto{" +
+        return "Product{" +
                 "id=" + id +
                 ", sku='" + sku + '\'' +
-                ", home='" + home + '\'' +
+                ", nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", valor=" + valor +
                 ", imagemUrl='" + imagemUrl + '\'' +
