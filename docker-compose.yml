@@ -1,12 +1,5 @@
 version: '3.8'
 services:
-  backend:
-    build: .
-    ports:
-      - "8080:8080"
-    environment:
-      - SPRING_PROFILES_ACTIVE=default
-
   backend-dev:
     build:
       context: .
@@ -32,6 +25,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
+      - ./seed/postgresql-init.sql:/docker-entrypoint-initdb.d/init.sql
       - pgdata:/var/lib/postgresql/data
 
   mongo:
