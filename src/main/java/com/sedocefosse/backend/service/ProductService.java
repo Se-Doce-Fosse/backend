@@ -30,7 +30,7 @@ public class ProductService {
         productRepository.deleteById(id);
     }
     
-    public Product findBySku(String sku) {
+    public Optional<Product> findBySku(String sku) {
         return productRepository.findBySku(sku);
     }
     
