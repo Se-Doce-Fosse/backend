@@ -24,6 +24,11 @@ public class ProductServiceImpl implements ProductService {
     public Optional<Product> findProductById(Long id) {
         return productRepository.findById(id);
     }
+
+    @Override
+    public void deleteProductById(Long id) {
+        productRepository.deleteById(id);
+    }
 }
 
 //Teste manual a ser feito no Postman
