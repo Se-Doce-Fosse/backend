@@ -1,6 +1,7 @@
 package com.sedocefosse.backend.controller;
 
 import com.sedocefosse.backend.model.Product;
+import com.sedocefosse.backend.model.Category;
 import com.sedocefosse.backend.service.ProductService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -17,6 +18,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+
+import com.sedocefosse.backend.dto.CategoryDTO;
+import com.sedocefosse.backend.dto.ProductDTO;
+import com.sedocefosse.backend.dto.RelatedProductDTO;
+import java.util.Arrays;
+import java.util.List;
 
 @WebMvcTest(ProductController.class)
 class ProductControllerTest {
@@ -28,33 +36,74 @@ class ProductControllerTest {
     private ProductService productService;
 
     @Test
-    void getProductById_shouldReturnProduct_whenIdExists() throws Exception {
+    void getProductBySku_shouldReturnProduct_whenSkuExists() throws Exception {
+        Category mockCategoria = new Category();
+        mockCategoria.setId(1L);
+        mockCategoria.setNome("Doces");
+
         Product mockProduct = new Product(
             "SKU-CHOCO-01",
             "Cookie de Chocolate",
             "Delicioso cookie com gotas de chocolate.",
             new BigDecimal("5.50"),
             "http://example.com/cookie.jpg",
-            true
+            true,
+            mockCategoria
         );
-        mockProduct.setId(1L);
 
-        when(productService.findProductById(1L)).thenReturn(Optional.of(mockProduct));
+        when(productService.findProductById("SKU-CHOCO-01")).thenReturn(Optional.of(mockProduct));
 
-        mockMvc.perform(get("/products/1"))
-                .andExpect(status().isOk()) 
-                .andExpect(jsonPath("$.id").value(1)) 
-                .andExpect(jsonPath("$.nome").value("Cookie de Chocolate")) 
-                .andExpect(jsonPath("$.valor").value(5.50)); 
+        mockMvc.perform(get("/products/SKU-CHOCO-01"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sku").value("SKU-CHOCO-01"))
+                .andExpect(jsonPath("$.nome").value("Cookie de Chocolate"))
+                .andExpect(jsonPath("$.valor").value(5.50));
     }
 
     @Test
-    void getProductById_shouldReturnNotFound_whenIdDoesNotExist() throws Exception {
-        
-        when(productService.findProductById(999L)).thenReturn(Optional.empty());
+    void getProductBySku_shouldReturnNotFound_whenSkuDoesNotExist() throws Exception {
+        when(productService.findProductById("SKU-INVALIDO")).thenReturn(Optional.empty());
 
-        mockMvc.perform(get("/products/999"))
-                .andExpect(status().isNotFound()); 
+        mockMvc.perform(get("/products/SKU-INVALIDO"))
+                .andExpect(status().isNotFound());
     }
-    
+
+    @Test
+    void getAllProducts_shouldReturnGroupedProducts_whenCalled() throws Exception {
+        RelatedProductDTO relatedCookieBranco = new RelatedProductDTO("2", "Cookie Chocolate Branco", "R$ 15,00", "/images/cookie-branco.jpg", "Cookie Chocolate Branco");
+        RelatedProductDTO relatedBolo = new RelatedProductDTO("10", "Bolo Red Velvet", "R$ 35,00", "/images/bolo-red-velvet.jpg", "Bolo Red Velvet");
+
+        ProductDTO cookieOreo = new ProductDTO(
+            "1", "Cookie Oreo com Nutella", "R$ 15,00", "/images/cookie-oreo.jpg",
+            "Cookie Oreo com Nutella", Arrays.asList("Sem Glúten", "Sem Lactose", "Vegan"),
+            Arrays.asList(relatedCookieBranco, relatedBolo)
+        );
+
+        ProductDTO boloRedVelvet = new ProductDTO(
+            "10", "Bolo Red Velvet", "R$ 35,00", "/images/bolo-red-velvet.jpg",
+            "Bolo Red Velvet", Arrays.asList("Sem Glúten", "Sem Lactose", "Vegan"),
+            Arrays.asList(new RelatedProductDTO("1", "Cookie Oreo com Nutella", "R$ 15,00", "/images/cookie-oreo.jpg", "Cookie Oreo com Nutella"))
+        );
+
+        CategoryDTO cookiesCategory = new CategoryDTO("cookies", "Cookies", Arrays.asList(cookieOreo));
+        CategoryDTO bolosCategory = new CategoryDTO("bolos", "Bolos", Arrays.asList(boloRedVelvet));
+
+        List<CategoryDTO> mockCategories = Arrays.asList(cookiesCategory, bolosCategory);
+
+        when(productService.getAllProductsGroupedByCategory()).thenReturn(mockCategories);
+
+        mockMvc.perform(get("/products"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType("application/json"))
+            .andExpect(jsonPath("$.categories").isArray())
+            .andExpect(jsonPath("$.categories.length()").value(2))
+            .andExpect(jsonPath("$.categories[0].id").value("cookies"))
+            .andExpect(jsonPath("$.categories[0].name").value("Cookies"))
+            .andExpect(jsonPath("$.categories[0].products.length()").value(1))
+            .andExpect(jsonPath("$.categories[0].products[0].name").value("Cookie Oreo com Nutella"))
+            .andExpect(jsonPath("$.categories[0].products[0].price").value("R$ 15,00"))
+            .andExpect(jsonPath("$.categories[0].products[0].relatedProducts.length()").value(2))
+            .andExpect(jsonPath("$.categories[1].name").value("Bolos"))
+            .andExpect(jsonPath("$.categories[1].products[0].name").value("Bolo Red Velvet"));
+    }
 }
