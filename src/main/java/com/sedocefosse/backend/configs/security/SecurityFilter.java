@@ -1,6 +1,7 @@
 package com.sedocefosse.backend.configs.security;
 
 
+import com.sedocefosse.backend.configs.exceptions.LoginException;
 import com.sedocefosse.backend.repository.AdminRepository;
 import com.sedocefosse.backend.repository.model.AdminEntity;
 import jakarta.servlet.FilterChain;
@@ -21,7 +22,9 @@ import java.util.Collections;
 @Component
 @RequiredArgsConstructor
 public class SecurityFilter extends OncePerRequestFilter {
+    @Autowired
     TokenService tokenService;
+    @Autowired
     AdminRepository adminRepository;
 
     @Override
@@ -30,7 +33,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         var login = tokenService.validateToken(token);
 
         if(login != null){
-            AdminEntity user = adminRepository.findByEmail(login).orElseThrow(() -> new RuntimeException("User Not Found"));
+            AdminEntity user = adminRepository.findByEmail(login).orElseThrow(() -> new LoginException("User Not Found"));
             var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
             var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
