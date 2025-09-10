@@ -42,8 +42,7 @@ public class LoginService {
             var newUser = mapToEntity(signupRequest);
             this.repository.save(newUser);
 
-            final var token = this.tokenService.generateToken(newUser);
-            return new AuthResponse(newUser.getUsername(), token);
+            return new AuthResponse(newUser.getUsername(), "User created");
         }
         else throw new SignupException(SIGNUP_FAILURE_MSG);
     }
