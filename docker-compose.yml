@@ -27,10 +27,6 @@ services:
     volumes:
       - ./seed:/docker-entrypoint-initdb.d/
       - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U admin" ]
-      interval: 5s
-      retries: 5
 
   mongo:
     image: mongo:6
@@ -42,10 +38,6 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: mongopassword
     volumes:
       - mongodata:/data/db
-    healthcheck:
-      test: [ "CMD-SHELL", "mdb_isready -U admin" ]
-      interval: 5s
-      retries: 5
 
 volumes:
   pgdata:

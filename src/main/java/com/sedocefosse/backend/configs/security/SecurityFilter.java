@@ -21,9 +21,7 @@ import java.util.Collections;
 @Component
 @RequiredArgsConstructor
 public class SecurityFilter extends OncePerRequestFilter {
-    @Autowired
     TokenService tokenService;
-    @Autowired
     AdminRepository adminRepository;
 
     @Override

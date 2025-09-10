@@ -3,16 +3,15 @@ package com.sedocefosse.backend.repository.model;
 import com.sedocefosse.backend.utils.RoleEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "admins")
+@Table(name = "admin")
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Access(AccessType.FIELD)
 public class AdminEntity {
 
     @Id
