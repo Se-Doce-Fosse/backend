@@ -1,7 +1,13 @@
 package com.sedocefosse.backend.controller;
 
+import com.sedocefosse.backend.dto.CategoryDTO;
+import com.sedocefosse.backend.dto.ProductDetailsDTO;
+import com.sedocefosse.backend.dto.ProductsResponseDTO;
 import com.sedocefosse.backend.model.Product;
 import com.sedocefosse.backend.service.ProductService;
+import com.sedocefosse.backend.service.ProductServiceImpl;
+
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,15 +27,20 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Optional<Product> product = productService.findProductById(id);
-        
-        if (product.isPresent()) {
-            return ResponseEntity.ok(product.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    //http://localhost:8081/products
+    @GetMapping
+    public ResponseEntity<ProductsResponseDTO> getAllProducts() {
+        List<CategoryDTO> categories = productService.getAllProductsGroupedByCategory();
+        ProductsResponseDTO response = new ProductsResponseDTO(categories);
+        return ResponseEntity.ok(response);
     }
 
+    //http://localhost:8081/products/1
+    @GetMapping("/{sku}")
+    public ResponseEntity<ProductDetailsDTO> getProductBySku(@PathVariable String sku) {
+        Optional<ProductDetailsDTO> productDto = productService.findProductDetailsBySku(sku);
+
+        return productDto.map(ResponseEntity::ok)
+                        .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }

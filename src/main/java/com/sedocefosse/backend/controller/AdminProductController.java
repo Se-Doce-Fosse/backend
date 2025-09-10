@@ -19,10 +19,10 @@ public class AdminProductController {
     @Autowired
     private ProductService productService;
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{sku}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProduct(@PathVariable Long id) {
-        productService.deleteProductById(id);
+    public void deleteProduct(@PathVariable String sku) {
+        productService.deleteProductById(sku);
     }
   
 }

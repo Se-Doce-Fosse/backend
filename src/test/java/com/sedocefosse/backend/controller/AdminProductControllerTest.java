@@ -23,9 +23,13 @@ class AdminProductControllerTest {
 
     @Test
     void deleteProduct_shouldReturnNoContent_whenProductExists() throws Exception {
-        doNothing().when(productService).deleteProductById(1L);
+    
+        String productSku = "SKU-CHOCO-01";
+        
+        doNothing().when(productService).deleteProductById(productSku);
 
-        mockMvc.perform(delete("/admin/products/1"))
-                .andExpect(status().isNoContent());
+        mockMvc.perform(delete("/admin/products/" + productSku))
+                .andExpect(status().isNoContent()); 
     }
+
 }
