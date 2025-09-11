@@ -19,4 +19,5 @@ public interface ProductService {
 
     List<CategoryDTO> getAllProductsGroupedByCategory();
 
+    Product toggleStatus(String id);
 }

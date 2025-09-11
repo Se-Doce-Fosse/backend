@@ -95,6 +95,17 @@ public class ProductServiceImpl implements ProductService {
         }
         return dto;
     }
+
+    @Override
+    public Product toggleStatus(String id) {
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        if (optionalProduct.isEmpty()) {
+            return null;
+        }
+        Product product = optionalProduct.get();
+        product.setAtivo(!Boolean.TRUE.equals(product.getAtivo()));
+        return productRepository.save(product);
+    }
 }
 
 //Teste manual a ser feito no Postman
