@@ -19,7 +19,7 @@ cd backend
 ```
 Suba o backend em modo desenvolvimento com:
 ```bash
-docker-compose up --build backend-dev
+docker compose up -d backend-dev
 ```
 O Docker vai baixar as dependências e iniciar o backend.
 
