@@ -2,6 +2,7 @@ package com.sedocefosse.backend.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -26,8 +27,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product create(Product product) {
-        return productRepository.save(product);
+    public ProductDetailsDTO create(Product product) {        
+        product.setSku("SKU-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());        
+        Product savedProduct = productRepository.save(product);
+        return mapToProductDetailsDTO(savedProduct);
     }
 
     @Override
