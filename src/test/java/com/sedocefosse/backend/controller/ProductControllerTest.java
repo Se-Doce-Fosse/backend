@@ -22,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.sedocefosse.backend.dto.CategoryDTO;
 import com.sedocefosse.backend.dto.ProductDTO;
+import com.sedocefosse.backend.dto.ProductDetailsDTO;
 import com.sedocefosse.backend.dto.RelatedProductDTO;
 import java.util.Arrays;
 import java.util.List;
@@ -41,17 +42,12 @@ class ProductControllerTest {
         mockCategoria.setId(1L);
         mockCategoria.setNome("Doces");
 
-        Product mockProduct = new Product(
-            "SKU-CHOCO-01",
-            "Cookie de Chocolate",
-            "Delicioso cookie com gotas de chocolate.",
-            new BigDecimal("5.50"),
-            "http://example.com/cookie.jpg",
-            true,
-            mockCategoria
-        );
+        ProductDetailsDTO mockProductDetails = new ProductDetailsDTO();
+        mockProductDetails.setSku("SKU-CHOCO-01");
+        mockProductDetails.setNome("Cookie de Chocolate");
+        mockProductDetails.setValor(new BigDecimal("5.50"));
 
-        when(productService.findProductById("SKU-CHOCO-01")).thenReturn(Optional.of(mockProduct));
+        when(productService.findProductDetailsBySku("SKU-CHOCO-01")).thenReturn(Optional.of(mockProductDetails));
 
         mockMvc.perform(get("/products/SKU-CHOCO-01"))
                 .andExpect(status().isOk())
@@ -62,7 +58,7 @@ class ProductControllerTest {
 
     @Test
     void getProductBySku_shouldReturnNotFound_whenSkuDoesNotExist() throws Exception {
-        when(productService.findProductById("SKU-INVALIDO")).thenReturn(Optional.empty());
+        when(productService.findProductDetailsBySku("SKU-INVALIDO")).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/products/SKU-INVALIDO"))
                 .andExpect(status().isNotFound());
