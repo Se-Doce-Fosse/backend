@@ -28,7 +28,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDetailsDTO create(Product product) {        
-        product.setSku("SKU-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());        
+        product.setSku(UUID.randomUUID().toString());        
         Product savedProduct = productRepository.save(product);
         return mapToProductDetailsDTO(savedProduct);
     }
