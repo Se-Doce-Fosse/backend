@@ -2,6 +2,8 @@ package com.sedocefosse.backend.controller;
 
 import com.sedocefosse.backend.model.Product;
 import com.sedocefosse.backend.model.Category;
+import com.sedocefosse.backend.configs.security.TokenService;
+import com.sedocefosse.backend.repository.AdminRepository;
 import com.sedocefosse.backend.service.ProductService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -35,6 +37,12 @@ class ProductControllerTest {
 
     @MockBean
     private ProductService productService;
+
+    @MockBean
+    private TokenService tokenService;
+
+    @MockBean
+    private AdminRepository adminRepository;
 
     @Test
     void getProductBySku_shouldReturnProduct_whenSkuExists() throws Exception {
