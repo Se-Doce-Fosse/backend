@@ -2,6 +2,8 @@ package com.sedocefosse.backend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sedocefosse.backend.configs.security.TokenService;
+import com.sedocefosse.backend.controller.admin.AdminProductController;
+import com.sedocefosse.backend.dto.ProductDetailsDTO;
 import com.sedocefosse.backend.model.Category;
 import com.sedocefosse.backend.model.Product;
 import com.sedocefosse.backend.repository.AdminRepository;
@@ -75,7 +77,10 @@ class AdminProductControllerTest {
         String newSku = "NEW-PRODUCT-SKU";
 
         Product newProductRequest = createDefaultTestProduct(newSku, "New Product", BigDecimal.valueOf(10.00), true);
-        Product createdProduct = createDefaultTestProduct(newSku, "New Product", BigDecimal.valueOf(10.00), true);
+        ProductDetailsDTO createdProduct = new ProductDetailsDTO();
+        createdProduct.setSku("SKU-CHOCO-01");
+        createdProduct.setNome("Cookie de Chocolate");
+        createdProduct.setValor(new BigDecimal("5.50"));
 
         when(productService.create(any(Product.class))).thenReturn(createdProduct);
 
