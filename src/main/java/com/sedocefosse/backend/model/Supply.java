@@ -5,8 +5,16 @@ import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString; 
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "estoque_insumos")
+@Getter 
+@Setter 
+@ToString 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
