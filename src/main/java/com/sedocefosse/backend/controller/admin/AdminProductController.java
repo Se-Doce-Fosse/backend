@@ -1,5 +1,6 @@
 package com.sedocefosse.backend.controller;
 
+import com.sedocefosse.backend.dto.ProductDetailsDTO;
 import com.sedocefosse.backend.model.Product;
 import com.sedocefosse.backend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +29,11 @@ public class AdminProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        Product createdProduct = productService.create(product);
+    public ResponseEntity<ProductDetailsDTO> createProduct(@RequestBody Product product) {
+        ProductDetailsDTO createdProduct = productService.create(product);
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
-
+  
     @PatchMapping("/{id}/status")
     public ResponseEntity<Product> toggleProductStatus(@PathVariable String id) {
         Product updatedProduct = productService.toggleStatus(id);

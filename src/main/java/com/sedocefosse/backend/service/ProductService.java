@@ -18,7 +18,7 @@ import com.sedocefosse.backend.model.Product;
 
 public interface ProductService {
 
-    Product create(Product product);
+    ProductDetailsDTO create(Product product);
 
     Optional<Product> findProductById(String sku);
 
