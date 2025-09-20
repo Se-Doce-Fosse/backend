@@ -24,6 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import com.sedocefosse.backend.dto.ProductDetailsDTO;
 
 
 @WebMvcTest(AdminProductController.class)
@@ -75,9 +76,14 @@ class AdminProductControllerTest {
         String newSku = "NEW-PRODUCT-SKU";
 
         Product newProductRequest = createDefaultTestProduct(newSku, "New Product", BigDecimal.valueOf(10.00), true);
-        Product createdProduct = createDefaultTestProduct(newSku, "New Product", BigDecimal.valueOf(10.00), true);
+        
+        ProductDetailsDTO createdProductDTO = new ProductDetailsDTO();
+        createdProductDTO.setSku(newSku);
+        createdProductDTO.setNome("New Product");
+        createdProductDTO.setValor(BigDecimal.valueOf(10.00));
+        createdProductDTO.setAtivo(true);
 
-        when(productService.create(any(Product.class))).thenReturn(createdProduct);
+        when(productService.create(any(Product.class))).thenReturn(createdProductDTO);
 
         mockMvc.perform(post("/admin/products")
                         .with(user("admin").roles("ADMIN"))
