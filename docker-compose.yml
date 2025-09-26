@@ -25,19 +25,21 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./seed:/docker-entrypoint-initdb.d/
+      - ./seed/postgresql-init.sql:/docker-entrypoint-initdb.d/init.sql:ro
       - pgdata:/var/lib/postgresql/data
 
   mongo:
     image: mongo:6
     restart: always
     ports:
-      - "27017:27017"
+      - "27018:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongouser
       MONGO_INITDB_ROOT_PASSWORD: mongopassword
+      MONGO_INITDB_DATABASE: db-se-doce-fosse
     volumes:
       - mongodata:/data/db
+      - ./seed/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
 
 volumes:
   pgdata:
