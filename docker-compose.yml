@@ -39,7 +39,7 @@ services:
       MONGO_INITDB_DATABASE: db-se-doce-fosse
     volumes:
       - mongodata:/data/db
-      - ./sdoeed/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./seed/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
 
 volumes:
   pgdata:
