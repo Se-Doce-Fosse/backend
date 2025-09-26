@@ -4,7 +4,6 @@ db = db.getSiblingDB('db-se-doce-fosse');
 db.user.insertMany([
   {
     "nome": "Alice Smith",
-    "email": "a.smith@webmail.com",
     "telefone": "987654321",
     "carrinho": [
       {
@@ -18,7 +17,6 @@ db.user.insertMany([
   },
   {
     "nome": "Bob Johnson",
-    "email": "bobj@corpmail.net",
     "telefone": "555123456",
     "carrinho": [
       {
@@ -39,7 +37,6 @@ db.user.insertMany([
   },
   {
     "nome": "Carlos Oliveira",
-    "email": "c.oliveira@provedor.com.br",
     "telefone": "11998765432",
     "carrinho": [
       {
@@ -53,7 +50,6 @@ db.user.insertMany([
   },
   {
     "nome": "Diana Santos",
-    "email": "diana.santos@email.com",
     "telefone": "21912345678",
     "carrinho": [
       {
@@ -74,7 +70,6 @@ db.user.insertMany([
   },
   {
     "nome": "Eduardo Costa",
-    "email": "eduardo.c@mailservice.org",
     "telefone": "31987654321",
     "carrinho": []
   },
@@ -108,7 +103,6 @@ db.user.insertMany([
   },
   {
     "nome": "Gustavo Pereira",
-    "email": "g.pereira@datamail.net",
     "telefone": "51988776655",
     "carrinho": [
       {
@@ -122,7 +116,6 @@ db.user.insertMany([
   },
   {
     "nome": "Helena Rocha",
-    "email": "h.rocha@mail.com.br",
     "telefone": "61977665544",
     "carrinho": [
       {
@@ -136,7 +129,6 @@ db.user.insertMany([
   },
   {
     "nome": "Igor Mendes",
-    "email": "igor.mendes@mycorp.info",
     "telefone": "71966554433",
     "carrinho": [
       {
@@ -150,7 +142,6 @@ db.user.insertMany([
   },
   {
     "nome": "Julia Nunes",
-    "email": "julia.n@mailbox.cc",
     "telefone": "81955443322",
     "carrinho": [
       {
@@ -171,7 +162,6 @@ db.user.insertMany([
   },
   {
     "nome": "Kleber Dias",
-    "email": "k.dias@hostmail.biz",
     "telefone": "91944332211",
     "carrinho": [
       {
@@ -185,7 +175,6 @@ db.user.insertMany([
   },
   {
     "nome": "Laura Gomes",
-    "email": "laura_g@mail.net",
     "telefone": "13933221100",
     "carrinho": [
       {
@@ -206,7 +195,6 @@ db.user.insertMany([
   },
   {
     "nome": "Marcelo Vieira",
-    "email": "marcelo.v@company.org",
     "telefone": "19922110099",
     "carrinho": [
       {
@@ -220,7 +208,6 @@ db.user.insertMany([
   },
   {
     "nome": "Nina Barreto",
-    "email": "nina.b@securemail.io",
     "telefone": "27911009988",
     "carrinho": [
       {
@@ -241,7 +228,6 @@ db.user.insertMany([
   },
   {
     "nome": "Otávio Sousa",
-    "email": "o.sousa@fastmail.com",
     "telefone": "34900998877",
     "carrinho": [
       {
