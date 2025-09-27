@@ -22,7 +22,7 @@ public interface SupplyService {
 
     Optional<Supply> findSupplyById(Long id);
     
-    List<SupplyResponseDTO> getAllSupplies();
+    List<Supply> getAllSupplies();
      
     void deleteSupplyById(Long id);
 }

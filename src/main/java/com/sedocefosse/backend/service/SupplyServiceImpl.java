@@ -36,24 +36,24 @@ public class SupplyServiceImpl implements SupplyService {
     }
     
 @Override
-public List<SupplyResponseDTO> getAllSupplies() {
+public List<Supply> getAllSupplies() {
     List<Supply> supplies = supplyRepository.findAll();
-    return supplies.stream()
-            .map(this::toResponseDTO)
-            .collect(Collectors.toList());
+    return supplies;
 }
 
-public void toResponseDTO(Supply supply) {
+public SupplyResponseDTO toResponseDTO(Supply supply) {
     SupplyResponseDTO dto = new SupplyResponseDTO();
-    dto.id = supply.getId();
-    dto.nome = supply.getNome();
-    dto.quantidade = supply.getQuantidade();
-    dto.unidade_medida = supply.getUnidadeMedida();
-    dto.ponto_reposicao = supply.getPontoReposicao();
+    dto.setId(supply.getId());
+    dto.setNome(supply.getNome());
+    dto.setUnidadeId(supply.getUnidade().getId());
+    dto.setUnidadeNome(supply.getUnidade().getNome()); // if Unit has a name field
+    dto.setQuantidade(supply.getQuantidade());
+    dto.setPrecoCompra(supply.getPreco_compra());
+    dto.setPontoReposicao(supply.getPonto_reposicao());
     return dto;
 }
-     
-    public void deleteSupplyById(Long id){
+    
+public void deleteSupplyById(Long id){
 
     }
 }

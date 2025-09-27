@@ -1,4 +1,4 @@
-package com.sedocefosse.backend.controller;
+package com.sedocefosse.backend.controller.admin;
 
 import com.sedocefosse.backend.model.Product;
 import com.sedocefosse.backend.service.ProductService;
