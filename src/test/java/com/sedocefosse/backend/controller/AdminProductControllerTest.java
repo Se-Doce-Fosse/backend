@@ -2,6 +2,7 @@ package com.sedocefosse.backend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sedocefosse.backend.configs.security.TokenService;
+import com.sedocefosse.backend.controller.admin.AdminProductController;
 import com.sedocefosse.backend.model.Category;
 import com.sedocefosse.backend.model.Product;
 import com.sedocefosse.backend.repository.AdminRepository;

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.sedocefosse.backend.configs.exceptions.ResourceNotFoundException;
 import com.sedocefosse.backend.dto.CategoryDTO;
 import com.sedocefosse.backend.dto.ProductDTO;
 import com.sedocefosse.backend.dto.ProductDetailsDTO;
@@ -107,6 +108,38 @@ public class ProductServiceImpl implements ProductService {
         }
         Product product = optionalProduct.get();
         product.setAtivo(!Boolean.TRUE.equals(product.getAtivo()));
+        return productRepository.save(product);
+    }
+    
+    @Override
+    public Product updateProduct(String sku, Product productDetails) {
+        Optional<Product> optionalProduct = productRepository.findById(sku);
+        if (optionalProduct.isEmpty()) {
+            throw new ResourceNotFoundException("Produto não encontrado com SKU: " + sku);
+        }
+        
+        Product product = optionalProduct.get();
+        
+        // Atualizar os campos do produto
+        if (productDetails.getNome() != null) {
+            product.setNome(productDetails.getNome());
+        }
+        if (productDetails.getDescricao() != null) {
+            product.setDescricao(productDetails.getDescricao());
+        }
+        if (productDetails.getValor() != null) {
+            product.setValor(productDetails.getValor());
+        }
+        if (productDetails.getImagemUrl() != null) {
+            product.setImagemUrl(productDetails.getImagemUrl());
+        }
+        if (productDetails.getAtivo() != null) {
+            product.setAtivo(productDetails.getAtivo());
+        }
+        if (productDetails.getCategoria() != null) {
+            product.setCategoria(productDetails.getCategoria());
+        }
+        
         return productRepository.save(product);
     }
 }
