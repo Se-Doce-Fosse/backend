@@ -90,8 +90,6 @@ CREATE TABLE "pedido_item" (
   PRIMARY KEY ("pedido_id", "produto_sku")
 );
 
-<<<<<<< HEAD
-=======
 CREATE TABLE "admin" (
     "id" BIGSERIAL PRIMARY KEY,
     "username" VARCHAR(255) NOT NULL UNIQUE,
@@ -99,8 +97,6 @@ CREATE TABLE "admin" (
     "password" VARCHAR(255) NOT NULL,
     "role" VARCHAR(50)
 );
-
->>>>>>> a051277 (feature: Login e signup - V2)
 CREATE TABLE "avaliacao" (
   "id" int PRIMARY KEY,
   "pedido_id" int,
