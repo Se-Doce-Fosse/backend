@@ -40,7 +40,7 @@ class LoginControllerTest {
     void login_shouldReturnExistingCustomer_orCreateAndReturn() throws Exception {
         Customer existing = new Customer();
         existing.setId("123");
-        existing.setNome("Will Smith");
+        existing.setNome("Alice Smith");
         existing.setTelefone("987654321");
 
         when(customerService.loginOrCreate(anyString(), anyString())).thenReturn(existing);
