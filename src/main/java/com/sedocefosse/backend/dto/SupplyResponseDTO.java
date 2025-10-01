@@ -1,4 +1,5 @@
 package com.sedocefosse.backend.dto;
+import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,8 +8,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-
 public class SupplyResponseDTO {
+    public SupplyResponseDTO() {}
     private Long id;
     private String nome;
     private Long unidadeId;
@@ -17,3 +18,4 @@ public class SupplyResponseDTO {
     private BigDecimal precoCompra;
     private double pontoReposicao;
 }
+

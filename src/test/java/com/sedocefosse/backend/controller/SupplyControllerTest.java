@@ -1,7 +1,6 @@
 package com.sedocefosse.backend.controller;
 
-import com.sedocefosse.backend.model.Product;
-import com.sedocefosse.backend.model.Category;
+import com.sedocefosse.backend.model.Supply;
 import com.sedocefosse.backend.configs.security.TokenService;
 import com.sedocefosse.backend.repository.AdminRepository;
 import com.sedocefosse.backend.service.ProductService;
@@ -21,11 +20,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import org.springframework.http.MediaType;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 
-import com.sedocefosse.backend.dto.CategoryDTO;
-import com.sedocefosse.backend.dto.ProductDTO;
-import com.sedocefosse.backend.dto.ProductDetailsDTO;
-import com.sedocefosse.backend.dto.RelatedProductDTO;
+import com.sedocefosse.backend.dto.SupplyResponseDTO;
+import com.sedocefosse.backend.service.SupplyService;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,10 +40,11 @@ class SupplyControllerTest {
 
     @Test
     void ShouldFindAllSuppliesReturnOK() throws Exception {
-        SupplyResponseDTO supply1 = new SupplyResponseDTO(1, "Farinha de trigo", 5, "kg", 1);
-        SupplyResponseDTO supply2 = new SupplyResponseDTO(2, "Farinha de trigo sem glúten", 5, "kg", 1);
-        List<SupplyResponseDTO> supplies = Arrays.asList(supply1, supply2);
-        when(supplyService.findAll().thenReturn(supplies));
+
+    SupplyResponseDTO supply1 = new SupplyResponseDTO(1L, "Farinha de trigo", 5L, "kg", 5.0, new BigDecimal("10.0"), 1.0);
+    SupplyResponseDTO supply2 = new SupplyResponseDTO(2L, "Farinha de trigo sem glúten", 5L, "kg", 5.0, new BigDecimal("12.0"), 1.0);
+    List<SupplyResponseDTO> supplies = Arrays.asList(supply1, supply2);
+    when(supplyService.getAllSupplies()).thenReturn(supplies);
 
         mockMvc.perform(get("/admin/supplies")
             .contentType(MediaType.APPLICATION_JSON))

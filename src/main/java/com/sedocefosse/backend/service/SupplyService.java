@@ -11,10 +11,9 @@ import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.StreamSupport;
-
-import com.sedocefosse.backend.dto.CategoryDTO;
-import com.sedocefosse.backend.dto.ProductDetailsDTO;
-import com.sedocefosse.backend.model.Product;
+import com.sedocefosse.backend.dto.SupplyResponseDTO;
+import com.sedocefosse.backend.model.Supply;
+import com.sedocefosse.backend.dto.SupplyUpdateDTO;
 
 @Service
 public interface SupplyService {
@@ -22,7 +21,10 @@ public interface SupplyService {
 
     Optional<Supply> findSupplyById(Long id);
     
-    List<Supply> getAllSupplies();
+    List<SupplyResponseDTO> getAllSupplies();
      
     void deleteSupplyById(Long id);
+
+    SupplyResponseDTO update(Long id, SupplyUpdateDTO updateDTO);
+
 }
