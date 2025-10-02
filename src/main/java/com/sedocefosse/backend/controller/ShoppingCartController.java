@@ -1,7 +1,7 @@
 package com.sedocefosse.backend.controller;
 
 import com.sedocefosse.backend.dto.ShoppingCartDTOs;
-import com.sedocefosse.backend.model.Customer;
+import com.sedocefosse.backend.model.ShoppingCart;
 import com.sedocefosse.backend.service.ShoppingCartService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,25 +29,19 @@ public class ShoppingCartController {
     @PostMapping
     public ResponseEntity<?> createCart(@RequestBody ShoppingCartDTOs.CreateCartRequest request) {
         try {
-            Customer saved = shoppingCartService.createCart(request);
+            ShoppingCart saved = shoppingCartService.createCart(request);
 
             ShoppingCartDTOs.CartResponse response = new ShoppingCartDTOs.CartResponse();
-            response.id = saved.getId();
-            response.customerId = saved.getId();
-            response.nome = saved.getNome();
-            response.telefone = saved.getTelefone();
-            response.carrinho = saved.getCarrinho().stream().map(item -> {
+            response.cartId = saved.getId();
+            response.items = saved.getItems().stream().map(item -> {
                 ShoppingCartDTOs.CartResponse.Item dto = new ShoppingCartDTOs.CartResponse.Item();
-                dto.produtoID = item.getProdutoID();
-                dto.quantidade = item.getQuantidade();
-                dto.precoProduto = item.getPrecoProduto();
-                dto.imagemProduto = item.getImagemProduto();
-                dto.descricaoProduto = item.getDescricaoProduto();
+                dto.productSku = item.getProductSku();
+                dto.quantity = item.getQuantity();
+                dto.unitPrice = item.getUnitPrice();
+                dto.lineTotal = item.getLineTotal();
                 return dto;
             }).collect(Collectors.toList());
-            response.subtotal = saved.getCarrinho().stream()
-                .mapToDouble(i -> (i.getPrecoProduto() != null ? i.getPrecoProduto() : 0.0) * (i.getQuantidade() != null ? i.getQuantidade() : 0))
-                .sum();
+            response.subtotal = saved.getSubtotal();
 
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (IllegalArgumentException e) {
@@ -58,25 +52,19 @@ public class ShoppingCartController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getCart(@PathVariable String id) {
         try {
-            Customer customer = shoppingCartService.getCart(id);
+            ShoppingCart cart = shoppingCartService.getCart(id);
 
             ShoppingCartDTOs.CartResponse response = new ShoppingCartDTOs.CartResponse();
-            response.id = customer.getId();
-            response.customerId = customer.getId();
-            response.nome = customer.getNome();
-            response.telefone = customer.getTelefone();
-            response.carrinho = customer.getCarrinho().stream().map(item -> {
+            response.cartId = cart.getId();
+            response.items = cart.getItems().stream().map(item -> {
                 ShoppingCartDTOs.CartResponse.Item dto = new ShoppingCartDTOs.CartResponse.Item();
-                dto.produtoID = item.getProdutoID();
-                dto.quantidade = item.getQuantidade();
-                dto.precoProduto = item.getPrecoProduto();
-                dto.imagemProduto = item.getImagemProduto();
-                dto.descricaoProduto = item.getDescricaoProduto();
+                dto.productSku = item.getProductSku();
+                dto.quantity = item.getQuantity();
+                dto.unitPrice = item.getUnitPrice();
+                dto.lineTotal = item.getLineTotal();
                 return dto;
             }).collect(Collectors.toList());
-            response.subtotal = customer.getCarrinho().stream()
-                .mapToDouble(i -> (i.getPrecoProduto() != null ? i.getPrecoProduto() : 0.0) * (i.getQuantidade() != null ? i.getQuantidade() : 0))
-                .sum();
+            response.subtotal = cart.getSubtotal();
 
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
@@ -87,25 +75,19 @@ public class ShoppingCartController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCart(@PathVariable String id, @RequestBody ShoppingCartDTOs.UpdateCartRequest request) {
         try {
-            Customer saved = shoppingCartService.updateCart(id, request);
+            ShoppingCart saved = shoppingCartService.updateCart(id, request);
 
             ShoppingCartDTOs.CartResponse response = new ShoppingCartDTOs.CartResponse();
-            response.id = saved.getId();
-            response.customerId = saved.getId();
-            response.nome = saved.getNome();
-            response.telefone = saved.getTelefone();
-            response.carrinho = saved.getCarrinho().stream().map(item -> {
+            response.cartId = saved.getId();
+            response.items = saved.getItems().stream().map(item -> {
                 ShoppingCartDTOs.CartResponse.Item dto = new ShoppingCartDTOs.CartResponse.Item();
-                dto.produtoID = item.getProdutoID();
-                dto.quantidade = item.getQuantidade();
-                dto.precoProduto = item.getPrecoProduto();
-                dto.imagemProduto = item.getImagemProduto();
-                dto.descricaoProduto = item.getDescricaoProduto();
+                dto.productSku = item.getProductSku();
+                dto.quantity = item.getQuantity();
+                dto.unitPrice = item.getUnitPrice();
+                dto.lineTotal = item.getLineTotal();
                 return dto;
             }).collect(Collectors.toList());
-            response.subtotal = saved.getCarrinho().stream()
-                .mapToDouble(i -> (i.getPrecoProduto() != null ? i.getPrecoProduto() : 0.0) * (i.getQuantidade() != null ? i.getQuantidade() : 0))
-                .sum();
+            response.subtotal = saved.getSubtotal();
 
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
@@ -116,25 +98,19 @@ public class ShoppingCartController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateCartItem(@PathVariable String id, @RequestBody ShoppingCartDTOs.UpdateItemRequest request) {
         try {
-            Customer saved = shoppingCartService.updateCartItem(id, request);
+            ShoppingCart saved = shoppingCartService.updateCartItem(id, request);
 
             ShoppingCartDTOs.CartResponse response = new ShoppingCartDTOs.CartResponse();
-            response.id = saved.getId();
-            response.customerId = saved.getId();
-            response.nome = saved.getNome();
-            response.telefone = saved.getTelefone();
-            response.carrinho = saved.getCarrinho().stream().map(item -> {
+            response.cartId = saved.getId();
+            response.items = saved.getItems().stream().map(item -> {
                 ShoppingCartDTOs.CartResponse.Item dto = new ShoppingCartDTOs.CartResponse.Item();
-                dto.produtoID = item.getProdutoID();
-                dto.quantidade = item.getQuantidade();
-                dto.precoProduto = item.getPrecoProduto();
-                dto.imagemProduto = item.getImagemProduto();
-                dto.descricaoProduto = item.getDescricaoProduto();
+                dto.productSku = item.getProductSku();
+                dto.quantity = item.getQuantity();
+                dto.unitPrice = item.getUnitPrice();
+                dto.lineTotal = item.getLineTotal();
                 return dto;
             }).collect(Collectors.toList());
-            response.subtotal = saved.getCarrinho().stream()
-                .mapToDouble(i -> (i.getPrecoProduto() != null ? i.getPrecoProduto() : 0.0) * (i.getQuantidade() != null ? i.getQuantidade() : 0))
-                .sum();
+            response.subtotal = saved.getSubtotal();
 
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
