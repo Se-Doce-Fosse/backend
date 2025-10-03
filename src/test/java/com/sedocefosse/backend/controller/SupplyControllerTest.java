@@ -2,6 +2,7 @@ package com.sedocefosse.backend.controller;
 
 import com.sedocefosse.backend.model.Supply;
 import com.sedocefosse.backend.configs.security.TokenService;
+import com.sedocefosse.backend.controller.admin.SupplyController;
 import com.sedocefosse.backend.repository.AdminRepository;
 import com.sedocefosse.backend.service.ProductService;
 import org.junit.jupiter.api.Test;
