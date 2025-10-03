@@ -1,8 +1,9 @@
 package com.sedocefosse.backend.repository;
 
-import com.sedocefosse.backend.repository.model.AdminEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import com.sedocefosse.backend.model.admin.AdminEntity;
 
 import java.util.Optional;
 

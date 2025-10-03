@@ -31,7 +31,7 @@ public class Supply {
     private Long id;
     private String nome;
     @ManyToOne
-    @JoinColumn(name = "unidade_id")
+    @JoinColumn(name = "id_unidade")
     private Unit unidade;
     private double quantidade;
     private BigDecimal preco_compra;

@@ -1,6 +1,7 @@
 package com.sedocefosse.backend.service;
 
 import com.sedocefosse.backend.model.Supply;
+import com.sedocefosse.backend.model.Unit;
 import com.sedocefosse.backend.repository.SupplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,7 @@ public class SupplyServiceImpl implements SupplyService {
         dto.setId(supply.getId());
         dto.setNome(supply.getNome());
         dto.setUnidadeId(supply.getUnidade().getId());
-        dto.setUnidadeNome(supply.getUnidade().getNome()); // if Unit has a name field
+        dto.setUnidadeNome(supply.getUnidade().getNome());
         dto.setQuantidade(supply.getQuantidade());
         dto.setPrecoCompra(supply.getPreco_compra());
         dto.setPontoReposicao(supply.getPonto_reposicao());
