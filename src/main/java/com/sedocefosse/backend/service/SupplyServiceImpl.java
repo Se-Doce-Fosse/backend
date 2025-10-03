@@ -3,6 +3,8 @@ package com.sedocefosse.backend.service;
 import com.sedocefosse.backend.model.Supply;
 import com.sedocefosse.backend.model.Unit;
 import com.sedocefosse.backend.repository.SupplyRepository;
+import com.sedocefosse.backend.repository.UnitRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +18,12 @@ import com.sedocefosse.backend.dto.SupplyUpdateDTO;
 @Service 
 public class SupplyServiceImpl implements SupplyService {
     private final SupplyRepository supplyRepository;
+    private final UnitRepository unitRepository;
 
     @Autowired
-    public SupplyServiceImpl(SupplyRepository supplyRepository){
+    public SupplyServiceImpl(SupplyRepository supplyRepository, UnitRepository unitRepository){
         this.supplyRepository = supplyRepository;
+        this.unitRepository = unitRepository;
     }
 
     @Override
@@ -63,6 +67,10 @@ public class SupplyServiceImpl implements SupplyService {
         existingSupply.setQuantidade(updateDTO.getQuantidade());
         existingSupply.setPreco_compra(updateDTO.getPrecoCompra());
         existingSupply.setPonto_reposicao(updateDTO.getPontoReposicao());
+
+        Unit newUnit = unitRepository.findById(updateDTO.getUnidadeId())
+            .orElseThrow(() -> new ResourceNotFoundException("Unidade não encontrado com o id: " + id));
+        existingSupply.setUnidade(newUnit);
         
         Supply savedSupply = supplyRepository.save(existingSupply);
 
