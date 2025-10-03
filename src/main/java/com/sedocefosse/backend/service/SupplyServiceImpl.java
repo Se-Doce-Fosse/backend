@@ -2,19 +2,15 @@ package com.sedocefosse.backend.service;
 
 import com.sedocefosse.backend.model.Supply;
 import com.sedocefosse.backend.repository.SupplyRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
-import java.util.Spliterator;
-import java.util.Spliterators;
-import java.util.stream.StreamSupport;
 import java.util.stream.Collectors;
 import com.sedocefosse.backend.configs.exceptions.ResourceNotFoundException;
 import com.sedocefosse.backend.dto.SupplyResponseDTO;
-import com.sedocefosse.backend.model.Supply;
+import com.sedocefosse.backend.dto.SupplyUpdateDTO;
 
 @Service 
 public class SupplyServiceImpl implements SupplyService {
@@ -62,10 +58,10 @@ public class SupplyServiceImpl implements SupplyService {
         Supply existingSupply = supplyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Insumo não encontrado com o id: " + id));
 
-        existingSupply.setNome(updateDTO.nome());
-        existingSupply.setQuantidade(updateDTO.quantidade());
-        existingSupply.setPreco_compra(updateDTO.precoCompra());
-        existingSupply.setPonto_reposicao(updateDTO.pontoReposicao());
+        existingSupply.setNome(updateDTO.getName());
+        existingSupply.setQuantidade(updateDTO.getQuantidade());
+        existingSupply.setPreco_compra(updateDTO.getPrecoCompra());
+        existingSupply.setPonto_reposicao(updateDTO.getPontoReposicao());
         
         Supply savedSupply = supplyRepository.save(existingSupply);
 
