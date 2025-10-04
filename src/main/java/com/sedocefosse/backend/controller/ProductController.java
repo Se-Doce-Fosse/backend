@@ -27,7 +27,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    //http://localhost:8081/products
+    //http://localhost:8081/products/
     @GetMapping
     public ResponseEntity<ProductsResponseDTO> getAllProducts() {
         List<CategoryDTO> categories = productService.getAllProductsGroupedByCategory();

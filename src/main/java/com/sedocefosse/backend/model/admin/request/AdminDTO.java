@@ -1,6 +1,6 @@
 package com.sedocefosse.backend.model.admin.request;
 
-import com.sedocefosse.backend.repository.model.AdminEntity;
+import com.sedocefosse.backend.model.admin.AdminEntity;
 import com.sedocefosse.backend.utils.ConstrainsMessages;
 import com.sedocefosse.backend.utils.RoleEnum;
 import jakarta.validation.constraints.Email;

@@ -1,4 +1,4 @@
-package com.sedocefosse.backend.repository.model;
+package com.sedocefosse.backend.model.admin;
 
 import com.sedocefosse.backend.utils.RoleEnum;
 import jakarta.persistence.*;

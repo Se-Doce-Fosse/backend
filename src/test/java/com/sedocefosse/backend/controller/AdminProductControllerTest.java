@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import com.sedocefosse.backend.controller.admin.AdminProductController;
 
 import java.math.BigDecimal;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -51,11 +52,10 @@ class AdminProductControllerTest {
     }
 
     private Product createDefaultTestProduct(String sku, String nome, BigDecimal valor, Boolean ativo) {
-        // Criando Category com construtor vazio e setters, conforme sua classe Category
         Category defaultCategory = new Category();
         defaultCategory.setId(1L);
         defaultCategory.setNome("Default Category");
-        defaultCategory.setProdutos(null); // Definindo a lista de produtos como null, pois ela é @OneToMany
+        defaultCategory.setProdutos(null); 
 
         return createTestProduct(sku, nome, "Descrição padrão para " + nome, valor, "http://example.com/images/" + sku + ".jpg", ativo, defaultCategory);
     }
