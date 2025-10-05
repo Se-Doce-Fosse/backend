@@ -92,7 +92,7 @@ CREATE TABLE "avaliacao" (
   "id" BIGSERIAL PRIMARY KEY,
   "pedido_id" int,
   "cliente_id" int,
-  "nota" int,
+  "nota" numeric,
   "descricao" text,
   "nome_exibicao" varchar
 );
@@ -131,7 +131,7 @@ INSERT INTO "user" ("nome", "telefone") VALUES
 ('Carlos Oliveira', '11998765432');
 
 INSERT INTO "admin" ("username", "email", "password", "role") VALUES
-('admin_master', 'admin@email.com', 'hash_senha_segura_aqui', 'ROLE_OWNER');
+('admin12345', 'admin.ad3@example.com', '$2a$10$l/yU4IeXBqtLO6ehBDxdU.QRJlLsMSbKTVB4KcvpBa1DvO7CYiD7O', 'ROLE_OWNER');
 
 INSERT INTO "cupom" ("codigo", "valor_desc", "validade", "ativo", "unico") VALUES
 ('DOCE10', 10.00, '2025-12-31', true, false),
@@ -190,4 +190,4 @@ INSERT INTO "pedido_item" ("pedido_id", "produto_sku", "quantidade", "valor_unit
 (3, 'CK002', 1, 7.00);
 
 INSERT INTO "avaliacao" ("pedido_id", "cliente_id", "nota", "descricao", "nome_exibicao") VALUES
-(1, 1, 5, 'Os melhores cookies que já comi! Chegou quentinho.', 'João S.');
+(1, 1, 3.5, 'Os melhores cookies que já comi! Chegou quentinho.', 'João S.');
