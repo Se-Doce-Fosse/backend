@@ -27,8 +27,9 @@ public class SupplyServiceImpl implements SupplyService {
     }
 
     @Override
-    public Supply create(Supply supply) {
-        return supplyRepository.save(supply);
+    public SupplyResponseDTO create(Supply supply) {
+        supplyRepository.save(supply);
+        return toResponseDTO(supply);
     }
 
 
