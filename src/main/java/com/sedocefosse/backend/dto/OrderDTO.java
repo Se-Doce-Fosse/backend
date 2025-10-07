@@ -27,7 +27,7 @@ public class OrderDTO {
     private OrderStatusEnum orderStatus;
     @Builder.Default
     private List<String> products = new ArrayList<>();
-    private String cupom;
+    private Integer cupomId;
     @Builder.Default
     private List<String> outOfStock = new ArrayList<>();
 }

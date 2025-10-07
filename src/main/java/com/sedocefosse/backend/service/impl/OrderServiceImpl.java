@@ -24,7 +24,6 @@ public class OrderServiceImpl {
         UpdateResult result = updateProducts(order.getProducts());
         order.setOutOfStock(result.outOfStock);
         Order entity = mapToEntity(order);
-        entity.setOrderId(UUID.randomUUID().toString());
         entity.setProducts(result.fulfilledProducts);
         Order saved = orderRepository.save(entity);
         return mapToDTO(saved, result.outOfStock);
@@ -62,7 +61,7 @@ public class OrderServiceImpl {
                 .orderDate(orderDTO.getOrderDate())
                 .totalPrice(orderDTO.getTotalPrice())
                 .products(orderDTO.getProducts())
-                .cupom(orderDTO.getCupom())
+                .cupomId(orderDTO.getCupomId())
                 .clientId(orderDTO.getClientId())
                 .build();
     }
@@ -74,7 +73,7 @@ public class OrderServiceImpl {
                 .totalPrice(order.getTotalPrice())
                 .orderStatus(order.getOrderStatus())
                 .products(order.getProducts())
-                .cupom(order.getCupom())
+                .cupomId(order.getCupomId())
                 .outOfStock(outOfStock != null ? outOfStock : List.of())
                 .build();
     }

@@ -19,8 +19,9 @@ import java.util.List;
 public class Order {
 
     @Id
-    @Column(name = "id", nullable = false, unique = true, length = 100)
-    private String orderId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true)
+    private Long orderId;
 
     @Column(name = "cliente_id", nullable = false)
     private Integer clientId;
@@ -42,7 +43,7 @@ public class Order {
     private List<String> products = new ArrayList<>();
 
     @Column(name = "cupom_id")
-    private String cupom;
+    private Integer cupomId;
 
     @PrePersist
     void prePersist() {
