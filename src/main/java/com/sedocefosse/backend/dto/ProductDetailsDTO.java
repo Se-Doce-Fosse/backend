@@ -13,5 +13,5 @@ public class ProductDetailsDTO {
     private BigDecimal valor;
     private String imagemUrl;
     private Boolean ativo;
-    private String categoriaNome; 
+    private String categoriaNome;
 }
