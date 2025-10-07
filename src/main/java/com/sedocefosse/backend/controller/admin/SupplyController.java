@@ -36,8 +36,10 @@ public class SupplyController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteSupply(@PathVariable Long id) { supplyService.deleteSupplyById(id);}
+    public ResponseEntity<String> deleteSupply(@PathVariable Long id) {
+        supplyService.deleteSupplyById(id);
+        return ResponseEntity.ok("Supply deletado com sucesso");
+    }
 
     @PostMapping
     public ResponseEntity<SupplyResponseDTO> createSupply (@RequestBody Supply supply){
