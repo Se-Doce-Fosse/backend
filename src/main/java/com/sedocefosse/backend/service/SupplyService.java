@@ -17,7 +17,7 @@ import com.sedocefosse.backend.dto.SupplyUpdateDTO;
 
 @Service
 public interface SupplyService {
-    Supply create(Supply supply);
+    SupplyResponseDTO create(Supply supply);
 
     Optional<Supply> findSupplyById(Long id);
     

@@ -47,16 +47,16 @@ class AdminProductControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    // private Product createTestProduct(String sku, String nome, String descricao, BigDecimal valor, String imagemUrl, Boolean ativo, Category categoria) {
-    //     return new Product(sku, nome, descricao, valor, imagemUrl, ativo, categoria);
-    // }
+    private Product createTestProduct(String sku, String nome, String descricao, BigDecimal valor, String imagemUrl, Boolean ativo, Integer quantidade) {
+        return new Product(sku, nome, descricao, valor, imagemUrl, ativo, quantidade);
+    }
 
     // private Product createDefaultTestProduct(String sku, String nome, BigDecimal valor, Boolean ativo) {
     //     Category defaultCategory = new Category();
     //     defaultCategory.setNome("Default Category");
     //     defaultCategory.setProdutos(null); 
 
-    //     return createTestProduct(sku, nome, "Descrição padrão para " + nome, valor, "http://example.com/images/" + sku + ".jpg", ativo, defaultCategory);
+    //     return createTestProduct(sku, nome, "Descrição padrão para " + nome, valor, "http://example.com/images/" + sku + ".jpg", ativo, 5);
     // }
 
 
