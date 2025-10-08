@@ -4,6 +4,7 @@ import com.sedocefosse.backend.model.Supply;
 import com.sedocefosse.backend.model.Unit;
 import com.sedocefosse.backend.repository.SupplyRepository;
 import com.sedocefosse.backend.repository.UnitRepository;
+import com.sedocefosse.backend.service.SupplyService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
