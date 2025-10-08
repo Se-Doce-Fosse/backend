@@ -245,17 +245,17 @@ db.categorias.insertMany([
   {
     "nome": "Cookies",
     "descricao": "Nossos Clássicos Cookies Crocantes e Macios",
-    "produtos": ["SKU1", "SKU2", "SKU3", "SKU4"]
+    "produtos": ["CK001", "CK002"]
   },
   {
     "nome": "Bolos",
     "descricao": "Bolos de Aniversário e Ocasiões Especiais",
-    "produtos": ["SKU9", "SKU12", "SKU11"]
+    "produtos": ["BL001", "BL002"]
   },
   {
     "nome": "Doces",
     "descricao": "Variedade de Doces e Guloseimas",
-    "produtos": ["SKU5", "SKU7", "SKU13", "SKU15"]
+    "produtos": ["CK001", "CK002", "BL001", "BL002"]
   },
   {
     "nome": "Vegano",

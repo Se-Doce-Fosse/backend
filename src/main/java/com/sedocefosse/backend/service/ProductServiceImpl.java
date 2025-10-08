@@ -79,9 +79,10 @@ public class ProductServiceImpl implements ProductService {
         return new ProductDTO(
                 product.getSku(),
                 product.getNome(),
-                valorFormatado,
+                valorFormatado,                
                 product.getImagemUrl(),
                 product.getNome(),
+                product.getAtivo(),
                 null, 
                 null
         );
