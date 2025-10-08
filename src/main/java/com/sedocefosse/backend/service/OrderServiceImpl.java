@@ -1,4 +1,4 @@
-package com.sedocefosse.backend.service.impl;
+package com.sedocefosse.backend.service;
 
 import com.sedocefosse.backend.dto.OrderDTO;
 import com.sedocefosse.backend.model.Order;

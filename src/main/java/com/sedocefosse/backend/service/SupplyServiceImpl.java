@@ -1,4 +1,4 @@
-package com.sedocefosse.backend.service.impl;
+package com.sedocefosse.backend.service;
 
 import com.sedocefosse.backend.model.Supply;
 import com.sedocefosse.backend.model.Unit;

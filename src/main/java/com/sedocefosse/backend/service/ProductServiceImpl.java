@@ -1,4 +1,4 @@
-package com.sedocefosse.backend.service.impl;
+package com.sedocefosse.backend.service;
 
 import java.util.List;
 import java.util.Optional;
