@@ -5,7 +5,6 @@ import com.sedocefosse.backend.model.Unit;
 import com.sedocefosse.backend.repository.SupplyRepository;
 import com.sedocefosse.backend.repository.UnitRepository;
 
-import com.sedocefosse.backend.service.SupplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,8 +27,9 @@ public class SupplyServiceImpl implements SupplyService {
     }
 
     @Override
-    public Supply create(Supply supply) {
-        return supplyRepository.save(supply);
+    public SupplyResponseDTO create(Supply supply) {
+        supplyRepository.save(supply);
+        return toResponseDTO(supply);
     }
 
 
