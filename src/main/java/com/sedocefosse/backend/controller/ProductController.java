@@ -1,6 +1,7 @@
 package com.sedocefosse.backend.controller;
 
 import com.sedocefosse.backend.dto.CategoryDTO;
+import com.sedocefosse.backend.dto.ProductDTO;
 import com.sedocefosse.backend.dto.ProductDetailsDTO;
 import com.sedocefosse.backend.dto.ProductsResponseDTO;
 import com.sedocefosse.backend.model.Product;
@@ -37,8 +38,8 @@ public class ProductController {
 
     //http://localhost:8081/products/1
     @GetMapping("/{sku}")
-    public ResponseEntity<ProductDetailsDTO> getProductBySku(@PathVariable String sku) {
-        Optional<ProductDetailsDTO> productDto = productService.findProductDetailsBySku(sku);
+    public ResponseEntity<ProductDTO> getProductBySku(@PathVariable String sku) {
+        Optional<ProductDTO> productDto = productService.findProductDetailsBySku(sku);
 
         return productDto.map(ResponseEntity::ok)
                         .orElseGet(() -> ResponseEntity.notFound().build());

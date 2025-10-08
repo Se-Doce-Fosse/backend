@@ -2,6 +2,7 @@ package com.sedocefosse.backend.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -11,6 +12,7 @@ import com.sedocefosse.backend.configs.exceptions.ResourceNotFoundException;
 import com.sedocefosse.backend.dto.CategoryDTO;
 import com.sedocefosse.backend.dto.ProductDTO;
 import com.sedocefosse.backend.dto.ProductDetailsDTO;
+import com.sedocefosse.backend.dto.RelatedProductDTO;
 import com.sedocefosse.backend.model.Category;
 import com.sedocefosse.backend.model.Product;
 import com.sedocefosse.backend.repository.CategoryRepository;
@@ -29,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDetailsDTO create(Product product) {        
-        product.setSku(UUID.randomUUID().toString());        
+        product.setSku(UUID.randomUUID().toString());
         Product savedProduct = productRepository.save(product);
         return mapToProductDetailsDTO(savedProduct);
     }
@@ -48,18 +50,23 @@ public class ProductServiceImpl implements ProductService {
     public List<CategoryDTO> getAllProductsGroupedByCategory() {
         List<Category> categories = categoryRepository.findAll();
 
-        return categories.stream()
-                .map(this::mapToCategoryDTO)
-                .collect(Collectors.toList());
+        return categories.stream().map(category -> {
+            List<String> productSkus = category.getProdutos();
+
+            List<Product> products = productRepository.findBySkuIn(productSkus);
+
+            return mapToCategoryDTO(category, products);
+
+        }).collect(Collectors.toList());
     }
 
-    private CategoryDTO mapToCategoryDTO(Category category) {
-        List<ProductDTO> productDTOs = category.getProdutos().stream()
+    private CategoryDTO mapToCategoryDTO(Category category, List<Product> products) {
+        List<ProductDTO> productDTOs = products.stream()
                 .map(this::mapToProductDTO)
                 .collect(Collectors.toList());
 
         return new CategoryDTO(
-                category.getId().toString(),
+                category.getId(),
                 category.getNome(),
                 productDTOs
         );
@@ -75,15 +82,38 @@ public class ProductServiceImpl implements ProductService {
                 product.getImagemUrl(),
                 product.getNome(),
                 null, 
-                null  
+                null
         );
     }
 
     @Override
-    public Optional<ProductDetailsDTO> findProductDetailsBySku(String sku) {
-        return productRepository.findById(sku)
-                .map(this::mapToProductDetailsDTO);
+    public Optional<ProductDTO> findProductDetailsBySku(String sku) {
+        return productRepository.findById(sku).map(product -> {
+
+            ProductDTO productDTO = this.mapToProductDTO(product);
+
+            List<Category> categories = categoryRepository.findByProdutos(sku);
+
+            Set<String> relatedSkus = categories.stream()
+                    .flatMap(category -> category.getProdutos().stream())
+                    .collect(Collectors.toSet());
+
+            relatedSkus.remove(sku);
+
+            if (!relatedSkus.isEmpty()) {
+                List<Product> relatedProducts = productRepository.findAllById(relatedSkus);
+
+                List<RelatedProductDTO> relatedProductsDTOs = relatedProducts.stream()
+                        .map(this::mapToRelatedProductDTO)
+                        .collect(Collectors.toList());
+                productDTO.setRelatedProducts(relatedProductsDTOs);
+                return productDTO;
+            }
+
+            return productDTO;
+        });
     }
+
 
     private ProductDetailsDTO mapToProductDetailsDTO(Product product) {
         ProductDetailsDTO dto = new ProductDetailsDTO();
@@ -93,10 +123,6 @@ public class ProductServiceImpl implements ProductService {
         dto.setValor(product.getValor());
         dto.setImagemUrl(product.getImagemUrl());
         dto.setAtivo(product.getAtivo());
-        
-        if (product.getCategoria() != null) {
-            dto.setCategoriaNome(product.getCategoria().getNome());
-        }
         return dto;
     }
 
@@ -136,11 +162,18 @@ public class ProductServiceImpl implements ProductService {
         if (productDetails.getAtivo() != null) {
             product.setAtivo(productDetails.getAtivo());
         }
-        if (productDetails.getCategoria() != null) {
-            product.setCategoria(productDetails.getCategoria());
-        }
         
         return productRepository.save(product);
+    }
+
+    private RelatedProductDTO mapToRelatedProductDTO(Product product) {
+        return new RelatedProductDTO(
+                product.getSku(),
+                product.getNome(),
+                product.getValor().toString(),
+                product.getImagemUrl(),
+                null
+        );
     }
 }
 
