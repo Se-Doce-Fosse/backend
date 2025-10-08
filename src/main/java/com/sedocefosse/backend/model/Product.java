@@ -2,17 +2,15 @@ package com.sedocefosse.backend.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.ArrayList;
+import java.util.List;
+
+import lombok.*;
 
 @Entity
 @Table(name = "produto")
-@Getter 
-@Setter 
-@ToString 
+@Builder
+@Data
 @NoArgsConstructor 
 @AllArgsConstructor 
 public class Product {
@@ -39,5 +37,8 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Category categoria;
+
+    @Column(name = "quantidade")
+    private Integer quantidade;
 
 }
