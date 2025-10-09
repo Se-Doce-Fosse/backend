@@ -59,9 +59,9 @@ class ProductControllerTest {
 
         mockMvc.perform(get("/products/SKU-CHOCO-01"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.sku").value("SKU-CHOCO-01"))
-                .andExpect(jsonPath("$.nome").value("Cookie de Chocolate"))
-                .andExpect(jsonPath("$.valor").value(5.50));
+                .andExpect(jsonPath("$.id").value("SKU-CHOCO-01"))
+                .andExpect(jsonPath("$.name").value("Cookie de Chocolate"))
+                .andExpect(jsonPath("$.price").value(5.50));
     }
 
     @Test
