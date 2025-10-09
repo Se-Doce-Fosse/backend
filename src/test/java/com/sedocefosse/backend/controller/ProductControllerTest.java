@@ -79,13 +79,13 @@ class ProductControllerTest {
 
         ProductDTO cookieOreo = new ProductDTO(
             "1", "Cookie Oreo com Nutella", "R$ 15,00", "/images/cookie-oreo.jpg",
-            "Cookie Oreo com Nutella","teste descrição",true, Arrays.asList("Sem Glúten", "Sem Lactose", "Vegan"),
+            "Cookie Oreo com Nutella","teste descrição",true,"1","Tradicional", Arrays.asList("Sem Glúten", "Sem Lactose", "Vegan"),
             Arrays.asList(relatedCookieBranco, relatedBolo)
         );
 
         ProductDTO boloRedVelvet = new ProductDTO(
             "10", "Bolo Red Velvet", "R$ 35,00", "/images/bolo-red-velvet.jpg",
-            "Bolo Red Velvet", "teste descrição", true, Arrays.asList("Sem Glúten", "Sem Lactose", "Vegan"),
+            "Bolo Red Velvet", "teste descrição", true, "1","Tradicional", Arrays.asList("Sem Glúten", "Sem Lactose", "Vegan"),
             Arrays.asList(new RelatedProductDTO("1", "Cookie Oreo com Nutella", "R$ 15,00", "/images/cookie-oreo.jpg", "Cookie Oreo com Nutella"))
         );
 

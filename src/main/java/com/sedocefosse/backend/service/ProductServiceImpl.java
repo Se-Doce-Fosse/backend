@@ -85,6 +85,8 @@ public class ProductServiceImpl implements ProductService {
                 product.getDescricao(),
                 product.getAtivo(),
                 null, 
+                null, 
+                null, 
                 null
         );
     }
@@ -95,16 +97,16 @@ public class ProductServiceImpl implements ProductService {
 
             ProductDTO productDTO = this.mapToProductDTO(product);
 
-            List<Category> categories = categoryRepository.findByProdutos(sku);
+            Category category = categoryRepository.findByProdutos(sku);
+            category.getProdutos().remove(sku);
+            System.out.println("Categoria encontrada:");
+            System.out.println(category.getNome());
 
-            Set<String> relatedSkus = categories.stream()
-                    .flatMap(category -> category.getProdutos().stream())
-                    .collect(Collectors.toSet());
+            productDTO.setCategoryName(category.getNome());
+            productDTO.setCategoryId(category.getId());
 
-            relatedSkus.remove(sku);
-
-            if (!relatedSkus.isEmpty()) {
-                List<Product> relatedProducts = productRepository.findAllById(relatedSkus);
+            if (!category.getProdutos().isEmpty()) {
+                List<Product> relatedProducts = productRepository.findAllById(category.getProdutos());
 
                 List<RelatedProductDTO> relatedProductsDTOs = relatedProducts.stream()
                         .map(this::mapToRelatedProductDTO)

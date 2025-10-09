@@ -10,5 +10,5 @@ import com.sedocefosse.backend.model.Category;
 @Repository
 public interface CategoryRepository extends MongoRepository<Category, String> {
 
-    List<Category> findByProdutos(String sku);
+    Category findByProdutos(String sku);
 }

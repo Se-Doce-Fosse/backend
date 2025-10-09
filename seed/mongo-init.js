@@ -255,66 +255,6 @@ db.categorias.insertMany([
   {
     "nome": "Doces",
     "descricao": "Variedade de Doces e Guloseimas",
-    "produtos": ["CK001", "CK002", "BL001", "BL002"]
-  },
-  {
-    "nome": "Vegano",
-    "descricao": "Opções Deliciosas Sem Ingredientes Animais",
-    "produtos": ["SKU16", "SKU17"]
-  },
-  {
-    "nome": "Sem Glúten",
-    "descricao": "Produtos para Dietas Restritivas",
-    "produtos": ["SKU18", "SKU19"]
-  },
-  {
-    "nome": "Café da Manhã",
-    "descricao": "Itens Perfeitos para a Primeira Refeição do Dia",
-    "produtos": ["SKU6", "SKU8", "SKU12"]
-  },
-  {
-    "nome": "Sazonal",
-    "descricao": "Produtos Especiais para as Estações do Ano",
-    "produtos": ["SKU20", "SKU21", "SKU22"]
-  },
-  {
-    "nome": "Pequenas Festas",
-    "descricao": "Kits para Reuniões e Pequenas Comemorações",
-    "produtos": ["SKU15", "SKU7", "SKU13"]
-  },
-  {
-    "nome": "Tortas",
-    "descricao": "Tortas Doces e Cremosas",
-    "produtos": ["SKU10", "SKU11"]
-  },
-  {
-    "nome": "Promoção",
-    "descricao": "Produtos com Desconto Limitado",
-    "produtos": ["SKU1", "SKU5", "SKU12"]
-  },
-  {
-    "nome": "Novidades",
-    "descricao": "Nossos Mais Novos Lançamentos",
-    "produtos": ["SKU23", "SKU24"]
-  },
-  {
-    "nome": "Embalagens",
-    "descricao": "Caixas e Kits de Presente",
-    "produtos": ["SKU14", "SKU25"]
-  },
-  {
-    "nome": "Cupcakes",
-    "descricao": "Mini Bolos Decorados",
-    "produtos": ["SKU4", "SKU26"]
-  },
-  {
-    "nome": "Donuts",
-    "descricao": "Donuts com Coberturas Variadas",
-    "produtos": ["SKU3", "SKU27"]
-  },
-  {
-    "nome": "Salgados",
-    "descricao": "Opções Salgadas para Acompanhar",
-    "produtos": ["SKU28", "SKU29"]
+    "produtos": ["CK003", "CK004", "BL005", "BL006"]
   }
 ]);
