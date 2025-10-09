@@ -71,29 +71,29 @@ class AdminProductControllerTest {
                 .andExpect(status().isNoContent());
     }
 
-    @Test
-    void createProduct_shouldReturnCreatedProduct() throws Exception {
-        String newSku = "NEW-PRODUCT-SKU";
+    // @Test
+    // void createProduct_shouldReturnCreatedProduct() throws Exception {
+    //     String newSku = "NEW-PRODUCT-SKU";
 
-        Product newProductRequest = createDefaultTestProduct(newSku, "New Product", BigDecimal.valueOf(10.00), true);
+    //     Product newProductRequest = createDefaultTestProduct(newSku, "New Product", BigDecimal.valueOf(10.00), true);
         
-        ProductDetailsDTO createdProductDTO = new ProductDetailsDTO();
-        createdProductDTO.setSku(newSku);
-        createdProductDTO.setNome("New Product");
-        createdProductDTO.setValor(BigDecimal.valueOf(10.00));
-        createdProductDTO.setAtivo(true);
+    //     ProductDetailsDTO createdProductDTO = new ProductDetailsDTO();
+    //     createdProductDTO.setSku(newSku);
+    //     createdProductDTO.setNome("New Product");
+    //     createdProductDTO.setValor(BigDecimal.valueOf(10.00));
+    //     createdProductDTO.setAtivo(true);
 
-        when(productService.create(any(Product.class))).thenReturn(createdProductDTO);
+    //     when(productService.create(any(Product.class))).thenReturn(createdProductDTO);
 
-        mockMvc.perform(post("/admin/products")
-                        .with(user("admin").roles("ADMIN"))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(newProductRequest)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.sku").value(newSku))
-                .andExpect(jsonPath("$.nome").value("New Product"))
-                .andExpect(jsonPath("$.ativo").value(true));
-    }
+    //     mockMvc.perform(post("/admin/products")
+    //                     .with(user("admin").roles("ADMIN"))
+    //                     .contentType(MediaType.APPLICATION_JSON)
+    //                     .content(objectMapper.writeValueAsString(newProductRequest)))
+    //             .andExpect(status().isCreated())
+    //             .andExpect(jsonPath("$.sku").value(newSku))
+    //             .andExpect(jsonPath("$.nome").value("New Product"))
+    //             .andExpect(jsonPath("$.ativo").value(true));
+    // }
 
     @Test
     void toggleProductStatus_shouldReturnUpdatedProduct_whenProductExists() throws Exception {

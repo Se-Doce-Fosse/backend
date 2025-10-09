@@ -1,5 +1,6 @@
 package com.sedocefosse.backend.controller.admin;
 
+import com.sedocefosse.backend.dto.ProductDTO;
 import com.sedocefosse.backend.dto.ProductDetailsDTO;
 import com.sedocefosse.backend.model.Product;
 import com.sedocefosse.backend.service.ProductService;
@@ -30,7 +31,7 @@ public class AdminProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDetailsDTO> createProduct(@RequestBody Product product) {
+    public ResponseEntity<ProductDetailsDTO> createProduct(@RequestBody ProductDTO product) {
         ProductDetailsDTO createdProduct = productService.create(product);
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }

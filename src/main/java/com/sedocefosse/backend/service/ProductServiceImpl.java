@@ -1,5 +1,6 @@
 package com.sedocefosse.backend.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -7,6 +8,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.sedocefosse.backend.service.ProductService;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.sedocefosse.backend.configs.exceptions.ResourceNotFoundException;
@@ -31,9 +35,29 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDetailsDTO create(Product product) {        
-        product.setSku(UUID.randomUUID().toString());
-        Product savedProduct = productRepository.save(product);
+    @Transactional
+    public ProductDetailsDTO create(ProductDTO product) {        
+        product.setId(UUID.randomUUID().toString());
+
+        Product newProduct = new Product();
+        newProduct.setSku(product.getId()); 
+        newProduct.setNome(product.getName());
+        newProduct.setDescricao(product.getDescription());
+        newProduct.setValor(new BigDecimal(product.getPrice().replace(",", ".")));
+        newProduct.setImagemUrl(product.getImageSrc());
+        newProduct.setAtivo(product.getIsActive());
+
+        Product savedProduct = productRepository.save(newProduct);
+
+        Optional<Category> optionalCategory = categoryRepository.findById(product.getCategory().getId());
+        if (optionalCategory.isPresent()) {            
+            Category category = optionalCategory.get();
+            List<String> produtos = category.getProdutos();
+            produtos.add(savedProduct.getSku());
+            category.setProdutos(produtos);
+            categoryRepository.save(category);
+        }
+
         return mapToProductDetailsDTO(savedProduct);
     }
 
@@ -83,7 +107,6 @@ public class ProductServiceImpl implements ProductService {
                 product.getImagemUrl(),
                 product.getNome(),
                 product.getDescricao(),
-                product.getAtivo(),
                 null, 
                 null, 
                 null, 
@@ -102,8 +125,8 @@ public class ProductServiceImpl implements ProductService {
             System.out.println("Categoria encontrada:");
             System.out.println(category.getNome());
 
-            productDTO.setCategoryName(category.getNome());
-            productDTO.setCategoryId(category.getId());
+            CategoryDTO categoryDTO = new CategoryDTO(category.getId(), category.getNome(), null);
+            productDTO.setCategory(categoryDTO);
 
             if (!category.getProdutos().isEmpty()) {
                 List<Product> relatedProducts = productRepository.findAllById(category.getProdutos());
