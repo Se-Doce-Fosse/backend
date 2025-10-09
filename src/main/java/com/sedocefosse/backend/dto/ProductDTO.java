@@ -14,6 +14,7 @@ public class ProductDTO {
     private String price;
     private String imageSrc;
     private String imageAlt;
+    private String description;
     private Boolean isActive;
     private List<String> allergens;
     private List<RelatedProductDTO> relatedProducts;

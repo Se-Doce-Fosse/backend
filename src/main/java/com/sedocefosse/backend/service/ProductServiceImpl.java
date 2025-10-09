@@ -81,7 +81,8 @@ public class ProductServiceImpl implements ProductService {
                 product.getNome(),
                 valorFormatado,                
                 product.getImagemUrl(),
-                product.getNome(),
+                product.getImagemUrl(),
+                product.getDescricao(),
                 product.getAtivo(),
                 null, 
                 null
