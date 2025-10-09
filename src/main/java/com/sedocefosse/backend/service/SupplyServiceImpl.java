@@ -56,6 +56,7 @@ public class SupplyServiceImpl implements SupplyService {
         dto.setQuantidade(supply.getQuantidade());
         dto.setPrecoCompra(supply.getPreco_compra());
         dto.setPontoReposicao(supply.getPonto_reposicao());
+        dto.setEhEmbalagem(supply.getEmbalagem());
         return dto;
     }
 

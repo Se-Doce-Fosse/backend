@@ -17,4 +17,5 @@ public class SupplyUpdateDTO {
     private double quantidade;
     private BigDecimal precoCompra;
     private double pontoReposicao;
+    private Boolean ehEmbalagem;
 }

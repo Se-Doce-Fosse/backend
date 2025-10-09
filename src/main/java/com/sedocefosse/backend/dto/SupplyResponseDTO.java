@@ -13,9 +13,10 @@ public class SupplyResponseDTO {
     private Long id;
     private String nome;
     private Long unidadeId;
-    private String unidadeNome; // Optional
+    private String unidadeNome;
     private double quantidade;
     private BigDecimal precoCompra;
     private double pontoReposicao;
+    private Boolean ehEmbalagem;
 }
 
