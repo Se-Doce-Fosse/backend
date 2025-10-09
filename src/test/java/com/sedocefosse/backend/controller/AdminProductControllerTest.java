@@ -51,73 +51,73 @@ class AdminProductControllerTest {
         return new Product(sku, nome, descricao, valor, imagemUrl, ativo, quantidade);
     }
 
-    // private Product createDefaultTestProduct(String sku, String nome, BigDecimal valor, Boolean ativo) {
-    //     Category defaultCategory = new Category();
-    //     defaultCategory.setNome("Default Category");
-    //     defaultCategory.setProdutos(null); 
+    private Product createDefaultTestProduct(String sku, String nome, BigDecimal valor, Boolean ativo) {
+        Category defaultCategory = new Category();
+        defaultCategory.setNome("Default Category");
+        defaultCategory.setProdutos(null); 
 
-    //     return createTestProduct(sku, nome, "Descrição padrão para " + nome, valor, "http://example.com/images/" + sku + ".jpg", ativo, 5);
-    // }
+        return createTestProduct(sku, nome, "Descrição padrão para " + nome, valor, "http://example.com/images/" + sku + ".jpg", ativo, 5);
+    }
 
 
-    // @Test
-    // void deleteProduct_shouldReturnNoContent_whenProductExists() throws Exception {
-    //     String productSku = "SKU-CHOCO-01";
+    @Test
+    void deleteProduct_shouldReturnNoContent_whenProductExists() throws Exception {
+        String productSku = "SKU-CHOCO-01";
 
-    //     doNothing().when(productService).deleteProductById(productSku);
+        doNothing().when(productService).deleteProductById(productSku);
 
-    //     mockMvc.perform(delete("/admin/products/" + productSku)
-    //                     .with(user("admin").roles("ADMIN")))
-    //             .andExpect(status().isNoContent());
-    // }
+        mockMvc.perform(delete("/admin/products/" + productSku)
+                        .with(user("admin").roles("ADMIN")))
+                .andExpect(status().isNoContent());
+    }
 
-    // @Test
-    // void createProduct_shouldReturnCreatedProduct() throws Exception {
-    //     String newSku = "NEW-PRODUCT-SKU";
+    @Test
+    void createProduct_shouldReturnCreatedProduct() throws Exception {
+        String newSku = "NEW-PRODUCT-SKU";
 
-    //     Product newProductRequest = createDefaultTestProduct(newSku, "New Product", BigDecimal.valueOf(10.00), true);
+        Product newProductRequest = createDefaultTestProduct(newSku, "New Product", BigDecimal.valueOf(10.00), true);
         
-    //     ProductDetailsDTO createdProductDTO = new ProductDetailsDTO();
-    //     createdProductDTO.setSku(newSku);
-    //     createdProductDTO.setNome("New Product");
-    //     createdProductDTO.setValor(BigDecimal.valueOf(10.00));
-    //     createdProductDTO.setAtivo(true);
+        ProductDetailsDTO createdProductDTO = new ProductDetailsDTO();
+        createdProductDTO.setSku(newSku);
+        createdProductDTO.setNome("New Product");
+        createdProductDTO.setValor(BigDecimal.valueOf(10.00));
+        createdProductDTO.setAtivo(true);
 
-    //     when(productService.create(any(Product.class))).thenReturn(createdProductDTO);
+        when(productService.create(any(Product.class))).thenReturn(createdProductDTO);
 
-    //     mockMvc.perform(post("/admin/products")
-    //                     .with(user("admin").roles("ADMIN"))
-    //                     .contentType(MediaType.APPLICATION_JSON)
-    //                     .content(objectMapper.writeValueAsString(newProductRequest)))
-    //             .andExpect(status().isCreated())
-    //             .andExpect(jsonPath("$.sku").value(newSku))
-    //             .andExpect(jsonPath("$.nome").value("New Product"))
-    //             .andExpect(jsonPath("$.ativo").value(true));
-    // }
+        mockMvc.perform(post("/admin/products")
+                        .with(user("admin").roles("ADMIN"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(newProductRequest)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.sku").value(newSku))
+                .andExpect(jsonPath("$.nome").value("New Product"))
+                .andExpect(jsonPath("$.ativo").value(true));
+    }
 
-    // @Test
-    // void toggleProductStatus_shouldReturnUpdatedProduct_whenProductExists() throws Exception {
-    //     String productSku = "existing-product-sku";
+    @Test
+    void toggleProductStatus_shouldReturnUpdatedProduct_whenProductExists() throws Exception {
+        String productSku = "existing-product-sku";
 
-    //     Product existingProduct = createDefaultTestProduct(productSku, "Existing Product", BigDecimal.valueOf(5.00), true);
-    //     Product updatedProduct = createDefaultTestProduct(productSku, "Existing Product", BigDecimal.valueOf(5.00), false);
+        Product existingProduct = createDefaultTestProduct(productSku, "Existing Product", BigDecimal.valueOf(5.00), true);
+        Product updatedProduct = createDefaultTestProduct(productSku, "Existing Product", BigDecimal.valueOf(5.00), false);
 
-    //     when(productService.toggleStatus(productSku)).thenReturn(updatedProduct);
+        when(productService.toggleStatus(productSku)).thenReturn(updatedProduct);
 
-    //     mockMvc.perform(patch("/admin/products/" + productSku + "/status")
-    //                     .with(user("admin").roles("ADMIN")))
-    //             .andExpect(status().isOk())
-    //             .andExpect(jsonPath("$.ativo").value(false));
-    // }
+        mockMvc.perform(patch("/admin/products/" + productSku + "/status")
+                        .with(user("admin").roles("ADMIN")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.ativo").value(false));
+    }
 
-    // @Test
-    // void toggleProductStatus_shouldReturnNotFound_whenProductDoesNotExist() throws Exception {
-    //     String productSku = "non-existent-product-sku";
+    @Test
+    void toggleProductStatus_shouldReturnNotFound_whenProductDoesNotExist() throws Exception {
+        String productSku = "non-existent-product-sku";
 
-    //     when(productService.toggleStatus(productSku)).thenReturn(null);
+        when(productService.toggleStatus(productSku)).thenReturn(null);
 
-    //     mockMvc.perform(patch("/admin/products/" + productSku + "/status")
-    //                     .with(user("admin").roles("ADMIN")))
-    //             .andExpect(status().isNotFound());
-    // }
+        mockMvc.perform(patch("/admin/products/" + productSku + "/status")
+                        .with(user("admin").roles("ADMIN")))
+                .andExpect(status().isNotFound());
+    }
 }

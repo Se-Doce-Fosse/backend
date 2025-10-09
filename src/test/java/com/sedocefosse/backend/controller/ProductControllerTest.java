@@ -44,25 +44,25 @@ class ProductControllerTest {
     @MockBean
     private AdminRepository adminRepository;
 
-    // @Test
-    // void getProductBySku_shouldReturnProduct_whenSkuExists() throws Exception {
-    //     Category mockCategoria = new Category();
-    //     mockCategoria.setId(1L);
-    //     mockCategoria.setNome("Doces");
+    @Test
+    void getProductBySku_shouldReturnProduct_whenSkuExists() throws Exception {
+        Category mockCategoria = new Category();
+        mockCategoria.setId("1");
+        mockCategoria.setNome("Doces");
 
-    //     ProductDetailsDTO mockProductDetails = new ProductDetailsDTO();
-    //     mockProductDetails.setSku("SKU-CHOCO-01");
-    //     mockProductDetails.setNome("Cookie de Chocolate");
-    //     mockProductDetails.setValor(new BigDecimal("5.50"));
+        ProductDTO mockProductDetails = new ProductDTO();
+        mockProductDetails.setId("SKU-CHOCO-01");
+        mockProductDetails.setName("Cookie de Chocolate");
+        mockProductDetails.setPrice("5.50");
 
-    //     when(productService.findProductDetailsBySku("SKU-CHOCO-01")).thenReturn(Optional.of(mockProductDetails));
+        when(productService.findProductDetailsBySku("SKU-CHOCO-01")).thenReturn(Optional.of(mockProductDetails));
 
-    //     mockMvc.perform(get("/products/SKU-CHOCO-01"))
-    //             .andExpect(status().isOk())
-    //             .andExpect(jsonPath("$.sku").value("SKU-CHOCO-01"))
-    //             .andExpect(jsonPath("$.nome").value("Cookie de Chocolate"))
-    //             .andExpect(jsonPath("$.valor").value(5.50));
-    // }
+        mockMvc.perform(get("/products/SKU-CHOCO-01"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sku").value("SKU-CHOCO-01"))
+                .andExpect(jsonPath("$.nome").value("Cookie de Chocolate"))
+                .andExpect(jsonPath("$.valor").value(5.50));
+    }
 
     @Test
     void getProductBySku_shouldReturnNotFound_whenSkuDoesNotExist() throws Exception {
@@ -79,13 +79,13 @@ class ProductControllerTest {
 
         ProductDTO cookieOreo = new ProductDTO(
             "1", "Cookie Oreo com Nutella", "R$ 15,00", "/images/cookie-oreo.jpg",
-            "Cookie Oreo com Nutella",true, Arrays.asList("Sem Glúten", "Sem Lactose", "Vegan"),
+            "Cookie Oreo com Nutella","teste descrição",true, Arrays.asList("Sem Glúten", "Sem Lactose", "Vegan"),
             Arrays.asList(relatedCookieBranco, relatedBolo)
         );
 
         ProductDTO boloRedVelvet = new ProductDTO(
             "10", "Bolo Red Velvet", "R$ 35,00", "/images/bolo-red-velvet.jpg",
-            "Bolo Red Velvet",true, Arrays.asList("Sem Glúten", "Sem Lactose", "Vegan"),
+            "Bolo Red Velvet", "teste descrição", true, Arrays.asList("Sem Glúten", "Sem Lactose", "Vegan"),
             Arrays.asList(new RelatedProductDTO("1", "Cookie Oreo com Nutella", "R$ 15,00", "/images/cookie-oreo.jpg", "Cookie Oreo com Nutella"))
         );
 
