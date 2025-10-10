@@ -70,6 +70,7 @@ public class SupplyServiceImpl implements SupplyService {
         existingSupply.setQuantidade(updateDTO.getQuantidade());
         existingSupply.setPreco_compra(updateDTO.getPrecoCompra());
         existingSupply.setPonto_reposicao(updateDTO.getPontoReposicao());
+        existingSupply.setEmbalagem(updateDTO.getEhEmbalagem());
 
         Unit newUnit = unitRepository.findById(updateDTO.getUnidadeId())
             .orElseThrow(() -> new ResourceNotFoundException("Unidade não encontrado com o id: " + id));

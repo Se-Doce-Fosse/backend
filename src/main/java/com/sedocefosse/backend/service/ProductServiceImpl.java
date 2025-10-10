@@ -107,7 +107,7 @@ public class ProductServiceImpl implements ProductService {
                 product.getImagemUrl(),
                 product.getNome(),
                 product.getDescricao(),
-                null, 
+                product.getAtivo(), 
                 null, 
                 null, 
                 null
