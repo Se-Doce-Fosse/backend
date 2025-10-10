@@ -243,18 +243,18 @@ db.user.insertMany([
 
 db.categorias.insertMany([
   {
-    "nome": "Cookies",
+    "nome": "Cookies Tradicionais",
     "descricao": "Nossos Clássicos Cookies Crocantes e Macios",
-    "produtos": ["CK001", "CK002"]
+    "produtos": ["CK001", "CK003"]
+  },
+  {
+    "nome": "Cookies Recheados",
+    "descricao": "Nossos Clássicos Cookies Crocantes e Macios",
+    "produtos": ["CK002", "CK004"]
   },
   {
     "nome": "Bolos",
     "descricao": "Bolos de Aniversário e Ocasiões Especiais",
-    "produtos": ["BL001", "BL002"]
-  },
-  {
-    "nome": "Doces",
-    "descricao": "Variedade de Doces e Guloseimas",
-    "produtos": ["CK003", "CK004", "BL005", "BL006"]
+    "produtos": ["BL001", "BL002", "BL003"]
   }
 ]);
