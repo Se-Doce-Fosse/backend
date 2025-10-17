@@ -12,7 +12,7 @@ public interface ProductService {
 
     ProductDetailsDTO create(ProductDTO product);
 
-    Optional<Product> findProductById(String sku);
+    Optional<ProductDTO> findProductBySku(String sku);
 
     Optional<ProductDTO> findProductDetailsBySku(String sku); 
 
@@ -22,5 +22,7 @@ public interface ProductService {
 
     Product toggleStatus(String id);
     
-    Product updateProduct(String sku, Product productDetails);
+    Product updateProduct(String sku, ProductDTO product);
+
+    List<ProductDTO> getAllProducts();
 }

@@ -1,13 +1,20 @@
 package com.sedocefosse.backend.controller.admin;
 
+import com.sedocefosse.backend.dto.CategoryDTO;
 import com.sedocefosse.backend.dto.ProductDTO;
 import com.sedocefosse.backend.dto.ProductDetailsDTO;
+import com.sedocefosse.backend.dto.ProductsResponseDTO;
 import com.sedocefosse.backend.model.Product;
 import com.sedocefosse.backend.service.ProductService;
+
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,8 +53,22 @@ public class AdminProductController {
     }
     
     @PutMapping("/{sku}")
-    public ResponseEntity<Product> updateProduct(@PathVariable String sku, @RequestBody Product productDetails) {
+    public ResponseEntity<Product> updateProduct(@PathVariable String sku, @RequestBody ProductDTO productDetails) {
         Product updatedProduct = productService.updateProduct(sku, productDetails);
         return ResponseEntity.ok(updatedProduct);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+        List<ProductDTO> response = productService.getAllProducts();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{sku}")
+    public ResponseEntity<ProductDTO> getProductBySku(@PathVariable String sku) {
+        Optional<ProductDTO> productDto = productService.findProductBySku(sku);
+
+        return productDto.map(ResponseEntity::ok)
+                        .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

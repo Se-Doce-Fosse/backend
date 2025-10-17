@@ -18,6 +18,7 @@ public class ProductDTO {
     private String imageAlt;
     private String description;
     private Boolean isActive;
+    private Integer quantity;
     private CategoryDTO category;
     private List<String> allergens;
     private List<RelatedProductDTO> relatedProducts;

@@ -62,13 +62,37 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> findProductById(String sku) {
-        return productRepository.findById(sku);
+    public Optional<ProductDTO> findProductBySku(String sku) {
+        Optional<Product> product = productRepository.findById(sku);
+
+        if (!product.isPresent()) {
+            throw new ResourceNotFoundException("Produto não encontrado com SKU: " + sku);
+        }
+
+        ProductDTO dto = this.mapToProductDTO(product.get());
+        Category category = categoryRepository.findByProdutos(product.get().getSku());
+        dto.setCategory(new CategoryDTO(category.getId(), category.getNome(), null));
+        return Optional.of(dto);
     }
 
     @Override
     public void deleteProductById(String sku) {
         productRepository.deleteById(sku);
+    }
+
+    @Override
+    public List<ProductDTO> getAllProducts() {
+
+        List<Product> products = productRepository.findAll();
+
+        return products.stream().map(product -> {
+            ProductDTO dto = this.mapToProductDTO(product);
+            Category category = categoryRepository.findByProdutos(product.getSku());
+            if (category != null) {
+                dto.setCategory(new CategoryDTO(category.getId(), category.getNome(), null));
+            }
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -107,7 +131,8 @@ public class ProductServiceImpl implements ProductService {
                 product.getImagemUrl(),
                 product.getNome(),
                 product.getDescricao(),
-                product.getAtivo(), 
+                product.getAtivo(),
+                product.getQuantidade(),
                 null, 
                 null, 
                 null
@@ -166,7 +191,7 @@ public class ProductServiceImpl implements ProductService {
     }
     
     @Override
-    public Product updateProduct(String sku, Product productDetails) {
+    public Product updateProduct(String sku, ProductDTO productDto) {
         Optional<Product> optionalProduct = productRepository.findById(sku);
         if (optionalProduct.isEmpty()) {
             throw new ResourceNotFoundException("Produto não encontrado com SKU: " + sku);
@@ -175,20 +200,20 @@ public class ProductServiceImpl implements ProductService {
         Product product = optionalProduct.get();
         
         // Atualizar os campos do produto
-        if (productDetails.getNome() != null) {
-            product.setNome(productDetails.getNome());
+        if (productDto.getName() != null) {
+            product.setNome(productDto.getName());
         }
-        if (productDetails.getDescricao() != null) {
-            product.setDescricao(productDetails.getDescricao());
+        if (productDto.getDescription() != null) {
+            product.setDescricao(productDto.getDescription());
         }
-        if (productDetails.getValor() != null) {
-            product.setValor(productDetails.getValor());
+        if (productDto.getPrice() != null) {
+            //product.setValor(productDto.getPrice());
         }
-        if (productDetails.getImagemUrl() != null) {
-            product.setImagemUrl(productDetails.getImagemUrl());
+        if (productDto.getImageSrc() != null) {
+            product.setImagemUrl(productDto.getImageSrc());
         }
-        if (productDetails.getAtivo() != null) {
-            product.setAtivo(productDetails.getAtivo());
+        if (productDto.getIsActive() != null) {
+            product.setAtivo(productDto.getIsActive());
         }
         
         return productRepository.save(product);
