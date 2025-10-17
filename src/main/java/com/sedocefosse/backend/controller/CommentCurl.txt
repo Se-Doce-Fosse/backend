@@ -1,0 +1,9 @@
+curl -X POST https://orange-guide-g9997xr79jq2999v-8081.app.github.dev/comments \
+  -H "Content-Type: application/json" \
+  -d '{
+    "pedidoId": 1,
+    "clienteId": "cli12345",
+    "nota": 5,
+    "descricao": "Excelente serviço, muito satisfeito com o atendimento!",
+    "nomeExibicao": "João Silva"
+  }'
