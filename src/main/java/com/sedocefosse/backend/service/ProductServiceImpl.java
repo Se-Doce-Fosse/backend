@@ -47,6 +47,7 @@ public class ProductServiceImpl implements ProductService {
         newProduct.setNome(product.getName());
         newProduct.setDescricao(product.getDescription());
         newProduct.setValor(new BigDecimal(product.getPrice()));
+        newProduct.setQuantidade(product.getQuantity());
         newProduct.setImagemUrl(product.getImageSrc());
         newProduct.setAtivo(product.getIsActive());
 
