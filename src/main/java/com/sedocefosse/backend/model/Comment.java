@@ -20,7 +20,7 @@ public class Comment {
     private Long pedidoId;
 
     @Column(name = "cliente_id", nullable = false)
-    private String clienteId;
+    private Integer clienteId;
 
     @Column(name = "nota", nullable = false)
     private int nota;
