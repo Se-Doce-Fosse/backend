@@ -38,8 +38,8 @@ public class AdminProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDetailsDTO> createProduct(@RequestBody ProductDTO product) {
-        ProductDetailsDTO createdProduct = productService.create(product);
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO product) {
+        ProductDTO createdProduct = productService.create(product);
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
   
@@ -53,8 +53,8 @@ public class AdminProductController {
     }
     
     @PutMapping("/{sku}")
-    public ResponseEntity<Product> updateProduct(@PathVariable String sku, @RequestBody ProductDTO productDetails) {
-        Product updatedProduct = productService.updateProduct(sku, productDetails);
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable String sku, @RequestBody ProductDTO productDetails) {
+        ProductDTO updatedProduct = productService.updateProduct(sku, productDetails);
         return ResponseEntity.ok(updatedProduct);
     }
 

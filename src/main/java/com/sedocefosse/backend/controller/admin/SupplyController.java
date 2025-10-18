@@ -22,7 +22,6 @@ public class SupplyController {
         this.supplyService = supplyService;
     }
 
-
     @GetMapping
     public ResponseEntity<List<SupplyResponseDTO>> getAllSupplies() {
         List<SupplyResponseDTO> supplies = supplyService.getAllSupplies();

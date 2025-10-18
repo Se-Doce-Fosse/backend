@@ -51,7 +51,7 @@ class ProductControllerTest {
         mockCategoria.setNome("Doces");
 
         ProductDTO mockProductDetails = new ProductDTO();
-        mockProductDetails.setId("SKU-CHOCO-01");
+        mockProductDetails.setSku("SKU-CHOCO-01");
         mockProductDetails.setName("Cookie de Chocolate");
         mockProductDetails.setPrice("5.50");
 

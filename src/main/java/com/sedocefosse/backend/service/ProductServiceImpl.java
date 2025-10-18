@@ -21,6 +21,7 @@ import com.sedocefosse.backend.dto.RelatedProductDTO;
 import com.sedocefosse.backend.model.Category;
 import com.sedocefosse.backend.model.Product;
 import com.sedocefosse.backend.repository.CategoryRepository;
+import com.sedocefosse.backend.repository.OrderRepository;
 import com.sedocefosse.backend.repository.ProductRepository;
 
 @Service 
@@ -28,22 +29,24 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-    
-    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    private final OrderRepository orderRepository;
+
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, OrderRepository orderRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.orderRepository = orderRepository;
     }
 
     @Override
     @Transactional
-    public ProductDetailsDTO create(ProductDTO product) {        
-        product.setId(UUID.randomUUID().toString());
+    public ProductDTO create(ProductDTO product) {        
+        product.setSku(UUID.randomUUID().toString());
 
         Product newProduct = new Product();
-        newProduct.setSku(product.getId()); 
+        newProduct.setSku(product.getSku()); 
         newProduct.setNome(product.getName());
         newProduct.setDescricao(product.getDescription());
-        newProduct.setValor(new BigDecimal(product.getPrice().replace(",", ".")));
+        newProduct.setValor(new BigDecimal(product.getPrice()));
         newProduct.setImagemUrl(product.getImageSrc());
         newProduct.setAtivo(product.getIsActive());
 
@@ -57,8 +60,7 @@ public class ProductServiceImpl implements ProductService {
             category.setProdutos(produtos);
             categoryRepository.save(category);
         }
-
-        return mapToProductDetailsDTO(savedProduct);
+        return mapToProductDTO(savedProduct);
     }
 
     @Override
@@ -77,12 +79,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProductById(String sku) {
+        boolean referenced = orderRepository.existsByProductsContaining(sku);
+        if (referenced) {
+            throw new IllegalStateException("Não é possível deletar o produto. Existem pedidos referenciando o SKU: " + sku);
+        }
         productRepository.deleteById(sku);
     }
 
     @Override
     public List<ProductDTO> getAllProducts() {
-
         List<Product> products = productRepository.findAll();
 
         return products.stream().map(product -> {
@@ -129,7 +134,6 @@ public class ProductServiceImpl implements ProductService {
                 product.getNome(),
                 valorFormatado,                
                 product.getImagemUrl(),
-                product.getNome(),
                 product.getDescricao(),
                 product.getAtivo(),
                 product.getQuantidade(),
@@ -191,7 +195,7 @@ public class ProductServiceImpl implements ProductService {
     }
     
     @Override
-    public Product updateProduct(String sku, ProductDTO productDto) {
+    public ProductDTO updateProduct(String sku, ProductDTO productDto) {
         Optional<Product> optionalProduct = productRepository.findById(sku);
         if (optionalProduct.isEmpty()) {
             throw new ResourceNotFoundException("Produto não encontrado com SKU: " + sku);
@@ -215,8 +219,10 @@ public class ProductServiceImpl implements ProductService {
         if (productDto.getIsActive() != null) {
             product.setAtivo(productDto.getIsActive());
         }
+
+        Product updatedProduct = productRepository.save(product);
         
-        return productRepository.save(product);
+        return mapToProductDTO(updatedProduct);
     }
 
     private RelatedProductDTO mapToRelatedProductDTO(Product product) {

@@ -35,7 +35,6 @@ public class ProductController {
     @GetMapping("/{sku}")
     public ResponseEntity<ProductDTO> getProductBySku(@PathVariable String sku) {
         Optional<ProductDTO> productDto = productService.findProductDetailsBySku(sku);
-
         return productDto.map(ResponseEntity::ok)
                         .orElseGet(() -> ResponseEntity.notFound().build());
     }

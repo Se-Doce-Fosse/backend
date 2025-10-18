@@ -10,7 +10,7 @@ import com.sedocefosse.backend.model.Product;
 
 public interface ProductService {
 
-    ProductDetailsDTO create(ProductDTO product);
+    ProductDTO create(ProductDTO product);
 
     Optional<ProductDTO> findProductBySku(String sku);
 
@@ -22,7 +22,7 @@ public interface ProductService {
 
     Product toggleStatus(String id);
     
-    Product updateProduct(String sku, ProductDTO product);
+    ProductDTO updateProduct(String sku, ProductDTO product);
 
     List<ProductDTO> getAllProducts();
 }
