@@ -33,7 +33,7 @@ public class ProductSupplyServiceImpl implements ProductSupplyService {
                 double newQuantity = supply.getQuantidade() - decreaseQuantity;
 
                 if (newQuantity < 0) {
-                    throw new InsufficientSupplyException("New quantity cannot be less than zero");
+                    throw new InsufficientSupplyException(String.format("Not enough %s", supply.getNome()));
                 }
                 supply.setQuantidade(newQuantity);
 
