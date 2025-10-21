@@ -23,10 +23,11 @@ public class CommentController {
     @PostMapping()
     public ResponseEntity<?> createComment(@RequestBody CommentDTO comentario){
         Comment comentarioEntity = new Comment(comentario.getId(), comentario.getPedidoId(), comentario.getClienteId(), comentario.getNota(), comentario.getDescricao(), comentario.getNomeExibicao());
-        if (commentService.create(comentarioEntity) == null){
+        CommentDTO criado = commentService.create(comentarioEntity);
+        if (criado == null){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Usuário deve fazer um pedido antes de poder comentar.");
         }
-        return ResponseEntity.ok(commentService.create(comentarioEntity));
+        return ResponseEntity.ok(criado);
     }
 
 }
