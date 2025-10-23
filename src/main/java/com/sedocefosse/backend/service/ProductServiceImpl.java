@@ -203,7 +203,7 @@ public class ProductServiceImpl implements ProductService {
         }
         
         Product product = optionalProduct.get();
-        
+
         // Atualizar os campos do produto
         if (productDto.getName() != null) {
             product.setNome(productDto.getName());
@@ -212,7 +212,7 @@ public class ProductServiceImpl implements ProductService {
             product.setDescricao(productDto.getDescription());
         }
         if (productDto.getPrice() != null) {
-            //product.setValor(productDto.getPrice());
+            product.setValor(new BigDecimal(productDto.getPrice().replace("R$ ", "").replace(",", ".")));
         }
         if (productDto.getImageSrc() != null) {
             product.setImagemUrl(productDto.getImageSrc());
@@ -220,6 +220,11 @@ public class ProductServiceImpl implements ProductService {
         if (productDto.getIsActive() != null) {
             product.setAtivo(productDto.getIsActive());
         }
+        if (productDto.getQuantity() != null) {
+            product.setQuantidade(productDto.getQuantity());
+        }
+
+        
 
         Product updatedProduct = productRepository.save(product);
         
