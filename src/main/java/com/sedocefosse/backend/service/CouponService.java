@@ -6,4 +6,6 @@ import java.util.List;
 public interface CouponService {
     
     List<Coupon> findAll();
+    
+    Coupon create(Coupon coupon);
 }

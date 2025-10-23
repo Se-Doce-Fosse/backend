@@ -20,4 +20,9 @@ public class CouponServiceImpl implements CouponService {
     public List<Coupon> findAll() {
         return couponRepository.findAll();
     }
+    
+    @Override
+    public Coupon create(Coupon coupon) {
+        return couponRepository.save(coupon);
+    }
 }
