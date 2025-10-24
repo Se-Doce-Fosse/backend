@@ -3,11 +3,8 @@ package com.sedocefosse.backend.service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import com.sedocefosse.backend.service.ProductService;
 
 import jakarta.transaction.Transactional;
 
@@ -54,6 +51,7 @@ public class ProductServiceImpl implements ProductService {
         Product savedProduct = productRepository.save(newProduct);
 
         Optional<Category> optionalCategory = categoryRepository.findById(product.getCategory().getId());
+
         if (optionalCategory.isPresent()) {            
             Category category = optionalCategory.get();
             List<String> produtos = category.getProdutos();
@@ -172,7 +170,6 @@ public class ProductServiceImpl implements ProductService {
         });
     }
 
-
     private ProductDetailsDTO mapToProductDetailsDTO(Product product) {
         ProductDetailsDTO dto = new ProductDetailsDTO();
         dto.setSku(product.getSku());
@@ -224,7 +221,9 @@ public class ProductServiceImpl implements ProductService {
             product.setQuantidade(productDto.getQuantity());
         }
 
-        
+        if (productDto.getCategory() != null && productDto.getCategory().getId() != null) {
+            updateCategoryProducts(sku, productDto.getCategory().getId());
+        }
 
         Product updatedProduct = productRepository.save(product);
         
@@ -239,6 +238,30 @@ public class ProductServiceImpl implements ProductService {
                 product.getImagemUrl(),
                 null
         );
+    }
+
+    private void updateCategoryProducts(String sku, String categoryIdRequest) {
+
+
+        Category currentCategory = categoryRepository.findByProdutos(sku);
+
+        if (currentCategory != null) {
+            if (currentCategory.getId().equals(categoryIdRequest)) {
+                return;
+            }
+        }
+        currentCategory.getProdutos().remove(sku);
+        categoryRepository.save(currentCategory);
+
+        Optional<Category> newCategory = categoryRepository.findById(categoryIdRequest);
+
+        if(newCategory.isPresent()) {
+            Category category = newCategory.get();
+            List<String> produtos = category.getProdutos();
+            produtos.add(sku);
+            category.setProdutos(produtos);
+            categoryRepository.save(category);
+        }
     }
 }
 
