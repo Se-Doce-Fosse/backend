@@ -1,5 +1,6 @@
 package com.sedocefosse.backend.controller.admin;
 
+import com.sedocefosse.backend.dto.CouponDTO;
 import com.sedocefosse.backend.model.Coupon;
 import com.sedocefosse.backend.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +20,14 @@ public class CouponController {
     private CouponService couponService;
 
     @GetMapping
-    public ResponseEntity<List<Coupon>> getAllCoupons() {
-        List<Coupon> coupons = couponService.findAll();
+    public ResponseEntity<List<CouponDTO>> getAllCoupons() {
+        List<CouponDTO> coupons = couponService.findAll();
         return ResponseEntity.ok(coupons);
     }
     
     @PostMapping
-    public ResponseEntity<Coupon> createCoupon(@Valid @RequestBody Coupon coupon) {
-        Coupon createdCoupon = couponService.create(coupon);
+    public ResponseEntity<CouponDTO> createCoupon(@Valid @RequestBody Coupon coupon) {
+        CouponDTO createdCoupon = couponService.create(coupon);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCoupon);
     }
 }
