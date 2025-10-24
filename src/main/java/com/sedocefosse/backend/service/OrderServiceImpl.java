@@ -47,7 +47,7 @@ public class OrderServiceImpl {
 
             if (fulfill > 0 && Objects.nonNull(product)) {
                 product.setQuantity(available - (int) fulfill);
-                //productService.updateProduct(product.getId(), product);
+                productService.updateProduct(product.getSku(), product);
                 for (int i = 0; i < fulfill; i++) fulfilledProducts.add(sku);
             }
             for (int i = 0; i < missing; i++) outOfStock.add(sku);

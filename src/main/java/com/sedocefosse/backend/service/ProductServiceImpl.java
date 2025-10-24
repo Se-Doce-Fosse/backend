@@ -77,8 +77,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void deleteProductById(String sku) {
         boolean referenced = orderRepository.existsByProductsContaining(sku);
+
         if (referenced) {
             throw new IllegalStateException("Não é possível deletar o produto. Existem pedidos referenciando o SKU: " + sku);
         }
@@ -193,6 +195,7 @@ public class ProductServiceImpl implements ProductService {
     }
     
     @Override
+    @Transactional
     public ProductDTO updateProduct(String sku, ProductDTO productDto) {
         Optional<Product> optionalProduct = productRepository.findById(sku);
         if (optionalProduct.isEmpty()) {
@@ -241,8 +244,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void updateCategoryProducts(String sku, String categoryIdRequest) {
-
-
         Category currentCategory = categoryRepository.findByProdutos(sku);
 
         if (currentCategory != null) {

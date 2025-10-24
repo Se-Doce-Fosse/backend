@@ -4,7 +4,6 @@ import com.sedocefosse.backend.model.Supply;
 import com.sedocefosse.backend.model.Unit;
 import com.sedocefosse.backend.repository.SupplyRepository;
 import com.sedocefosse.backend.repository.UnitRepository;
-import com.sedocefosse.backend.service.SupplyService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import com.sedocefosse.backend.configs.exceptions.ResourceNotFoundException;
 import com.sedocefosse.backend.dto.SupplyDTO;
-import com.sedocefosse.backend.dto.SupplyResponseDTO;
 
 @Service 
 public class SupplyServiceImpl implements SupplyService {
@@ -33,9 +31,7 @@ public class SupplyServiceImpl implements SupplyService {
         Supply newSupply = new Supply();
 
         newSupply.setNome(supply.getName());
-        System.out.println("QUANTIDADE REQUEST: "+supply.getQuantity());
         newSupply.setQuantidade(supply.getQuantity());
-        System.out.println("QUANTIDADE SALVA: "+ newSupply.getQuantidade());
         newSupply.setPreco_compra(supply.getPurchasePrice());
         newSupply.setPonto_reposicao(supply.getReorderPoint());
         newSupply.setEmbalagem(supply.getIsPackaging());
@@ -46,7 +42,6 @@ public class SupplyServiceImpl implements SupplyService {
 
         return toSupplyDTO(supplyRepository.save(newSupply));
     }
-
 
     @Override
     public Optional<Supply> findSupplyById(Long id) {
