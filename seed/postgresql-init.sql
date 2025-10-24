@@ -131,7 +131,7 @@ INSERT INTO "user" ("nome", "telefone") VALUES
 ('Carlos Oliveira', '11998765432');
 
 INSERT INTO "admin" ("username", "email", "password", "role") VALUES
-('admin_master', 'admin@email.com', 'hash_senha_segura_aqui', 'ROLE_OWNER');
+('admin_master', 'admin@email.com', '$2a$10$CKonyZomgg/CVkYBy.Ex9.stAr8SBerpSE8igTBlk5I..YRniz4ta', 'ROLE_OWNER');
 
 INSERT INTO "cupom" ("codigo", "valor_desc", "validade", "ativo", "unico") VALUES
 ('DOCE10', 10.00, '2025-12-31', true, false),
@@ -160,15 +160,15 @@ INSERT INTO "produto" ("sku", "nome", "descricao", "valor", "imagem_url", "ativo
 
 
 INSERT INTO "produto_ingrediente" ("produto_sku", "ingrediente_id", "quantidade_utilizada") VALUES
-('CK001', 1, 0.05),
-('CK001', 2, 0.03),
-('CK001', 3, 0.025),
-('CK001', 5, 0.02),
+('CK001', 1, 0.5),
+('CK001', 2, 0.3),
+('CK001', 3, 0.250),
+('CK001', 5, 0.2),
 ('CK001', 11, 1),
-('BL001', 1, 0.1),
+('BL001', 1, 0.8),
 ('BL001', 4, 1),
-('BL001', 8, 0.1),
-('BL001', 9, 0.05),
+('BL001', 8, 0.6),
+('BL001', 9, 0.5),
 ('BL002', 12, 1);
 
 INSERT INTO "cupom_produto" ("cupom_id", "produto_sku") VALUES
