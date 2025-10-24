@@ -279,13 +279,15 @@ public class ProductServiceImpl implements ProductService {
 
         Optional<Category> newCategory = categoryRepository.findById(categoryIdRequest);
 
-        if(newCategory.isPresent()) {
-            Category category = newCategory.get();
-            List<String> produtos = category.getProdutos();
-            produtos.add(sku);
-            category.setProdutos(produtos);
-            categoryRepository.save(category);
+        if(!newCategory.isPresent()) {
+            throw new ResourceNotFoundException("Categoria não encontrada com ID: " + categoryIdRequest);
         }
+
+        Category category = newCategory.get();
+        List<String> produtos = category.getProdutos();
+        produtos.add(sku);
+        category.setProdutos(produtos);
+        categoryRepository.save(category);
     }
 }
 
