@@ -1,34 +1,18 @@
 package com.sedocefosse.backend.controller;
 
-import com.sedocefosse.backend.model.Supply;
-import com.sedocefosse.backend.configs.security.TokenService;
 import com.sedocefosse.backend.controller.admin.SupplyController;
-import com.sedocefosse.backend.repository.AdminRepository;
-import com.sedocefosse.backend.service.ProductService;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.math.BigDecimal;
-import java.util.Optional;
-
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import org.springframework.http.MediaType;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
-import com.sedocefosse.backend.dto.SupplyResponseDTO;
-import com.sedocefosse.backend.service.SupplyService;
-import java.util.Arrays;
-import java.util.List;
+import com.sedocefosse.backend.service.products.SupplyService;
 
 @WebMvcTest(SupplyController.class)
 class SupplyControllerTest {

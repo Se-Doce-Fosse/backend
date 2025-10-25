@@ -1,4 +1,4 @@
-package com.sedocefosse.backend.service;
+package com.sedocefosse.backend.service.products;
 
 import com.sedocefosse.backend.model.Coupon;
 import java.util.List;

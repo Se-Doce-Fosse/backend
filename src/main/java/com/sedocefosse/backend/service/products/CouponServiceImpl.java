@@ -1,9 +1,9 @@
-package com.sedocefosse.backend.service;
+package com.sedocefosse.backend.service.products;
 
 import org.springframework.stereotype.Service;
 
 import com.sedocefosse.backend.model.Coupon;
-import com.sedocefosse.backend.repository.CouponRepository;
+import com.sedocefosse.backend.repository.products.CouponRepository;
 
 import java.util.List;
 

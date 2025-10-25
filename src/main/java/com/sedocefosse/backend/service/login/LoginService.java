@@ -1,4 +1,4 @@
-package com.sedocefosse.backend.service;
+package com.sedocefosse.backend.service.login;
 
 import com.sedocefosse.backend.configs.exceptions.LoginException;
 import com.sedocefosse.backend.configs.exceptions.SignupException;
@@ -7,7 +7,7 @@ import com.sedocefosse.backend.model.admin.AdminEntity;
 import com.sedocefosse.backend.model.admin.request.AdminDTO;
 import com.sedocefosse.backend.model.admin.request.LoginRequest;
 import com.sedocefosse.backend.model.admin.response.auth.AuthResponse;
-import com.sedocefosse.backend.repository.AdminRepository;
+import com.sedocefosse.backend.repository.admin.AdminRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

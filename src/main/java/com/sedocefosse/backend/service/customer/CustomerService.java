@@ -1,7 +1,7 @@
-package com.sedocefosse.backend.service;
+package com.sedocefosse.backend.service.customer;
 
 import com.sedocefosse.backend.model.Customer;
-import com.sedocefosse.backend.repository.CustomerRepository;
+import com.sedocefosse.backend.repository.customer.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 @Service

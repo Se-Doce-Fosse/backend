@@ -1,10 +1,9 @@
-package com.sedocefosse.backend.service;
+package com.sedocefosse.backend.service.products;
 
 import com.sedocefosse.backend.model.Supply;
 import com.sedocefosse.backend.model.Unit;
-import com.sedocefosse.backend.repository.SupplyRepository;
-import com.sedocefosse.backend.repository.UnitRepository;
-import com.sedocefosse.backend.service.SupplyService;
+import com.sedocefosse.backend.repository.products.SupplyRepository;
+import com.sedocefosse.backend.repository.products.UnitRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

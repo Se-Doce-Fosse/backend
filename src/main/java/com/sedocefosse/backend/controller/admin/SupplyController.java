@@ -3,7 +3,7 @@ package com.sedocefosse.backend.controller.admin;
 import com.sedocefosse.backend.dto.SupplyResponseDTO;
 import com.sedocefosse.backend.dto.SupplyUpdateDTO;
 import com.sedocefosse.backend.model.Supply;
-import com.sedocefosse.backend.service.SupplyService;
+import com.sedocefosse.backend.service.products.SupplyService;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

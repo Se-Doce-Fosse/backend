@@ -1,4 +1,4 @@
-package com.sedocefosse.backend.repository;
+package com.sedocefosse.backend.repository.products;
 
 import com.sedocefosse.backend.model.Category;
 import org.springframework.data.jpa.repository.JpaRepository;

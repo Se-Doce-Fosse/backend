@@ -1,4 +1,4 @@
-package com.sedocefosse.backend.service;
+package com.sedocefosse.backend.service.customer;
 
 import com.sedocefosse.backend.dto.CommentDTO;
 import com.sedocefosse.backend.model.Comment;

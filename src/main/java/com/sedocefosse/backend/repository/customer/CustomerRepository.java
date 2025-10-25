@@ -1,4 +1,4 @@
-package com.sedocefosse.backend.repository;
+package com.sedocefosse.backend.repository.customer;
 
 import com.sedocefosse.backend.model.Customer;
 import org.springframework.data.mongodb.repository.MongoRepository;

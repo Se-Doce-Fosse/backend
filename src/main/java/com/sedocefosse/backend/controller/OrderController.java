@@ -1,7 +1,7 @@
 package com.sedocefosse.backend.controller;
 
 import com.sedocefosse.backend.dto.OrderDTO;
-import com.sedocefosse.backend.service.OrderServiceImpl;
+import com.sedocefosse.backend.service.order.OrderServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

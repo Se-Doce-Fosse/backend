@@ -2,7 +2,7 @@ package com.sedocefosse.backend.controller.admin;
 
 import com.sedocefosse.backend.dto.ProductDetailsDTO;
 import com.sedocefosse.backend.model.Product;
-import com.sedocefosse.backend.service.ProductService;
+import com.sedocefosse.backend.service.products.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

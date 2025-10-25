@@ -3,7 +3,7 @@ package com.sedocefosse.backend.controller;
 import com.sedocefosse.backend.dto.CategoryDTO;
 import com.sedocefosse.backend.dto.ProductDetailsDTO;
 import com.sedocefosse.backend.dto.ProductsResponseDTO;
-import com.sedocefosse.backend.service.ProductService;
+import com.sedocefosse.backend.service.products.ProductService;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

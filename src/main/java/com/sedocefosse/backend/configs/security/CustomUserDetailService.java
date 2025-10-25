@@ -1,7 +1,7 @@
 package com.sedocefosse.backend.configs.security;
 
 import com.sedocefosse.backend.model.admin.AdminEntity;
-import com.sedocefosse.backend.repository.AdminRepository;
+import com.sedocefosse.backend.repository.admin.AdminRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
