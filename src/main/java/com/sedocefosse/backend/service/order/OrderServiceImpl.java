@@ -4,6 +4,7 @@ import com.sedocefosse.backend.dto.OrderDTO;
 import com.sedocefosse.backend.model.Order;
 import com.sedocefosse.backend.model.Product;
 import com.sedocefosse.backend.repository.order.OrderRepository;
+import com.sedocefosse.backend.service.OrderService;
 import com.sedocefosse.backend.service.products.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class OrderServiceImpl {
+public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final ProductService productService;
@@ -27,6 +28,14 @@ public class OrderServiceImpl {
         entity.setProducts(result.fulfilledProducts);
         Order saved = orderRepository.save(entity);
         return mapToDTO(saved, result.outOfStock);
+    }
+
+    @Override
+    public java.util.List<OrderDTO> findByStatus(com.sedocefosse.backend.utils.OrderStatusEnum status) {
+        java.util.List<Order> orders = orderRepository.findByOrderStatus(status);
+        return orders.stream()
+                .map(o -> mapToDTO(o, java.util.List.of()))
+                .collect(java.util.stream.Collectors.toList());
     }
 
     private UpdateResult updateProducts(List<String> requestedProducts) {

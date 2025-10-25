@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.sedocefosse.backend.configs.exceptions.InsufficientSupplyException;
+import com.sedocefosse.backend.service.ProductSupplyService;
 import org.springframework.stereotype.Service;
 
 import com.sedocefosse.backend.configs.exceptions.ResourceNotFoundException;
@@ -21,16 +23,25 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-    
-    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    private final ProductSupplyService productSupplyService;
+
+    public ProductServiceImpl(ProductRepository productRepository,
+                              CategoryRepository categoryRepository,
+                              ProductSupplyService productSupplyService) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.productSupplyService = productSupplyService;
     }
 
     @Override
     public ProductDetailsDTO create(Product product) {        
         product.setSku(UUID.randomUUID().toString());        
         Product savedProduct = productRepository.save(product);
+
+        if (savedProduct.getQuantidade() > 0) {
+            productSupplyService.updateSupplyInventory(savedProduct.getSku(), savedProduct.getQuantidade());
+        }
+
         return mapToProductDetailsDTO(savedProduct);
     }
 
@@ -139,7 +150,21 @@ public class ProductServiceImpl implements ProductService {
         if (productDetails.getCategoria() != null) {
             product.setCategoria(productDetails.getCategoria());
         }
-        
+        if (productDetails.getQuantidade() != null) {
+            int newQuantity = productDetails.getQuantidade();
+            int oldQuantity = product.getQuantidade() != null ? product.getQuantidade(): 0;
+            if (newQuantity < 0) {
+                throw new InsufficientSupplyException("Quantity cannot be negative");
+            }
+
+            if (newQuantity != oldQuantity) {
+                if (newQuantity > oldQuantity) {
+                    productSupplyService.updateSupplyInventory(product.getSku(), newQuantity - oldQuantity);
+                }
+                product.setQuantidade(newQuantity);
+            }
+
+        }
         return productRepository.save(product);
     }
 }
