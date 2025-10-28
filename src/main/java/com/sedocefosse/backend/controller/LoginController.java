@@ -1,7 +1,7 @@
 package com.sedocefosse.backend.controller;
 
 import com.sedocefosse.backend.model.Customer;
-import com.sedocefosse.backend.service.CustomerService;
+import com.sedocefosse.backend.service.customer.CustomerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +27,7 @@ public class LoginController {
         return ResponseEntity.ok(customer);
     }
 
-    public static class LoginRequest {
+    private static class LoginRequest {
         @NotBlank
         private String nome;
         @NotBlank

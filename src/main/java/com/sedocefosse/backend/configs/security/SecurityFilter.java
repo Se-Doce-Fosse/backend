@@ -3,7 +3,7 @@ package com.sedocefosse.backend.configs.security;
 
 import com.sedocefosse.backend.configs.exceptions.LoginException;
 import com.sedocefosse.backend.model.admin.AdminEntity;
-import com.sedocefosse.backend.repository.AdminRepository;
+import com.sedocefosse.backend.repository.admin.AdminRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

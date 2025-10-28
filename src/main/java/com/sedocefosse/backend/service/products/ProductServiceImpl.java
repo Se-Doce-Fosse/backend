@@ -1,4 +1,4 @@
-package com.sedocefosse.backend.service;
+package com.sedocefosse.backend.service.products;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.sedocefosse.backend.configs.exceptions.InsufficientSupplyException;
+import com.sedocefosse.backend.service.ProductSupplyService;
 import org.springframework.stereotype.Service;
 
 import com.sedocefosse.backend.configs.exceptions.ResourceNotFoundException;
@@ -14,8 +15,8 @@ import com.sedocefosse.backend.dto.ProductDTO;
 import com.sedocefosse.backend.dto.ProductDetailsDTO;
 import com.sedocefosse.backend.model.Category;
 import com.sedocefosse.backend.model.Product;
-import com.sedocefosse.backend.repository.CategoryRepository;
-import com.sedocefosse.backend.repository.ProductRepository;
+import com.sedocefosse.backend.repository.products.CategoryRepository;
+import com.sedocefosse.backend.repository.products.ProductRepository;
 
 @Service 
 public class ProductServiceImpl implements ProductService {
@@ -23,7 +24,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductSupplyService productSupplyService;
-    
+
     public ProductServiceImpl(ProductRepository productRepository,
                               CategoryRepository categoryRepository,
                               ProductSupplyService productSupplyService) {

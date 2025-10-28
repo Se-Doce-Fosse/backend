@@ -1,7 +1,7 @@
 package com.sedocefosse.backend.controller.admin;
 
 import com.sedocefosse.backend.model.Coupon;
-import com.sedocefosse.backend.service.CouponService;
+import com.sedocefosse.backend.service.products.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

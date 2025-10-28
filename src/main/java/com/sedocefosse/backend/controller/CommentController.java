@@ -2,8 +2,11 @@ package com.sedocefosse.backend.controller;
 
 import com.sedocefosse.backend.dto.CommentDTO;
 import com.sedocefosse.backend.model.Comment;
-import com.sedocefosse.backend.service.CommentService;
 
+import com.sedocefosse.backend.service.customer.CommentService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -23,6 +26,11 @@ public class CommentController {
 
     private final CommentService commentService;
 
+    @Operation(summary = "Get a greeting message", description = "Returns a personalized greeting based on the provided name.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful retrieval of greeting"),
+            @ApiResponse(responseCode = "400", description = "Invalid name supplied")
+    })
     @PostMapping()
     public ResponseEntity<?> createComment(@RequestBody CommentDTO comentario){
         Comment comentarioEntity = new Comment(comentario.getId(), comentario.getPedidoId(), comentario.getClienteId(), comentario.getNota(), comentario.getDescricao(), comentario.getNomeExibicao());
