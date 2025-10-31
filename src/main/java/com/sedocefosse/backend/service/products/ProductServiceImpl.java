@@ -1,4 +1,4 @@
-package com.sedocefosse.backend.service;
+package com.sedocefosse.backend.service.products;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -10,6 +10,7 @@ import com.sedocefosse.backend.configs.exceptions.InsufficientSupplyException;
 import com.sedocefosse.backend.configs.exceptions.ResourceInUseException;
 
 import jakarta.transaction.Transactional;
+import com.sedocefosse.backend.service.ProductSupplyService;
 import org.springframework.stereotype.Service;
 
 import com.sedocefosse.backend.configs.exceptions.ResourceNotFoundException;
@@ -19,9 +20,9 @@ import com.sedocefosse.backend.dto.ProductDetailsDTO;
 import com.sedocefosse.backend.dto.RelatedProductDTO;
 import com.sedocefosse.backend.model.Category;
 import com.sedocefosse.backend.model.Product;
-import com.sedocefosse.backend.repository.CategoryRepository;
-import com.sedocefosse.backend.repository.OrderRepository;
-import com.sedocefosse.backend.repository.ProductRepository;
+import com.sedocefosse.backend.repository.order.OrderRepository;
+import com.sedocefosse.backend.repository.products.CategoryRepository;
+import com.sedocefosse.backend.repository.products.ProductRepository;
 
 @Service 
 public class ProductServiceImpl implements ProductService {
@@ -31,6 +32,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductSupplyService productSupplyService;
     private final OrderRepository orderRepository;
     
+
     public ProductServiceImpl(ProductRepository productRepository,
                               CategoryRepository categoryRepository,
                               ProductSupplyService productSupplyService,

@@ -33,13 +33,13 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(authorize -> authorize
-            // allow this test endpoint without authentication so we can verify controller registration
-            .requestMatchers("/admin/order/test-public").permitAll()
-            .requestMatchers("/admin/**").authenticated()
-            .anyRequest().permitAll()
-        )
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/admin/**").authenticated()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
+                        .anyRequest().permitAll()
+                )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 

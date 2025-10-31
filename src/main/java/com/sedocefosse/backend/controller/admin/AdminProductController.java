@@ -5,7 +5,7 @@ import com.sedocefosse.backend.dto.ProductDTO;
 import com.sedocefosse.backend.dto.ProductDetailsDTO;
 import com.sedocefosse.backend.dto.ProductsResponseDTO;
 import com.sedocefosse.backend.model.Product;
-import com.sedocefosse.backend.service.ProductService;
+import com.sedocefosse.backend.service.products.ProductService;
 
 import java.util.List;
 import java.util.Optional;

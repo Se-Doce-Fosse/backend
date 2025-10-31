@@ -1,4 +1,4 @@
-package com.sedocefosse.backend.repository;
+package com.sedocefosse.backend.repository.products;
 
 import java.util.List;
 

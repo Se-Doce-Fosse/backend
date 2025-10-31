@@ -1,7 +1,7 @@
 package com.sedocefosse.backend.controller.admin;
 
 import com.sedocefosse.backend.dto.SupplyDTO;
-import com.sedocefosse.backend.service.SupplyService;
+import com.sedocefosse.backend.service.products.SupplyService;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -4,7 +4,7 @@ import com.sedocefosse.backend.configs.exceptions.InsufficientSupplyException;
 import com.sedocefosse.backend.model.ProductSupply;
 import com.sedocefosse.backend.model.Supply;
 import com.sedocefosse.backend.repository.ProductSupplyRepository;
-import com.sedocefosse.backend.repository.SupplyRepository;
+import com.sedocefosse.backend.repository.products.SupplyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

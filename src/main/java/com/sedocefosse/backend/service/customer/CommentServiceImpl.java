@@ -1,11 +1,11 @@
-package com.sedocefosse.backend.service;
+package com.sedocefosse.backend.service.customer;
 
 import org.springframework.stereotype.Service;
 
 import com.sedocefosse.backend.dto.CommentDTO;
 import com.sedocefosse.backend.model.Comment;
-import com.sedocefosse.backend.repository.CommentRepository;
-import com.sedocefosse.backend.repository.OrderRepository;
+import com.sedocefosse.backend.repository.customer.CommentRepository;
+import com.sedocefosse.backend.repository.order.OrderRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;

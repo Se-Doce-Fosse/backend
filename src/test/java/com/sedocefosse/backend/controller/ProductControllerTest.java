@@ -1,12 +1,10 @@
 package com.sedocefosse.backend.controller;
 
-import com.sedocefosse.backend.model.Product;
 import com.sedocefosse.backend.model.Category;
 import com.sedocefosse.backend.configs.security.TokenService;
-import com.sedocefosse.backend.repository.AdminRepository;
-import com.sedocefosse.backend.service.ProductService;
+import com.sedocefosse.backend.repository.admin.AdminRepository;
+import com.sedocefosse.backend.service.products.ProductService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

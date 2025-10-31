@@ -4,7 +4,7 @@ import com.sedocefosse.backend.configs.exceptions.LoginException;
 import com.sedocefosse.backend.model.admin.request.LoginRequest;
 import com.sedocefosse.backend.model.admin.request.AdminDTO;
 import com.sedocefosse.backend.model.admin.response.auth.AuthResponse;
-import com.sedocefosse.backend.service.LoginService;
+import com.sedocefosse.backend.service.login.LoginService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

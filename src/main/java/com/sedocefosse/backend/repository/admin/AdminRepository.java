@@ -1,4 +1,4 @@
-package com.sedocefosse.backend.repository;
+package com.sedocefosse.backend.repository.admin;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

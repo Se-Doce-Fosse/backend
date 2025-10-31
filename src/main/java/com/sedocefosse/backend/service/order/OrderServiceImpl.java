@@ -1,11 +1,12 @@
-package com.sedocefosse.backend.service;
+package com.sedocefosse.backend.service.order;
 
 import com.sedocefosse.backend.dto.OrderDTO;
 import com.sedocefosse.backend.dto.ProductDTO;
 import com.sedocefosse.backend.model.Order;
 import com.sedocefosse.backend.model.Product;
-import com.sedocefosse.backend.repository.OrderRepository;
-import com.sedocefosse.backend.service.ProductService;
+import com.sedocefosse.backend.repository.order.OrderRepository;
+import com.sedocefosse.backend.service.OrderService;
+import com.sedocefosse.backend.service.products.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -2,9 +2,9 @@ package com.sedocefosse.backend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sedocefosse.backend.model.Customer;
-import com.sedocefosse.backend.service.CustomerService;
+import com.sedocefosse.backend.service.customer.CustomerService;
 import com.sedocefosse.backend.configs.security.TokenService;
-import com.sedocefosse.backend.repository.AdminRepository;
+import com.sedocefosse.backend.repository.admin.AdminRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
