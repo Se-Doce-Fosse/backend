@@ -11,7 +11,7 @@ import lombok.Setter;
 public class ProductDetailsDTO {
     private String id;
     private String name;
-    private BigDecimal price;
+    private String price;
     private String imageSrc;
     private String description;
     private List<String> allergens;

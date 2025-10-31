@@ -1,7 +1,6 @@
 package com.sedocefosse.backend.service;
 
 import com.sedocefosse.backend.configs.exceptions.InsufficientSupplyException;
-import com.sedocefosse.backend.model.Product;
 import com.sedocefosse.backend.model.ProductSupply;
 import com.sedocefosse.backend.model.Supply;
 import com.sedocefosse.backend.repository.ProductSupplyRepository;

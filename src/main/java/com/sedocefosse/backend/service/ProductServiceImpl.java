@@ -127,14 +127,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private CategoryDTO mapToCategoryDTO(Category category, List<Product> products) {
-        List<ProductDTO> productDTOs = products.stream()
-                .map(this::mapToProductDTO)
+        List<ProductDetailsDTO> productDetailsDTOs = products.stream()
+                .map(this::mapToProductDetailsDTO)
                 .collect(Collectors.toList());
 
         return new CategoryDTO(
                 category.getId(),
                 category.getNome(),
-                productDTOs
+                productDetailsDTOs
         );
     }
 
@@ -162,8 +162,6 @@ public class ProductServiceImpl implements ProductService {
 
             Category category = categoryRepository.findByProdutos(sku);
             category.getProdutos().remove(sku);
-            System.out.println("Categoria encontrada:");
-            System.out.println(category.getNome());
 
             if (!category.getProdutos().isEmpty()) {
                 List<Product> relatedProducts = productRepository.findAllById(category.getProdutos());
@@ -180,11 +178,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private ProductDetailsDTO mapToProductDetailsDTO(Product product) {
+        String valorFormatado = "R$ " + product.getValor().toString().replace('.', ',');
         ProductDetailsDTO dto = new ProductDetailsDTO();
         dto.setId(product.getSku());
         dto.setName(product.getNome());
         dto.setDescription(product.getDescricao());
-        dto.setPrice(product.getValor());
+        dto.setPrice(valorFormatado);
         dto.setImageSrc(product.getImagemUrl());
         return dto;
     }

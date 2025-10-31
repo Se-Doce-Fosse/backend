@@ -11,5 +11,5 @@ import lombok.Setter;
 public class CategoryDTO {
     private String id;
     private String name;
-    private List<ProductDTO> products;
+    private List<ProductDetailsDTO> products;
 }
