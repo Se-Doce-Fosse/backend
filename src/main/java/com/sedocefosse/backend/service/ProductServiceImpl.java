@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import com.sedocefosse.backend.configs.exceptions.InsufficientSupplyException;
 import jakarta.transaction.Transactional;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.sedocefosse.backend.configs.exceptions.ResourceNotFoundException;
@@ -89,8 +90,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void deleteProductById(String sku) {
-        boolean referenced = orderRepository.existsByProductsContaining(sku);
-
+        boolean referenced = orderRepository.existsByProductsContains(sku);
+        System.out.println("Produto referenciado em pedidos: " + referenced);
         if (referenced) {
             throw new IllegalStateException("Não é possível deletar o produto. Existem pedidos referenciando o SKU: " + sku);
         }
@@ -268,26 +269,20 @@ public class ProductServiceImpl implements ProductService {
 
     private void updateCategoryProducts(String sku, String categoryIdRequest) {
         Category currentCategory = categoryRepository.findByProdutos(sku);
-
-        if (currentCategory != null) {
-            if (currentCategory.getId().equals(categoryIdRequest)) {
-                return;
-            }
+        if (currentCategory.getId().equals(categoryIdRequest)) {
+            return;
         }
+
         currentCategory.getProdutos().remove(sku);
         categoryRepository.save(currentCategory);
 
-        Optional<Category> newCategory = categoryRepository.findById(categoryIdRequest);
+        Category newCategory = categoryRepository.findById(categoryIdRequest)
+            .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada com ID: " + categoryIdRequest));
 
-        if(!newCategory.isPresent()) {
-            throw new ResourceNotFoundException("Categoria não encontrada com ID: " + categoryIdRequest);
-        }
-
-        Category category = newCategory.get();
-        List<String> produtos = category.getProdutos();
+        List<String> produtos = newCategory.getProdutos();
         produtos.add(sku);
-        category.setProdutos(produtos);
-        categoryRepository.save(category);
+        newCategory.setProdutos(produtos);
+        categoryRepository.save(newCategory);
     }
 }
 
