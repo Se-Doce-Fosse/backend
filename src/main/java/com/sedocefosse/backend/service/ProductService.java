@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.sedocefosse.backend.dto.CategoryDTO;
 import com.sedocefosse.backend.dto.ProductDTO;
+import com.sedocefosse.backend.dto.ProductDetailsDTO;
 import com.sedocefosse.backend.model.Product;
 
 public interface ProductService {
@@ -13,7 +14,7 @@ public interface ProductService {
 
     Optional<ProductDTO> findProductBySku(String sku);
 
-    Optional<ProductDTO> findProductDetailsBySku(String sku); 
+    Optional<ProductDetailsDTO> findProductDetailsBySku(String sku); 
 
     void deleteProductById(String sku);
 

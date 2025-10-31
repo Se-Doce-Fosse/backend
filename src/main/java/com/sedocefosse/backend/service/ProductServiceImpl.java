@@ -7,9 +7,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.sedocefosse.backend.configs.exceptions.InsufficientSupplyException;
-import jakarta.transaction.Transactional;
+import com.sedocefosse.backend.configs.exceptions.ResourceInUseException;
 
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.sedocefosse.backend.configs.exceptions.ResourceNotFoundException;
@@ -93,7 +93,7 @@ public class ProductServiceImpl implements ProductService {
         boolean referenced = orderRepository.existsByProductsContains(sku);
         System.out.println("Produto referenciado em pedidos: " + referenced);
         if (referenced) {
-            throw new IllegalStateException("Não é possível deletar o produto. Existem pedidos referenciando o SKU: " + sku);
+            throw new ResourceInUseException("Não é possível deletar o produto. Existem pedidos referenciando o SKU: " + sku);
         }
         productRepository.deleteById(sku);
     }
@@ -150,24 +150,20 @@ public class ProductServiceImpl implements ProductService {
                 product.getAtivo(),
                 product.getQuantidade(),
                 null, 
-                null, 
                 null
         );
     }
 
     @Override
-    public Optional<ProductDTO> findProductDetailsBySku(String sku) {
+    public Optional<ProductDetailsDTO> findProductDetailsBySku(String sku) {
         return productRepository.findById(sku).map(product -> {
 
-            ProductDTO productDTO = this.mapToProductDTO(product);
+            ProductDetailsDTO productDetails = this.mapToProductDetailsDTO(product);
 
             Category category = categoryRepository.findByProdutos(sku);
             category.getProdutos().remove(sku);
             System.out.println("Categoria encontrada:");
             System.out.println(category.getNome());
-
-            CategoryDTO categoryDTO = new CategoryDTO(category.getId(), category.getNome(), null);
-            productDTO.setCategory(categoryDTO);
 
             if (!category.getProdutos().isEmpty()) {
                 List<Product> relatedProducts = productRepository.findAllById(category.getProdutos());
@@ -175,22 +171,21 @@ public class ProductServiceImpl implements ProductService {
                 List<RelatedProductDTO> relatedProductsDTOs = relatedProducts.stream()
                         .map(this::mapToRelatedProductDTO)
                         .collect(Collectors.toList());
-                productDTO.setRelatedProducts(relatedProductsDTOs);
-                return productDTO;
+                productDetails.setRelatedProducts(relatedProductsDTOs);
+                return productDetails;
             }
 
-            return productDTO;
+            return productDetails;
         });
     }
 
     private ProductDetailsDTO mapToProductDetailsDTO(Product product) {
         ProductDetailsDTO dto = new ProductDetailsDTO();
-        dto.setSku(product.getSku());
-        dto.setNome(product.getNome());
-        dto.setDescricao(product.getDescricao());
-        dto.setValor(product.getValor());
-        dto.setImagemUrl(product.getImagemUrl());
-        dto.setAtivo(product.getAtivo());
+        dto.setId(product.getSku());
+        dto.setName(product.getNome());
+        dto.setDescription(product.getDescricao());
+        dto.setPrice(product.getValor());
+        dto.setImageSrc(product.getImagemUrl());
         return dto;
     }
 
