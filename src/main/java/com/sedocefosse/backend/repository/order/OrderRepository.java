@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    public boolean existsByClientId(Integer clientId);
+    public boolean existsByClientId(String clientId);
     java.util.List<Order> findByOrderStatus(com.sedocefosse.backend.utils.OrderStatusEnum status);
 }

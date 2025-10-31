@@ -10,7 +10,7 @@ import lombok.*;
 public class CommentDTO {
     private Long id;
     private Long pedidoId;
-    private Integer clienteId;
+    private String clienteId;
     private int nota;
     private String descricao;
     private String nomeExibicao;
