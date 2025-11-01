@@ -13,13 +13,13 @@ import java.util.List;
 @Data
 @Entity
 @Builder
-@Table(name = "Pedido")
+@Table(name = "pedido")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false, unique = true)
     private Long orderId;
 

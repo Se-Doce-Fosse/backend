@@ -65,7 +65,7 @@ CREATE TABLE "user" (
 
 CREATE TABLE "pedido" (
   "id" BIGSERIAL PRIMARY KEY,
-  "cliente_id" int,
+  "cliente_id" varchar,
   "data_criacao" timestamp,
   "valor_total" numeric,
   "status" varchar,
@@ -91,7 +91,7 @@ CREATE TABLE "admin" (
 CREATE TABLE "avaliacao" (
   "id" BIGSERIAL PRIMARY KEY,
   "pedido_id" int,
-  "cliente_id" int,
+  "cliente_id" varchar,
   "nota" int,
   "descricao" text,
   "nome_exibicao" varchar
@@ -179,9 +179,9 @@ INSERT INTO "historico_compra" ("id_insumo", "id_unidade", "quantidade", "peco_u
 (5, 1, 5, 42.50);
 
 INSERT INTO "pedido" ("cliente_id", "data_criacao", "valor_total", "status", "cupom_id") VALUES
-(1, '2025-09-26 14:00:00', 13.00, 'ENTREGUE', 2),
-(1, '2025-09-27 18:10:00', 45.00, 'PAGAMENTO_APROVADO', 3),
-(2, NOW(), 22.00, 'EM_PREPARACAO', NULL);
+('1', '2025-09-26 14:00:00', 13.00, 'ENTREGUE', 2),
+('1', '2025-09-27 18:10:00', 45.00, 'PAGAMENTO_APROVADO', 3),
+('2', NOW(), 22.00, 'EM_PREPARACAO', NULL);
 
 INSERT INTO "pedido_item" ("pedido_id", "produto_sku", "quantidade", "valor_unitario") VALUES
 (1, 'CK001', 4, 4.50),
@@ -190,4 +190,4 @@ INSERT INTO "pedido_item" ("pedido_id", "produto_sku", "quantidade", "valor_unit
 (3, 'CK002', 1, 7.00);
 
 INSERT INTO "avaliacao" ("pedido_id", "cliente_id", "nota", "descricao", "nome_exibicao") VALUES
-(1, 1, 5, 'Os melhores cookies que já comi! Chegou quentinho.', 'João S.');
+(1, '1', 5, 'Os melhores cookies que já comi! Chegou quentinho.', 'João S.');
