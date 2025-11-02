@@ -9,7 +9,8 @@ DROP TABLE IF EXISTS "produto" CASCADE;
 DROP TABLE IF EXISTS "estoque_insumos" CASCADE;
 DROP TABLE IF EXISTS "unidade" CASCADE;
 DROP TABLE IF EXISTS "user" CASCADE;
-drop table if exists "admin" cascade;
+DROP TABLE IF EXISTS "admin" cascade;
+DROP TABLE IF EXISTS "supply_log" cascade;
 
 CREATE TABLE "unidade" (
   "id" BIGSERIAL PRIMARY KEY,
@@ -105,6 +106,16 @@ CREATE TABLE "historico_compra" (
   "peco_unidade" DOUBLE PRECISION
 );
 
+CREATE TABLE "supply_log" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "id_insumo" int,
+  "nome_insumo" varchar,
+  "quantidade" numeric,
+  "preco_compra" numeric,
+  "status" boolean, --true é entrada, false é saída
+  "date_time" timestamp
+);
+
 ALTER TABLE "estoque_insumos" ADD FOREIGN KEY ("id_unidade") REFERENCES "unidade" ("id");
 ALTER TABLE "produto_ingrediente" ADD FOREIGN KEY ("produto_sku") REFERENCES "produto" ("sku");
 ALTER TABLE "produto_ingrediente" ADD FOREIGN KEY ("ingrediente_id") REFERENCES "estoque_insumos" ("id");
@@ -118,6 +129,7 @@ ALTER TABLE "avaliacao" ADD FOREIGN KEY ("pedido_id") REFERENCES "pedido" ("id")
 ALTER TABLE "avaliacao" ADD FOREIGN KEY ("cliente_id") REFERENCES "user" ("id");
 ALTER TABLE "historico_compra" ADD FOREIGN KEY ("id_insumo") REFERENCES "estoque_insumos" ("id");
 ALTER TABLE "historico_compra" ADD FOREIGN KEY ("id_unidade") REFERENCES "unidade" ("id");
+ALTER TABLE "supply_log" ADD FOREIGN KEY ("id_insumo") REFERENCES "estoque_insumos" ("id");
 
 -- inserts iniciais
 INSERT INTO "unidade" ("nome", "base_preco_compra") VALUES
@@ -152,12 +164,16 @@ INSERT INTO "estoque_insumos" ("nome", "id_unidade", "quantidade", "preco_compra
 ('Embalagem Individual para Cookie', 2, 500, 0.50, 100),
 ('Caixa para Bolo Pequeno', 2, 50, 3.00, 10);
 
+INSERT INTO "estoque_insumos" ("id_insumo", "nome_insumo", "quantidade", "preco_compra", "status", "date_time") VALUES
+(1, 'Farinha de Trigo', 5000, 4.0, true, 1)
+(2, 'Açúcar Mascavo', 1000, 8.0, false, 1)
+(3, 'Manteiga Sem Sal', 2000, 37.0, true, 1)
+
 INSERT INTO "produto" ("sku", "nome", "descricao", "valor", "imagem_url", "ativo") VALUES
 ('CK001', 'Cookie Clássico com Gotas de Chocolate', 'Massa amanteigada com baunilha e gotas de chocolate meio amargo.', 41.50, 'http://example.com/img/cookie-chocolate.jpg', true),
 ('CK002', 'Cookie de Red Velvet', 'Massa aveludada vermelha com gotas de chocolate branco.', 52.50, 'http://example.com/img/cookie-redvelvet.jpg', true),
 ('BL001', 'Bolo de Chocolate Intenso (fatia)', 'Fatia generosa de bolo de chocolate com cobertura de brigadeiro.', 35.00, 'http://example.com/img/bolo-chocolate.jpg', true),
 ('BL002', 'Bolo de Cenoura com Chocolate (inteiro)', 'Bolo fofinho de cenoura com cobertura de chocolate. Serve 8 pessoas.', 25.00, 'http://example.com/img/bolo-cenoura.jpg', true);
-
 
 INSERT INTO "produto_ingrediente" ("produto_sku", "ingrediente_id", "quantidade_utilizada") VALUES
 ('CK001', 1, 0.5),
