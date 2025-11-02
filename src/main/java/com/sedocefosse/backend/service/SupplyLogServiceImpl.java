@@ -1,5 +1,5 @@
 package com.sedocefosse.backend.service;
 
-public class SupplyLogServiceImpl {
+public class SupplyLogServiceImpl implements SupplyLogService{
 
 }
