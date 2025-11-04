@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface CouponService {
     
-    List<Coupon> findAll();
+    List<CouponDTO> findAll();
+
+    CouponDTO create(Coupon coupon);
 
     void deleteCuponById(Long cuponId);
 

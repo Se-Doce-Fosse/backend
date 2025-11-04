@@ -8,6 +8,7 @@ import com.sedocefosse.backend.model.Coupon;
 import com.sedocefosse.backend.repository.products.CouponRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CouponServiceImpl implements CouponService {
@@ -19,8 +20,16 @@ public class CouponServiceImpl implements CouponService {
     }
     
     @Override
-    public List<Coupon> findAll() {
-        return couponRepository.findAll();
+    public List<CouponDTO> findAll() {
+        return couponRepository.findAll().stream()
+            .map(this::toDTO)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public CouponDTO create(Coupon coupon) {
+        Coupon saved = couponRepository.save(coupon);
+        return toDTO(saved);
     }
 
     @Override
