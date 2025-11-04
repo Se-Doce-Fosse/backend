@@ -16,6 +16,6 @@ public class SupplyLogDTO {
     private String nomeInsumo;
     private int quantidade;
     private BigDecimal preco_compra;
-    private Boolean descricao;
+    private Boolean status;
     private LocalDateTime orderDate;
 }

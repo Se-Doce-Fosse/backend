@@ -32,7 +32,7 @@ public class SupplyLog {
     private BigDecimal preco_compra;
 
     @Column(name = "status", nullable = false)
-    private Boolean descricao;
+    private Boolean status;
 
     @Column(name = "date_time", nullable = false)
     private LocalDateTime orderDate;

@@ -1,5 +1,10 @@
 package com.sedocefosse.backend.service;
 
-public interface SupplyLogService {
+import java.time.LocalDateTime;
+import java.util.List;
 
+import com.sedocefosse.backend.dto.SupplyLogDTO;
+
+public interface SupplyLogService {
+    List<SupplyLogDTO> getSupplyLogBetweenDates(LocalDateTime startDate, LocalDateTime endDate);
 }
