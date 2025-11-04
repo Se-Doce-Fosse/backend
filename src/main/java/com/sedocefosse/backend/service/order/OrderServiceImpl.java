@@ -1,6 +1,7 @@
 package com.sedocefosse.backend.service.order;
 
 import com.sedocefosse.backend.dto.OrderDTO;
+import com.sedocefosse.backend.dto.ProductDTO;
 import com.sedocefosse.backend.model.Order;
 import com.sedocefosse.backend.model.Product;
 import com.sedocefosse.backend.repository.order.OrderRepository;
@@ -48,13 +49,13 @@ public class OrderServiceImpl implements OrderService {
         for (var entry : requestedCounts.entrySet()) {
             String sku = entry.getKey();
             long requestedQty = entry.getValue();
-            Product product = productService.findProductById(sku).orElse(null);
-            int available = product == null ? 0 : product.getQuantidade();
+            ProductDTO product = productService.findProductBySku(sku).orElse(null);
+            int available = product == null ? 0 : product.getQuantity();
             long fulfill = Math.min(available, requestedQty);
             long missing = requestedQty - fulfill;
 
             if (fulfill > 0 && Objects.nonNull(product)) {
-                product.setQuantidade(available - (int) fulfill);
+                product.setQuantity(available - (int) fulfill);
                 productService.updateProduct(product.getSku(), product);
                 for (int i = 0; i < fulfill; i++) fulfilledProducts.add(sku);
             }

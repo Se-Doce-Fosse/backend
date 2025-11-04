@@ -37,7 +37,7 @@ public class Order {
     private OrderStatusEnum orderStatus;
 
     @ElementCollection
-    @CollectionTable(name = "pedido_produto", joinColumns = @JoinColumn(name = "pedido_id"))
+    @CollectionTable(name = "pedido_item", joinColumns = @JoinColumn(name = "pedido_id"))
     @Column(name = "produto_sku", nullable = false)
     @Builder.Default
     private List<String> products = new ArrayList<>();

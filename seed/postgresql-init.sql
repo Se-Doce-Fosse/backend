@@ -23,7 +23,8 @@ CREATE TABLE "estoque_insumos" (
   "id_unidade" int,
   "quantidade" numeric,
   "preco_compra" numeric,
-  "ponto_reposicao" numeric
+  "ponto_reposicao" numeric,
+  "embalagem" boolean
 );
 
 CREATE TABLE "produto" (
@@ -138,26 +139,29 @@ INSERT INTO "cupom" ("codigo", "valor_desc", "validade", "ativo", "unico") VALUE
 ('BEMVINDO', 5.00, '2025-10-30', true, true),
 ('BOLOFESTA', 15.00, '2025-12-30', true, false);
 
-INSERT INTO "estoque_insumos" ("nome", "id_unidade", "quantidade", "preco_compra", "ponto_reposicao") VALUES
-('Farinha de Trigo', 1, 50000, 4.50, 10000),
-('Açúcar Mascavo', 1, 25000, 8.00, 5000),
-('Manteiga Sem Sal', 1, 20000, 35.00, 4000),
-('Ovos', 2, 120, 0.80, 30),
-('Gotas de Chocolate Meio Amargo', 1, 15000, 45.00, 3000),
-('Essência de Baunilha', 3, 5, 25.00, 1),
-('Fermento Químico', 1, 2, 1500, 500),
-('Leite Integral', 3, 10, 5.50, 3),
-('Chocolate em Pó 50%', 1, 8, 30000, 2000),
-('Café em Grãos Moído', 1, 5, 50000, 1000),
-('Embalagem Individual para Cookie', 2, 500, 0.50, 100),
-('Caixa para Bolo Pequeno', 2, 50, 3.00, 10);
+INSERT INTO "estoque_insumos" ("nome", "id_unidade", "quantidade", "preco_compra", "ponto_reposicao", "embalagem") VALUES
+('Farinha de Trigo', 1, 50000, 4.50, 10000, false),
+('Açúcar Mascavo', 1, 25000, 8.00, 5000, false),
+('Manteiga Sem Sal', 1, 20000, 35.00, 4000, false),
+('Ovos', 2, 120, 0.80, 30, false),
+('Gotas de Chocolate Meio Amargo', 1, 15000, 45.00, 3000, false),
+('Essência de Baunilha', 3, 5, 25.00, 1, false),
+('Fermento Químico', 1, 2, 1500, 500, false),
+('Leite Integral', 3, 10, 5.50, 3, false),
+('Chocolate em Pó 50%', 1, 8, 30000, 2000, false),
+('Café em Grãos Moído', 1, 5, 50000, 1000, false),
+('Embalagem Individual para Cookie', 2, 500, 0.50, 100, true),
+('Caixa para Bolo Pequeno', 2, 50, 3.00, 10, true);
 
 INSERT INTO "produto" ("sku", "nome", "descricao", "valor", "imagem_url", "ativo") VALUES
-('CK001', 'Cookie Clássico com Gotas de Chocolate', 'Massa amanteigada com baunilha e gotas de chocolate meio amargo.', 41.50, 'http://example.com/img/cookie-chocolate.jpg', true),
-('CK002', 'Cookie de Red Velvet', 'Massa aveludada vermelha com gotas de chocolate branco.', 52.50, 'http://example.com/img/cookie-redvelvet.jpg', true),
-('BL001', 'Bolo de Chocolate Intenso (fatia)', 'Fatia generosa de bolo de chocolate com cobertura de brigadeiro.', 35.00, 'http://example.com/img/bolo-chocolate.jpg', true),
-('BL002', 'Bolo de Cenoura com Chocolate (inteiro)', 'Bolo fofinho de cenoura com cobertura de chocolate. Serve 8 pessoas.', 25.00, 'http://example.com/img/bolo-cenoura.jpg', true);
-
+('CK001', 'Cookie Clássico com Gotas de Chocolate', 'Massa amanteigada com baunilha e gotas de chocolate meio amargo.', 41.50, 'https://static.ifood-static.com.br/image/upload/t_medium/pratos/96aa4ce9-22d9-4993-8f81-01caf03c2d31/202506161754_8J5A_i.jpg', true),
+('CK002', 'Cookie Chocolate Branco', 'Prepare-se para uma verdadeira explosão de sabores com o nosso irresistível Cookie de chocolate branco! ', 15.50, 'https://static.ifood-static.com.br/image/upload/t_medium/pratos/96aa4ce9-22d9-4993-8f81-01caf03c2d31/202502272218_TE6C_i.jpg', true),
+('CK003', 'Cookie Dark Chocolate', 'Uma verdadeira explosão de sabores para os chocólatras de plantão! Nossa massa rica e intensa em cacau é a base perfeita para pedaços generosos de chocolate branco, ao leite e meio amargo, que se derretem delicadamente em cada mordida.', 52.50, 'https://static.ifood-static.com.br/image/upload/t_medium/pratos/96aa4ce9-22d9-4993-8f81-01caf03c2d31/202506161756_NB65_i.jpg', true),
+('CK004', 'Cookie Nozes com Doce de Leite', 'Mergulhe em um mundo de sabor com o nosso Cookie de Nozes com Doce de Leite, uma verdadeira obra-prima que vai encantar seus sentidos! ', 17.90, 'https://static.ifood-static.com.br/image/upload/t_medium/pratos/96aa4ce9-22d9-4993-8f81-01caf03c2d31/202506161909_5T2Y_i.jpg', true),
+('CK005', 'Cookie Romeu e Julieta', 'Uma releitura irresistível do clássico brasileiro!', 15.90, 'https://static.ifood-static.com.br/image/upload/t_medium/pratos/96aa4ce9-22d9-4993-8f81-01caf03c2d31/202506162235_DC6F_i.jpg', true),
+('BL001', 'Brownie com Nutella', 'Marmitinha de brownie com um delicioso recheio de Nutella', 20.90, 'https://static.ifood-static.com.br/image/upload/t_medium/pratos/96aa4ce9-22d9-4993-8f81-01caf03c2d31/202502272219_4KDY_i.jpg', true),
+('BL002', 'Bolo de Chocolate Intenso (fatia)', 'Fatia generosa de bolo de chocolate com cobertura de brigadeiro.', 35.00, 'https://static.ifood-static.com.br/image/upload/t_medium/pratos/96aa4ce9-22d9-4993-8f81-01caf03c2d31/202508091609_49LG_.jpeg', true),
+('BL003', 'Bolo de Cenoura com Chocolate (inteiro)', 'Bolo fofinho de cenoura com cobertura de chocolate. Serve 8 pessoas.', 25.00, 'https://static.ifood-static.com.br/image/upload/t_medium/pratos/96aa4ce9-22d9-4993-8f81-01caf03c2d31/202508091609_49LG_.jpeg', true);
 
 INSERT INTO "produto_ingrediente" ("produto_sku", "ingrediente_id", "quantidade_utilizada") VALUES
 ('CK001', 1, 0.5),
