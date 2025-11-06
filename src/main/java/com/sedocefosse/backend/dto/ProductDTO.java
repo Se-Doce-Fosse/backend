@@ -20,4 +20,5 @@ public class ProductDTO {
     private Integer quantity;
     private CategoryDTO category;
     private List<String> allergens;
+    private List<ProductSupplyDTO> productSupply;
 }

@@ -1,9 +1,15 @@
 package com.sedocefosse.backend.dto;
 
-public class ProductSupplyDTO {
-    private Long id;
-    private Long supplyId;
-    private String productId;
-    private double quantity;
+import com.sedocefosse.backend.utils.UpdateProductSupplyEnum;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+@AllArgsConstructor
+@Getter
+@Setter
+public class ProductSupplyDTO {
+    private Long supplyId;
+    private double quantity;
+    private UpdateProductSupplyEnum productSupplyEnum;
 }

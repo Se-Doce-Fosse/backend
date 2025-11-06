@@ -1,13 +1,15 @@
-package com.sedocefosse.backend.repository;
+package com.sedocefosse.backend.repository.products;
 
-import com.sedocefosse.backend.model.Product;
 import com.sedocefosse.backend.model.ProductSupply;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductSupplyRepository extends JpaRepository<ProductSupply, Long> {
     List<ProductSupply> findByProductSku(String sku);
+    Optional<ProductSupply> findByProductIdAndSupplyId(String productSku, Long supplyId);
+    void deleteByProductIdAndSupplyId(String productSku, Long supplyId);
 }
