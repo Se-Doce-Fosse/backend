@@ -40,9 +40,9 @@ public class LoginService {
 
         if(user.isEmpty()) {
             var newUser = mapToEntity(signupRequest);
-            this.repository.save(newUser);
-
-            return new AuthResponse(newUser.getUsername(), "User created");
+            var savedUser = this.repository.save(newUser);
+            String token = this.tokenService.generateToken(savedUser);
+            return new AuthResponse(savedUser.getUsername(), token);
         }
         else throw new SignupException(SIGNUP_FAILURE_MSG);
     }

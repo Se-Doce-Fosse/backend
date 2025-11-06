@@ -43,10 +43,12 @@ public class SecurityFilter extends OncePerRequestFilter {
         if(login != null){
             logger.debug("Token validated, subject={}", login);
             AdminEntity user = adminRepository.findByEmail(login).orElseThrow(() -> new LoginException("User Not Found"));
-            var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+            var authority = new SimpleGrantedAuthority(user.getRole().name());
+            var authorities = Collections.singletonList(authority);
             var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            logger.info("Authenticated user={} for request {} {} with authorities={}", user.getEmail(), request.getMethod(), request.getRequestURI(), authorities);
+            logger.info("Authenticated user={} with role={} for request {} {}", 
+                user.getEmail(), user.getRole(), request.getMethod(), request.getRequestURI());
         } else {
             if (token != null) logger.info("Token present but invalid for request {} {}", request.getMethod(), request.getRequestURI());
         }
