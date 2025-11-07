@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface ProductSupplyRepository extends JpaRepository<ProductSupply, Long> {
     List<ProductSupply> findByProductSku(String sku);
-    Optional<ProductSupply> findByProductIdAndSupplyId(String productSku, Long supplyId);
-    void deleteByProductIdAndSupplyId(String productSku, Long supplyId);
+    Optional<ProductSupply> findByProductSkuAndSupplyId(String productSku, Long supplyId);
+    void deleteByProductSkuAndSupplyId(String productSku, Long supplyId);
 }

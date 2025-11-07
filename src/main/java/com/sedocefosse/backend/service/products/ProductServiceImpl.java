@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import com.sedocefosse.backend.configs.exceptions.InsufficientSupplyException;
 import com.sedocefosse.backend.configs.exceptions.ResourceInUseException;
 
-import com.sedocefosse.backend.service.mapper.ProductsMapper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,14 +32,22 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductSupplyService productSupplyService;
     private final OrderRepository orderRepository;
-    private final ProductsMapper productsMapper;
 
     @Override
     @Transactional
     public ProductDTO create(ProductDTO product) {        
         product.setSku(UUID.randomUUID().toString());
 
-        Product savedProduct = productRepository.save(productsMapper.toEntity(product));
+        Product newProduct = new Product();
+        newProduct.setSku(product.getSku());
+        newProduct.setNome(product.getName());
+        newProduct.setDescricao(product.getDescription());
+        newProduct.setValor(new BigDecimal(product.getPrice()));
+        newProduct.setQuantidade(product.getQuantity());
+        newProduct.setImagemUrl(product.getImageSrc());
+        newProduct.setAtivo(product.getIsActive());
+
+        Product savedProduct = productRepository.save(newProduct);
 
         Optional<Category> optionalCategory = categoryRepository.findById(product.getCategory().getId());
 
@@ -60,7 +67,7 @@ public class ProductServiceImpl implements ProductService {
             productSupplyService.updateSupplyInventory(product.getSku(), product.getQuantity());
         }
 
-        return productsMapper.toProductDTO(savedProduct);
+        return mapToProductDTO(savedProduct);
     }
 
     @Override
@@ -71,7 +78,7 @@ public class ProductServiceImpl implements ProductService {
             throw new ResourceNotFoundException("Produto não encontrado com SKU: " + sku);
         }
 
-        ProductDTO dto = productsMapper.toProductDTO(product.get());
+        ProductDTO dto = this.mapToProductDTO(product.get());
         Category category = categoryRepository.findByProdutos(product.get().getSku());
         dto.setCategory(new CategoryDTO(category.getId(), category.getNome(), null));
         return Optional.of(dto);
@@ -93,7 +100,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = productRepository.findAll();
 
         return products.stream().map(product -> {
-            ProductDTO dto = productsMapper.toProductDTO(product);
+            ProductDTO dto = this.mapToProductDTO(product);
             Category category = categoryRepository.findByProdutos(product.getSku());
             if (category != null) {
                 dto.setCategory(new CategoryDTO(category.getId(), category.getNome(), null));
@@ -118,7 +125,7 @@ public class ProductServiceImpl implements ProductService {
 
     private CategoryDTO mapToCategoryDTO(Category category, List<Product> products) {
         List<ProductDetailsDTO> productDetailsDTOs = products.stream()
-                .map(productsMapper::toProductDetailsDTO)
+                .map(this::mapToProductDetailsDTO)
                 .collect(Collectors.toList());
 
         return new CategoryDTO(
@@ -128,12 +135,26 @@ public class ProductServiceImpl implements ProductService {
         );
     }
 
+    private ProductDTO mapToProductDTO(Product product) {
+        String valorFormatado = "R$ " + product.getValor().toString().replace('.', ',');
+
+        return ProductDTO.builder()
+                .sku(product.getSku())
+                .name(product.getNome())
+                .price(valorFormatado)
+                .imageSrc(product.getImagemUrl())
+                .description(product.getDescricao())
+                .isActive(product.getAtivo())
+                .quantity(product.getQuantidade())
+                .build();
+    }
+
 
     @Override
     public Optional<ProductDetailsDTO> findProductDetailsBySku(String sku) {
         return productRepository.findById(sku).map(product -> {
 
-            ProductDetailsDTO productDetails = productsMapper.toProductDetailsDTO(product);
+            ProductDetailsDTO productDetails = this.mapToProductDetailsDTO(product);
 
             Category category = categoryRepository.findByProdutos(sku);
             category.getProdutos().remove(sku);
@@ -150,6 +171,17 @@ public class ProductServiceImpl implements ProductService {
 
             return productDetails;
         });
+    }
+
+    private ProductDetailsDTO mapToProductDetailsDTO(Product product) {
+        String valorFormatado = "R$ " + product.getValor().toString().replace('.', ',');
+        ProductDetailsDTO dto = new ProductDetailsDTO();
+        dto.setId(product.getSku());
+        dto.setName(product.getNome());
+        dto.setDescription(product.getDescricao());
+        dto.setPrice(valorFormatado);
+        dto.setImageSrc(product.getImagemUrl());
+        return dto;
     }
 
     @Override
@@ -216,7 +248,7 @@ public class ProductServiceImpl implements ProductService {
 
         Product updatedProduct = productRepository.save(product);
         
-        return productsMapper.toProductDTO(updatedProduct);
+        return mapToProductDTO(updatedProduct);
     }
 
     private RelatedProductDTO mapToRelatedProductDTO(Product product) {

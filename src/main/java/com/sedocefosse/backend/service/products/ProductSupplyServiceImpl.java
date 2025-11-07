@@ -8,12 +8,11 @@ import com.sedocefosse.backend.model.ProductSupply;
 import com.sedocefosse.backend.model.Supply;
 import com.sedocefosse.backend.repository.products.ProductSupplyRepository;
 import com.sedocefosse.backend.repository.products.SupplyRepository;
-import com.sedocefosse.backend.service.mapper.ProductsMapper;
+import com.sedocefosse.backend.service.mapper.ProductMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -21,7 +20,7 @@ public class ProductSupplyServiceImpl implements ProductSupplyService {
 
     private final ProductSupplyRepository productSupplyRepository;
     private final SupplyRepository supplyRepository;
-    private final ProductsMapper productsMapper;
+    private final ProductMapper productMapper;
 
     @Override
     public void updateSupplyInventory(String productSku, Integer quantity) {
@@ -55,16 +54,16 @@ public class ProductSupplyServiceImpl implements ProductSupplyService {
 
                     ProductSupply productSupply = new ProductSupply();
 
-                    productSupply.setProduct(productsMapper.toEntity(productDTO));
+                    productSupply.setProduct(productMapper.toEntity(productDTO));
                     productSupply.setSupply(supply);
 
                     productSupplyRepository.save(productSupply);
                 }
                 case DELETE_ENUM -> {
-                    productSupplyRepository.deleteByProductIdAndSupplyId(productDTO.getSku(), productSupplyDTO.getSupplyId());
+                    productSupplyRepository.deleteByProductSkuAndSupplyId(productDTO.getSku(), productSupplyDTO.getSupplyId());
                 }
                 case UPDATE_ENUM -> {
-                    ProductSupply productSupply = productSupplyRepository.findByProductIdAndSupplyId(productDTO.getSku(), productSupplyDTO.getSupplyId())
+                    ProductSupply productSupply = productSupplyRepository.findByProductSkuAndSupplyId(productDTO.getSku(), productSupplyDTO.getSupplyId())
                             .orElseThrow(() -> new ResourceNotFoundException("Relation not found"));
 
                     productSupply.setQuantidade(productSupplyDTO.getQuantity());

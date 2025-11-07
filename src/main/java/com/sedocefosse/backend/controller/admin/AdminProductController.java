@@ -39,7 +39,8 @@ public class AdminProductController {
 
     @PostMapping
     public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO product) {
-        return new ResponseEntity<>(productService.create(product), HttpStatus.CREATED);
+        ProductDTO createdProduct = productService.create(product);
+        return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
   
     @PatchMapping("/{id}/status")
