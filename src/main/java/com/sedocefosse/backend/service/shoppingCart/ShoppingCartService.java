@@ -33,7 +33,7 @@ public class ShoppingCartService {
     public ShoppingCartDTO addProduct(String shoppingCartId, String SKU) {
         final var shoppingCart = shoppingCartRepository.findById(shoppingCartId);
         if (Objects.isNull(shoppingCart)) {
-            shoppingCart = create
+            shoppingCart = createShoppingCart(new ShoppingCartDTO())
         }
 
         final var product = productService.findProductById(SKU).orElse(null);
