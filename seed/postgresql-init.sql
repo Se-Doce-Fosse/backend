@@ -12,98 +12,98 @@ DROP TABLE IF EXISTS "user" CASCADE;
 drop table if exists "admin" cascade;
 
 CREATE TABLE "unidade" (
-  "id" BIGSERIAL PRIMARY KEY,
-  "nome" varchar,
-  "base_preco_compra" numeric
+"id" BIGSERIAL PRIMARY KEY,
+"nome" varchar,
+"base_preco_compra" numeric
 );
 
 CREATE TABLE "estoque_insumos" (
-  "id" BIGSERIAL PRIMARY KEY,
-  "nome" varchar,
-  "id_unidade" int,
-  "quantidade" numeric,
-  "preco_compra" numeric,
-  "ponto_reposicao" numeric,
-  "embalagem" boolean
+"id" BIGSERIAL PRIMARY KEY,
+"nome" varchar,
+"id_unidade" int,
+"quantidade" numeric,
+"preco_compra" numeric,
+"ponto_reposicao" numeric,
+"embalagem" boolean
 );
 
 CREATE TABLE "produto" (
-  "sku" varchar PRIMARY KEY,
-  "nome" varchar,
-  "descricao" varchar,
-  "valor" numeric,
-  "imagem_url" varchar,
-  "ativo" boolean
+"sku" varchar PRIMARY KEY,
+"nome" varchar,
+"descricao" varchar,
+"valor" numeric,
+"imagem_url" varchar,
+"ativo" boolean
 );
 
 CREATE TABLE "produto_ingrediente" (
-  "produto_sku" varchar,
-  "ingrediente_id" int,
-  "quantidade_utilizada" numeric,
-  PRIMARY KEY ("produto_sku", "ingrediente_id")
+"produto_sku" varchar,
+"ingrediente_id" int,
+"quantidade_utilizada" numeric,
+PRIMARY KEY ("produto_sku", "ingrediente_id")
 );
 
 CREATE TABLE "cupom" (
-  "id" BIGSERIAL PRIMARY KEY,
-  "codigo" varchar UNIQUE,
-  "valor_desc" numeric,
-  "validade" date,
-  "ativo" boolean,
-  "unico" boolean
+"id" BIGSERIAL PRIMARY KEY,
+"codigo" varchar UNIQUE,
+"valor_desc" numeric,
+"validade" date,
+"ativo" boolean,
+"unico" boolean
 );
 
 CREATE TABLE "cupom_produto" (
-  "cupom_id" int,
-  "produto_sku" varchar,
-  PRIMARY KEY ("cupom_id", "produto_sku")
+"cupom_id" int,
+"produto_sku" varchar,
+PRIMARY KEY ("cupom_id", "produto_sku")
 );
 
 CREATE TABLE "user" (
-  "id" BIGSERIAL PRIMARY KEY,
-  "nome" varchar,
-  "telefone" varchar
+"id" BIGSERIAL PRIMARY KEY,
+"nome" varchar,
+"telefone" varchar
 );
 
 CREATE TABLE "pedido" (
-  "id" BIGSERIAL PRIMARY KEY,
-  "cliente_id" varchar,
-  "data_criacao" timestamp,
-  "valor_total" numeric,
-  "status" varchar,
-  "cupom_id" int
+"id" BIGSERIAL PRIMARY KEY,
+"cliente_id" BIGSERIAL,
+"data_criacao" timestamp,
+"valor_total" numeric,
+"status" varchar,
+"cupom_id" int
 );
 
 CREATE TABLE "pedido_item" (
-  "pedido_id" int,
-  "produto_sku" varchar,
-  "quantidade" int,
-  "valor_unitario" numeric,
-  PRIMARY KEY ("pedido_id", "produto_sku")
+"pedido_id" int,
+"produto_sku" varchar,
+"quantidade" int,
+"valor_unitario" numeric,
+PRIMARY KEY ("pedido_id", "produto_sku")
 );
 
 CREATE TABLE "admin" (
-    "id" BIGSERIAL PRIMARY KEY,
-    "username" VARCHAR(255) NOT NULL UNIQUE,
-    "email" VARCHAR(255) NOT NULL UNIQUE,
-    "password" VARCHAR(255) NOT NULL,
-    "role" VARCHAR(50)
+"id" BIGSERIAL PRIMARY KEY,
+"username" VARCHAR(255) NOT NULL UNIQUE,
+"email" VARCHAR(255) NOT NULL UNIQUE,
+"password" VARCHAR(255) NOT NULL,
+"role" VARCHAR(50)
 );
 
 CREATE TABLE "avaliacao" (
-  "id" BIGSERIAL PRIMARY KEY,
-  "pedido_id" int,
-  "cliente_id" varchar,
-  "nota" int,
-  "descricao" text,
-  "nome_exibicao" varchar
+"id" BIGSERIAL PRIMARY KEY,
+"pedido_id" int,
+"cliente_id" BIGSERIAL,
+"nota" int,
+"descricao" text,
+"nome_exibicao" varchar
 );
 
 CREATE TABLE "historico_compra" (
-  "id" BIGSERIAL PRIMARY KEY,
-  "id_insumo" int,
-  "id_unidade" int,
-  "quantidade" DOUBLE PRECISION,
-  "peco_unidade" DOUBLE PRECISION
+"id" BIGSERIAL PRIMARY KEY,
+"id_insumo" int,
+"id_unidade" int,
+"quantidade" DOUBLE PRECISION,
+"peco_unidade" DOUBLE PRECISION
 );
 
 ALTER TABLE "estoque_insumos" ADD FOREIGN KEY ("id_unidade") REFERENCES "unidade" ("id");

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "avaliacao")
 @Builder
@@ -20,7 +22,7 @@ public class Comment {
     private Long pedidoId;
 
     @Column(name = "cliente_id", nullable = false)
-    private String clienteId;
+    private Long clienteId;
 
     @Column(name = "nota", nullable = false)
     private int nota;

@@ -49,14 +49,16 @@ public class ProductServiceImpl implements ProductService {
 
         Product savedProduct = productRepository.save(newProduct);
 
-        Optional<Category> optionalCategory = categoryRepository.findById(product.getCategory().getId());
+        if (product.getCategory() != null) {
+            Optional<Category> optionalCategory = categoryRepository.findById(product.getCategory().getId());
 
-        if (optionalCategory.isPresent()) {            
-            Category category = optionalCategory.get();
-            List<String> products = category.getProdutos();
-            products.add(product.getSku());
-            category.setProdutos(products);
-            categoryRepository.save(category);
+            if (optionalCategory.isPresent()) {
+                Category category = optionalCategory.get();
+                List<String> products = category.getProdutos();
+                products.add(product.getSku());
+                category.setProdutos(products);
+                categoryRepository.save(category);
+            }
         }
 
         if(!product.getProductSupply().isEmpty()){
@@ -67,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
             productSupplyService.updateSupplyInventory(product.getSku(), product.getQuantity());
         }
 
-        return mapToProductDTO(savedProduct);
+        return product;
     }
 
     @Override
@@ -149,7 +151,6 @@ public class ProductServiceImpl implements ProductService {
                 .build();
     }
 
-
     @Override
     public Optional<ProductDetailsDTO> findProductDetailsBySku(String sku) {
         return productRepository.findById(sku).map(product -> {
@@ -223,6 +224,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         if (!productDto.getProductSupply().isEmpty()) {
+            productDto.setSku(sku);
             productSupplyService.productSupplyRelation(productDto.getProductSupply(), productDto);
         }
 

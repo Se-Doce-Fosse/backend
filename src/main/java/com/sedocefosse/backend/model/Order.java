@@ -24,7 +24,7 @@ public class Order {
     private Long orderId;
 
     @Column(name = "cliente_id", nullable = false)
-    private String clientId;
+    private Long clientId;
 
     @Column(name = "data_criacao", nullable = false)
     private LocalDateTime orderDate;
