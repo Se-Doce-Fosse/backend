@@ -1,4 +1,8 @@
+<<<<<<< HEAD:src/main/java/com/sedocefosse/backend/controller/admin/SupplyLogController.java
 package com.sedocefosse.backend.controller.admin;
+=======
+package com.sedocefosse.backend.controller;
+>>>>>>> f1d8bd95de5fb27f2ffa11bef19c0c540a7b4c59:src/main/java/com/sedocefosse/backend/controller/SupplyLogController.java
 
 import com.sedocefosse.backend.dto.SupplyLogDTO;
 import com.sedocefosse.backend.service.SupplyLogService;
