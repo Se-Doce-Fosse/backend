@@ -31,8 +31,8 @@ public class SupplyLog {
     @Column(name = "preco_compra", nullable = false)
     private BigDecimal preco_compra;
 
-    @Column(name = "status", nullable = false)
-    private Boolean status;
+    @Column(name = "status", nullable = false, length = 10)
+    private String status; // "entrada" ou "saída"
 
     @Column(name = "date_time", nullable = false)
     private LocalDateTime orderDate;

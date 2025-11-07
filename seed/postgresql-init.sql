@@ -66,7 +66,7 @@ CREATE TABLE "user" (
 
 CREATE TABLE "pedido" (
   "id" BIGSERIAL PRIMARY KEY,
-  "cliente_id" varchar,
+  "cliente_id" BIGINT,
   "data_criacao" timestamp,
   "valor_total" numeric,
   "status" varchar,
@@ -74,7 +74,7 @@ CREATE TABLE "pedido" (
 );
 
 CREATE TABLE "pedido_item" (
-  "pedido_id" int,
+  "pedido_id" BIGINT,
   "produto_sku" varchar,
   "quantidade" int,
   "valor_unitario" numeric,
@@ -91,8 +91,8 @@ CREATE TABLE "admin" (
 
 CREATE TABLE "avaliacao" (
   "id" BIGSERIAL PRIMARY KEY,
-  "pedido_id" int,
-  "cliente_id" varchar,
+  "pedido_id" BIGINT,
+  "cliente_id" BIGINT,
   "nota" int,
   "descricao" text,
   "nome_exibicao" varchar
@@ -112,7 +112,7 @@ CREATE TABLE "supply_log" (
   "nome_insumo" varchar,
   "quantidade" numeric,
   "preco_compra" numeric,
-  "status" boolean, --true é entrada, false é saída
+  "status" varchar(10), -- "entrada" ou "saída"
   "date_time" timestamp
 );
 
@@ -164,10 +164,10 @@ INSERT INTO "estoque_insumos" ("nome", "id_unidade", "quantidade", "preco_compra
 ('Embalagem Individual para Cookie', 2, 500, 0.50, 100),
 ('Caixa para Bolo Pequeno', 2, 50, 3.00, 10);
 
-INSERT INTO "estoque_insumos" ("id_insumo", "nome_insumo", "quantidade", "preco_compra", "status", "date_time") VALUES
-(1, 'Farinha de Trigo', 5000, 4.0, true, '2025-10-26 14:00:00')
-(2, 'Açúcar Mascavo', 1000, 8.0, false, '2025-10-28 14:00:00')
-(3, 'Manteiga Sem Sal', 2000, 37.0, true, '2025-10-29 14:00:00')
+INSERT INTO "supply_log" ("id_insumo", "nome_insumo", "quantidade", "preco_compra", "status", "date_time") VALUES
+(1, 'Farinha de Trigo', 5000, 4.0, 'entrada', '2025-10-26 14:00:00'),
+(2, 'Açúcar Mascavo', 1000, 8.0, 'saída', '2025-10-28 14:00:00'),
+(3, 'Manteiga Sem Sal', 2000, 37.0, 'entrada', '2025-10-29 14:00:00');
 
 INSERT INTO "produto" ("sku", "nome", "descricao", "valor", "imagem_url", "ativo") VALUES
 ('CK001', 'Cookie Clássico com Gotas de Chocolate', 'Massa amanteigada com baunilha e gotas de chocolate meio amargo.', 41.50, 'http://example.com/img/cookie-chocolate.jpg', true),
@@ -195,9 +195,9 @@ INSERT INTO "historico_compra" ("id_insumo", "id_unidade", "quantidade", "peco_u
 (5, 1, 5, 42.50);
 
 INSERT INTO "pedido" ("cliente_id", "data_criacao", "valor_total", "status", "cupom_id") VALUES
-('1', '2025-09-26 14:00:00', 13.00, 'ENTREGUE', 2),
-('1', '2025-09-27 18:10:00', 45.00, 'PAGAMENTO_APROVADO', 3),
-('2', NOW(), 22.00, 'EM_PREPARACAO', NULL);
+(1, '2025-09-26 14:00:00', 13.00, 'ENTREGUE', 2),
+(1, '2025-09-27 18:10:00', 45.00, 'PAGAMENTO_APROVADO', 3),
+(2, NOW(), 22.00, 'EM_PREPARACAO', NULL);
 
 INSERT INTO "pedido_item" ("pedido_id", "produto_sku", "quantidade", "valor_unitario") VALUES
 (1, 'CK001', 4, 4.50),
@@ -206,4 +206,4 @@ INSERT INTO "pedido_item" ("pedido_id", "produto_sku", "quantidade", "valor_unit
 (3, 'CK002', 1, 7.00);
 
 INSERT INTO "avaliacao" ("pedido_id", "cliente_id", "nota", "descricao", "nome_exibicao") VALUES
-(1, '1', 5, 'Os melhores cookies que já comi! Chegou quentinho.', 'João S.');
+(1, 1, 5, 'Os melhores cookies que já comi! Chegou quentinho.', 'João S.');

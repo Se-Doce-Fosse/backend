@@ -4,6 +4,7 @@ import com.sedocefosse.backend.model.Supply;
 import com.sedocefosse.backend.model.Unit;
 import com.sedocefosse.backend.repository.products.SupplyRepository;
 import com.sedocefosse.backend.repository.products.UnitRepository;
+import com.sedocefosse.backend.service.SupplyLogService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,17 +20,39 @@ import com.sedocefosse.backend.dto.SupplyUpdateDTO;
 public class SupplyServiceImpl implements SupplyService {
     private final SupplyRepository supplyRepository;
     private final UnitRepository unitRepository;
+    private final SupplyLogService supplyLogService;
 
     @Autowired
-    public SupplyServiceImpl(SupplyRepository supplyRepository, UnitRepository unitRepository){
+    public SupplyServiceImpl(SupplyRepository supplyRepository, UnitRepository unitRepository, SupplyLogService supplyLogService){
         this.supplyRepository = supplyRepository;
         this.unitRepository = unitRepository;
+        this.supplyLogService = supplyLogService;
     }
 
     @Override
+    @Transactional
     public SupplyResponseDTO create(Supply supply) {
-        supplyRepository.save(supply);
-        return toResponseDTO(supply);
+        // Busca a unidade pelo ID se ela foi enviada
+        if (supply.getUnidade() != null && supply.getUnidade().getId() != null) {
+            Unit unit = unitRepository.findById(supply.getUnidade().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Unidade não encontrada com o id: " + supply.getUnidade().getId()));
+            supply.setUnidade(unit);
+        } else {
+            throw new ResourceNotFoundException("Unidade é obrigatória para criar um supply");
+        }
+        
+        Supply savedSupply = supplyRepository.save(supply);
+        
+        // Registra log de entrada quando cria um novo supply
+        supplyLogService.createLog(
+            savedSupply.getId(),
+            savedSupply.getNome(),
+            (int) savedSupply.getQuantidade(),
+            savedSupply.getPreco_compra(),
+            "entrada"
+        );
+        
+        return toResponseDTO(savedSupply);
     }
 
 
@@ -64,6 +87,10 @@ public class SupplyServiceImpl implements SupplyService {
         Supply existingSupply = supplyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Insumo não encontrado com o id: " + id));
 
+        // Guarda a quantidade antiga para calcular a diferença
+        double quantidadeAntiga = existingSupply.getQuantidade();
+        double tolerancia = 0.0001; // Tolerância para comparação de double
+
         existingSupply.setNome(updateDTO.getName());
         existingSupply.setQuantidade(updateDTO.getQuantidade());
         existingSupply.setPreco_compra(updateDTO.getPrecoCompra());
@@ -74,6 +101,24 @@ public class SupplyServiceImpl implements SupplyService {
         existingSupply.setUnidade(newUnit);
         
         Supply savedSupply = supplyRepository.save(existingSupply);
+
+        // Calcula a diferença
+        double diferencaQuantidade = savedSupply.getQuantidade() - quantidadeAntiga;
+        boolean quantidadeMudou = Math.abs(diferencaQuantidade) > tolerancia;
+        
+        // Registra apenas se tiver mudança na quantidade
+        if (quantidadeMudou) {
+            String status = diferencaQuantidade > 0 ? "entrada" : "saída";
+            int quantidadeAbsoluta = (int) Math.abs(diferencaQuantidade);
+            
+            supplyLogService.createLog(
+                savedSupply.getId(),
+                savedSupply.getNome(),
+                quantidadeAbsoluta,
+                savedSupply.getPreco_compra(),
+                status
+            );
+        }
 
         return toResponseDTO(savedSupply); 
     }

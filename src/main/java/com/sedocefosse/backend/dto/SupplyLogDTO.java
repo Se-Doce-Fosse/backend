@@ -16,6 +16,6 @@ public class SupplyLogDTO {
     private String nomeInsumo;
     private int quantidade;
     private BigDecimal preco_compra;
-    private Boolean status;
+    private String status; // "entrada" ou "saída"
     private LocalDateTime orderDate;
 }

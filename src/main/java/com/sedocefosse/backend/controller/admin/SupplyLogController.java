@@ -1,8 +1,7 @@
-
-package com.sedocefosse.backend.controller;
+package com.sedocefosse.backend.controller.admin;
 
 import com.sedocefosse.backend.dto.SupplyLogDTO;
-import com.sedocefosse.backend.service.SupplyLogServiceImpl;
+import com.sedocefosse.backend.service.SupplyLogService;
 
 import lombok.AllArgsConstructor;
 
@@ -18,11 +17,11 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/supplylog")
+@RequestMapping("/admin/supplylog")
 public class SupplyLogController {
-    private final SupplyLogServiceImpl supplyLogService;
+    private final SupplyLogService supplyLogService;
 
-    // Exemplo de uso: GET /supplylog?startDate=2025-10-27 00:00:00&endDate=2025-10-30 00:00:00
+    //GET /admin/supplylog?startDate=2025-10-27T00:00:00&endDate=2025-10-30T00:00:00
 
     @GetMapping()
     public ResponseEntity<List<SupplyLogDTO>> getSupplyLogBetweenDates(
@@ -32,3 +31,5 @@ public class SupplyLogController {
         return ResponseEntity.ok(supplyLog);
     }
 }
+
+
