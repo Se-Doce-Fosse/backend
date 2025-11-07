@@ -164,9 +164,9 @@ INSERT INTO "estoque_insumos" ("nome", "id_unidade", "quantidade", "preco_compra
 ('Embalagem Individual para Cookie', 2, 500, 0.50, 100),
 ('Caixa para Bolo Pequeno', 2, 50, 3.00, 10);
 
-INSERT INTO "estoque_insumos" ("id_insumo", "nome_insumo", "quantidade", "preco_compra", "status", "date_time") VALUES
-(1, 'Farinha de Trigo', 5000, 4.0, true, '2025-10-26 14:00:00')
-(2, 'Açúcar Mascavo', 1000, 8.0, false, '2025-10-28 14:00:00')
+INSERT INTO "supply_log" ("id_insumo", "nome_insumo", "quantidade", "preco_compra", "status", "date_time") VALUES
+(1, 'Farinha de Trigo', 5000, 4.0, true, '2025-10-26 14:00:00'),
+(2, 'Açúcar Mascavo', 1000, 8.0, false, '2025-10-28 14:00:00'),
 (3, 'Manteiga Sem Sal', 2000, 37.0, true, '2025-10-29 14:00:00')
 
 INSERT INTO "produto" ("sku", "nome", "descricao", "valor", "imagem_url", "ativo") VALUES
