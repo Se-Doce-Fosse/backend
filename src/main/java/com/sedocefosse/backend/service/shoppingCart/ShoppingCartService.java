@@ -2,7 +2,7 @@ package com.sedocefosse.backend.service.shoppingCart;
 
 import com.sedocefosse.backend.dto.shoppingCart.ShoppingCartDTO;
 import com.sedocefosse.backend.repository.shoppingCart.ShoppingCartRepository;
-import com.sedocefosse.backend.service.shoppingCart.mapper.ShoppingCartMapper;
+import com.sedocefosse.backend.service.mapper.ShoppingCartMapper;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

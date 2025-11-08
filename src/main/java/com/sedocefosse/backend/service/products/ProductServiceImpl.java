@@ -10,7 +10,7 @@ import com.sedocefosse.backend.configs.exceptions.InsufficientSupplyException;
 import com.sedocefosse.backend.configs.exceptions.ResourceInUseException;
 
 import jakarta.transaction.Transactional;
-import com.sedocefosse.backend.service.ProductSupplyService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import com.sedocefosse.backend.configs.exceptions.ResourceNotFoundException;
@@ -24,24 +24,14 @@ import com.sedocefosse.backend.repository.order.OrderRepository;
 import com.sedocefosse.backend.repository.products.CategoryRepository;
 import com.sedocefosse.backend.repository.products.ProductRepository;
 
-@Service 
+@Service
+@AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductSupplyService productSupplyService;
     private final OrderRepository orderRepository;
-    
-
-    public ProductServiceImpl(ProductRepository productRepository,
-                              CategoryRepository categoryRepository,
-                              ProductSupplyService productSupplyService,
-                              OrderRepository orderRepository) {
-        this.productRepository = productRepository;
-        this.categoryRepository = categoryRepository;
-        this.productSupplyService = productSupplyService;
-        this.orderRepository = orderRepository;
-    }
 
     @Override
     @Transactional
@@ -49,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
         product.setSku(UUID.randomUUID().toString());
 
         Product newProduct = new Product();
-        newProduct.setSku(product.getSku()); 
+        newProduct.setSku(product.getSku());
         newProduct.setNome(product.getName());
         newProduct.setDescricao(product.getDescription());
         newProduct.setValor(new BigDecimal(product.getPrice()));
@@ -59,27 +49,34 @@ public class ProductServiceImpl implements ProductService {
 
         Product savedProduct = productRepository.save(newProduct);
 
-        Optional<Category> optionalCategory = categoryRepository.findById(product.getCategory().getId());
+        if (product.getCategory() != null) {
+            Optional<Category> optionalCategory = categoryRepository.findById(product.getCategory().getId());
 
-        if (optionalCategory.isPresent()) {            
-            Category category = optionalCategory.get();
-            List<String> produtos = category.getProdutos();
-            produtos.add(savedProduct.getSku());
-            category.setProdutos(produtos);
-            categoryRepository.save(category);
+            if (optionalCategory.isPresent()) {
+                Category category = optionalCategory.get();
+                List<String> products = category.getProdutos();
+                products.add(product.getSku());
+                category.setProdutos(products);
+                categoryRepository.save(category);
+            }
         }
 
-        if (savedProduct.getQuantidade() > 0) {
-            productSupplyService.updateSupplyInventory(savedProduct.getSku(), savedProduct.getQuantidade());
+        if(!product.getProductSupply().isEmpty()){
+            productSupplyService.productSupplyRelation(product.getProductSupply(), product);
         }
-        return mapToProductDTO(savedProduct);
+
+        if (product.getQuantity() > 0) {
+            productSupplyService.updateSupplyInventory(product.getSku(), product.getQuantity());
+        }
+
+        return product;
     }
 
     @Override
     public Optional<ProductDTO> findProductBySku(String sku) {
         Optional<Product> product = productRepository.findById(sku);
 
-        if (!product.isPresent()) {
+        if (product.isEmpty()) {
             throw new ResourceNotFoundException("Produto não encontrado com SKU: " + sku);
         }
 
@@ -143,17 +140,15 @@ public class ProductServiceImpl implements ProductService {
     private ProductDTO mapToProductDTO(Product product) {
         String valorFormatado = "R$ " + product.getValor().toString().replace('.', ',');
 
-        return new ProductDTO(
-                product.getSku(),
-                product.getNome(),
-                valorFormatado,                
-                product.getImagemUrl(),
-                product.getDescricao(),
-                product.getAtivo(),
-                product.getQuantidade(),
-                null, 
-                null
-        );
+        return ProductDTO.builder()
+                .sku(product.getSku())
+                .name(product.getNome())
+                .price(valorFormatado)
+                .imageSrc(product.getImagemUrl())
+                .description(product.getDescricao())
+                .isActive(product.getAtivo())
+                .quantity(product.getQuantidade())
+                .build();
     }
 
     @Override
@@ -226,6 +221,11 @@ public class ProductServiceImpl implements ProductService {
         }
         if (productDto.getIsActive() != null) {
             product.setAtivo(productDto.getIsActive());
+        }
+
+        if (!productDto.getProductSupply().isEmpty()) {
+            productDto.setSku(sku);
+            productSupplyService.productSupplyRelation(productDto.getProductSupply(), productDto);
         }
 
         if (productDto.getQuantity() != null) {
