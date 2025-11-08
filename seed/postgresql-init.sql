@@ -59,14 +59,14 @@ PRIMARY KEY ("cupom_id", "produto_sku")
 );
 
 CREATE TABLE "user" (
-"id" BIGSERIAL PRIMARY KEY,
+"id" varchar PRIMARY KEY,
 "nome" varchar,
 "telefone" varchar
 );
 
 CREATE TABLE "pedido" (
 "id" BIGSERIAL PRIMARY KEY,
-"cliente_id" BIGSERIAL,
+"cliente_id" varchar,
 "data_criacao" timestamp,
 "valor_total" numeric,
 "status" varchar,
@@ -92,7 +92,7 @@ CREATE TABLE "admin" (
 CREATE TABLE "avaliacao" (
 "id" BIGSERIAL PRIMARY KEY,
 "pedido_id" int,
-"cliente_id" BIGSERIAL,
+"cliente_id" varchar,
 "nota" int,
 "descricao" text,
 "nome_exibicao" varchar
@@ -126,10 +126,10 @@ INSERT INTO "unidade" ("nome", "base_preco_compra") VALUES
 ('UN', 1.00),
 ('L', 1.00);
 
-INSERT INTO "user" ("nome", "telefone") VALUES
-('Alice Smith', '987654321'),
-('Bob Johnson', '555123456'),
-('Carlos Oliveira', '11998765432');
+INSERT INTO "user" ("id","nome", "telefone") VALUES
+('1','Alice Smith', '987654321'),
+('2','Bob Johnson', '555123456'),
+('3','Carlos Oliveira', '11998765432');
 
 INSERT INTO "admin" ("username", "email", "password", "role") VALUES
 ('admin_master', 'admin@email.com', '$2a$10$CKonyZomgg/CVkYBy.Ex9.stAr8SBerpSE8igTBlk5I..YRniz4ta', 'ROLE_OWNER');

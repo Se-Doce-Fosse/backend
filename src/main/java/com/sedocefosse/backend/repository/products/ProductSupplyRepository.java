@@ -21,4 +21,7 @@ public interface ProductSupplyRepository extends JpaRepository<ProductSupply, Lo
             nativeQuery = true
     )
     void deleteByProductSkuAndSupplyId(@Param("sku") String productSku, @Param("id") Long supplyId);
+
+    void deleteByProductSku(String productSku);
+    List<ProductSupply> findAllByProductSku(String productSku);
 }

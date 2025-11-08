@@ -22,7 +22,7 @@ public class Comment {
     private Long pedidoId;
 
     @Column(name = "cliente_id", nullable = false)
-    private Long clienteId;
+    private String clienteId;
 
     @Column(name = "nota", nullable = false)
     private int nota;
