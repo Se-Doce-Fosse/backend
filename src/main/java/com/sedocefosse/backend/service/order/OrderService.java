@@ -1,4 +1,4 @@
-package com.sedocefosse.backend.service;
+package com.sedocefosse.backend.service.order;
 
 import com.sedocefosse.backend.dto.OrderDTO;
 import com.sedocefosse.backend.utils.OrderStatusEnum;

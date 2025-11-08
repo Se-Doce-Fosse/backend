@@ -1,11 +1,12 @@
 package com.sedocefosse.backend.dto;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+import lombok.*;
+
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -18,6 +19,10 @@ public class ProductDTO {
     private String description;
     private Boolean isActive;
     private Integer quantity;
-    private CategoryDTO category;
-    private List<String> allergens;
+    @Builder.Default
+    private CategoryDTO category = null;
+    @Builder.Default
+    private List<String> allergens =  new ArrayList<>();
+    @Builder.Default
+    private List<ProductSupplyDTO> productSupply =  new ArrayList<>();
 }
