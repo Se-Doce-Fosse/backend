@@ -14,4 +14,5 @@ public interface CouponService {
 
     CouponDTO update(Long id, CouponDTO updateDTO);
 
+    CouponDTO findActiveCouponByCode(String codigo);
 }
