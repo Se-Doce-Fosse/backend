@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
@@ -28,6 +29,12 @@ import java.util.Arrays;
 import java.util.List;
 
 @WebMvcTest(ProductController.class)
+@TestPropertySource(properties = {
+    "aws.s3.bucket-name=test-bucket",
+    "aws.s3.region=us-east-1",
+    "aws.access-key-id=test-access-key",
+    "aws.secret-access-key=test-secret-key"
+})
 class ProductControllerTest {
 
     @Autowired
