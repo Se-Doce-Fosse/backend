@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import software.amazon.awssdk.services.s3.S3Client;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -48,6 +49,9 @@ class ProductControllerTest {
 
     @MockBean
     private AdminRepository adminRepository;
+
+    @MockBean
+    private S3Client s3Client;
 
     // @Test
     // void getProductBySku_shouldReturnProduct_whenSkuExists() throws Exception {

@@ -6,6 +6,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import software.amazon.awssdk.services.s3.S3Client;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -29,6 +30,9 @@ class SupplyControllerTest {
 
     @MockBean
     private SupplyService supplyService;
+
+    @MockBean
+    private S3Client s3Client;
 
     // @Test
     // void ShouldFindAllSuppliesReturnOK() throws Exception {

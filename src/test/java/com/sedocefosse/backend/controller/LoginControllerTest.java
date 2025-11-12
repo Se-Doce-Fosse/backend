@@ -12,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import software.amazon.awssdk.services.s3.S3Client;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -42,6 +43,9 @@ class LoginControllerTest {
 
     @MockBean
     private AdminRepository adminRepository;
+
+    @MockBean
+    private S3Client s3Client;
 
     @Test
     void login_shouldReturnExistingCustomer_orCreateAndReturn() throws Exception {

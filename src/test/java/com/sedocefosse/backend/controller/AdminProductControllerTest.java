@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import software.amazon.awssdk.services.s3.S3Client;
 
 import java.math.BigDecimal;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -53,6 +54,9 @@ class AdminProductControllerTest {
 
     @MockBean
     private S3Service s3Service;
+
+    @MockBean
+    private S3Client s3Client;
 
     @Autowired
     private ObjectMapper objectMapper;
