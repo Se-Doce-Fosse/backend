@@ -1,4 +1,4 @@
-package com.sedocefosse.backend.service.shoppingCart.mapper;
+package com.sedocefosse.backend.service.mapper;
 
 import com.sedocefosse.backend.dto.shoppingCart.ShoppingCartDTO;
 import com.sedocefosse.backend.model.shoppingCart.ShoppingCartEntity;

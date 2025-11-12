@@ -4,14 +4,15 @@ import java.util.List;
 import java.util.Optional;
 
 import com.sedocefosse.backend.dto.CategoryDTO;
+import com.sedocefosse.backend.dto.ProductDTO;
 import com.sedocefosse.backend.dto.ProductDetailsDTO;
 import com.sedocefosse.backend.model.Product;
 
 public interface ProductService {
 
-    ProductDetailsDTO create(Product product);
+    ProductDTO create(ProductDTO product);
 
-    Optional<Product> findProductById(String sku);
+    Optional<ProductDTO> findProductBySku(String sku);
 
     Optional<ProductDetailsDTO> findProductDetailsBySku(String sku); 
 
@@ -21,5 +22,7 @@ public interface ProductService {
 
     Product toggleStatus(String id);
     
-    Product updateProduct(String sku, Product productDetails);
+    ProductDTO updateProduct(String sku, ProductDTO product);
+
+    List<ProductDTO> getAllProducts();
 }

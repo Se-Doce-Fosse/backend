@@ -13,18 +13,18 @@ import java.util.List;
 @Data
 @Entity
 @Builder
-@Table(name = "Pedido")
+@Table(name = "pedido")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false, unique = true)
     private Long orderId;
 
     @Column(name = "cliente_id", nullable = false)
-    private Integer clientId;
+    private String clientId;
 
     @Column(name = "data_criacao", nullable = false)
     private LocalDateTime orderDate;
@@ -37,7 +37,7 @@ public class Order {
     private OrderStatusEnum orderStatus;
 
     @ElementCollection
-    @CollectionTable(name = "pedido_produto", joinColumns = @JoinColumn(name = "pedido_id"))
+    @CollectionTable(name = "pedido_item", joinColumns = @JoinColumn(name = "pedido_id"))
     @Column(name = "produto_sku", nullable = false)
     @Builder.Default
     private List<String> products = new ArrayList<>();

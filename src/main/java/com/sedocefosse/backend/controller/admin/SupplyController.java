@@ -1,8 +1,6 @@
 package com.sedocefosse.backend.controller.admin;
 
-import com.sedocefosse.backend.dto.SupplyResponseDTO;
-import com.sedocefosse.backend.dto.SupplyUpdateDTO;
-import com.sedocefosse.backend.model.Supply;
+import com.sedocefosse.backend.dto.SupplyDTO;
 import com.sedocefosse.backend.service.products.SupplyService;
 
 import java.util.List;
@@ -22,16 +20,15 @@ public class SupplyController {
         this.supplyService = supplyService;
     }
 
-
     @GetMapping
-    public ResponseEntity<List<SupplyResponseDTO>> getAllSupplies() {
-        List<SupplyResponseDTO> supplies = supplyService.getAllSupplies();
+    public ResponseEntity<List<SupplyDTO>> getAllSupplies() {
+        List<SupplyDTO> supplies = supplyService.getAllSupplies();
         return ResponseEntity.ok(supplies);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SupplyResponseDTO> update(@PathVariable Long id, @RequestBody SupplyUpdateDTO updateDTO) {
-        SupplyResponseDTO updatedSupply = supplyService.update(id, updateDTO);
+    public ResponseEntity<SupplyDTO> update(@PathVariable Long id, @RequestBody SupplyDTO updateDTO) {
+        SupplyDTO updatedSupply = supplyService.update(id, updateDTO);
         return ResponseEntity.ok(updatedSupply);
     }
 
@@ -42,8 +39,8 @@ public class SupplyController {
     }
 
     @PostMapping
-    public ResponseEntity<SupplyResponseDTO> createSupply (@RequestBody Supply supply){
-        SupplyResponseDTO supplyCreated = supplyService.create(supply);
+    public ResponseEntity<SupplyDTO> createSupply (@RequestBody SupplyDTO supply){
+        SupplyDTO supplyCreated = supplyService.create(supply);
         return new ResponseEntity<>(supplyCreated, HttpStatus.CREATED);
     }
 
