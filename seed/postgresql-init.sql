@@ -169,6 +169,11 @@ INSERT INTO "historico_compra" ("id_insumo", "id_unidade", "quantidade", "peco_u
 (1, 1, 25, 4.20),
 (5, 1, 5, 42.50);
 
+INSERT INTO "pedido" ("cliente_id", "data_criacao", "valor_total", "status", "cupom_id") VALUES
+('1', '2025-09-26 14:00:00', 13.00, 'ENTREGUE', 2),
+('1', '2025-09-27 18:10:00', 45.00, 'PREPARANDO', 3),
+('2', NOW(), 22.00, 'ACEITO', NULL);
+
 INSERT INTO "pedido_item" ("pedido_id", "produto_sku", "quantidade", "valor_unitario") VALUES
 (1, 'CK001', 4, 4.50),
 (2, 'BL002', 1, 65.00),

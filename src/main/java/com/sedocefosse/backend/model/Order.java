@@ -19,7 +19,12 @@ import java.util.List;
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(
+        name = "pedido_id_seq_gen",
+        sequenceName = "pedido_id_seq",
+        allocationSize = 1
+    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pedido_id_seq_gen")
     @Column(name = "id", nullable = false, unique = true)
     private Long orderId;
 
