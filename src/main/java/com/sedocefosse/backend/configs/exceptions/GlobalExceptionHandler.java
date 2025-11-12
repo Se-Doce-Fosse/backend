@@ -23,6 +23,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleResourceInUse(ResourceInUseException ex, WebRequest request) {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, "Resource In Use", ex.getMessage(), request);
     }
+
+    @ExceptionHandler(FileUploadException.class)
+    public ResponseEntity<Map<String, Object>> handleFileUploadException(
+            FileUploadException ex, WebRequest request) {
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, "File Upload Error", ex.getMessage(), request);
+    }
     
     private ResponseEntity<Map<String, Object>> buildErrorResponse(HttpStatus status, String error, String message, WebRequest request) {
         Map<String, Object> response = new HashMap<>();
