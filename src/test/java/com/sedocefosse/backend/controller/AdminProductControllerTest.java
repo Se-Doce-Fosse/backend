@@ -6,13 +6,16 @@ import com.sedocefosse.backend.controller.admin.AdminProductController;
 import com.sedocefosse.backend.model.Category;
 import com.sedocefosse.backend.model.Product;
 import com.sedocefosse.backend.repository.admin.AdminRepository;
+import com.sedocefosse.backend.service.aws.S3Service;
 import com.sedocefosse.backend.service.products.ProductService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import software.amazon.awssdk.services.s3.S3Client;
 
 import java.math.BigDecimal;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -29,6 +32,12 @@ import com.sedocefosse.backend.dto.ProductDetailsDTO;
 
 
 @WebMvcTest(AdminProductController.class)
+@TestPropertySource(properties = {
+    "aws.s3.bucket-name=test-bucket",
+    "aws.s3.region=us-east-1",
+    "aws.access-key-id=test-access-key",
+    "aws.secret-access-key=test-secret-key"
+})
 class AdminProductControllerTest {
 
     @Autowired
@@ -42,6 +51,12 @@ class AdminProductControllerTest {
 
     @MockBean
     private AdminRepository adminRepository;
+
+    @MockBean
+    private S3Service s3Service;
+
+    @MockBean
+    private S3Client s3Client;
 
     @Autowired
     private ObjectMapper objectMapper;

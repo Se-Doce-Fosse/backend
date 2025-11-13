@@ -100,7 +100,6 @@ application-local.properties
 application-local.yml
 application-dev.properties
 application-dev.yml
-application-test.properties
 application-test.yml
 
 ### Database files ###

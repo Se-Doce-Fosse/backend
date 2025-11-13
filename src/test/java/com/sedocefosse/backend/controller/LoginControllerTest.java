@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import software.amazon.awssdk.services.s3.S3Client;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -19,6 +21,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(LoginController.class)
+@TestPropertySource(properties = {
+    "aws.s3.bucket-name=test-bucket",
+    "aws.s3.region=us-east-1",
+    "aws.access-key-id=test-access-key",
+    "aws.secret-access-key=test-secret-key"
+})
 class LoginControllerTest {
 
     @Autowired
@@ -35,6 +43,9 @@ class LoginControllerTest {
 
     @MockBean
     private AdminRepository adminRepository;
+
+    @MockBean
+    private S3Client s3Client;
 
     @Test
     void login_shouldReturnExistingCustomer_orCreateAndReturn() throws Exception {
