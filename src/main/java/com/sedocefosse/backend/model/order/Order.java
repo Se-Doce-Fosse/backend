@@ -36,9 +36,7 @@ public class Order {
     @Column(name = "status", nullable = false, length = 20)
     private OrderStatusEnum orderStatus;
 
-    @ElementCollection
-    @CollectionTable(name = "pedido_item", joinColumns = @JoinColumn(name = "pedido_id"))
-    @Column(name = "produto_sku", nullable = false)
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<OrderItem> products = new ArrayList<>();
 
