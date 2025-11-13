@@ -8,7 +8,6 @@ DROP TABLE IF EXISTS "produto_ingrediente" CASCADE;
 DROP TABLE IF EXISTS "produto" CASCADE;
 DROP TABLE IF EXISTS "estoque_insumos" CASCADE;
 DROP TABLE IF EXISTS "unidade" CASCADE;
-DROP TABLE IF EXISTS "user" CASCADE;
 drop table if exists "admin" cascade;
 
 CREATE TABLE "unidade" (
@@ -59,12 +58,6 @@ CREATE TABLE "cupom_produto" (
 PRIMARY KEY ("cupom_id", "produto_sku")
 );
 
-CREATE TABLE "user" (
-"id" varchar PRIMARY KEY,
-"nome" varchar,
-"telefone" varchar
-);
-
 CREATE TABLE "pedido" (
 "id" BIGSERIAL PRIMARY KEY,
 "cliente_id" varchar,
@@ -113,10 +106,8 @@ ALTER TABLE "produto_ingrediente" ADD FOREIGN KEY ("ingrediente_id") REFERENCES 
 ALTER TABLE "cupom_produto" ADD FOREIGN KEY ("cupom_id") REFERENCES "cupom" ("id");
 ALTER TABLE "cupom_produto" ADD FOREIGN KEY ("produto_sku") REFERENCES "produto" ("sku");
 ALTER TABLE "pedido" ADD FOREIGN KEY ("cupom_id") REFERENCES "cupom" ("id");
-ALTER TABLE "pedido" ADD FOREIGN KEY ("cliente_id") REFERENCES "user" ("id");
 ALTER TABLE "pedido_item" ADD FOREIGN KEY ("pedido_id") REFERENCES "pedido" ("id");
 ALTER TABLE "pedido_item" ADD FOREIGN KEY ("produto_sku") REFERENCES "produto" ("sku");
-ALTER TABLE "avaliacao" ADD FOREIGN KEY ("cliente_id") REFERENCES "user" ("id");
 ALTER TABLE "avaliacao" ADD FOREIGN KEY ("pedido_id") REFERENCES "pedido" ("id");
 ALTER TABLE "historico_compra" ADD FOREIGN KEY ("id_insumo") REFERENCES "estoque_insumos" ("id");
 ALTER TABLE "historico_compra" ADD FOREIGN KEY ("id_unidade") REFERENCES "unidade" ("id");
@@ -126,11 +117,6 @@ INSERT INTO "unidade" ("nome", "base_preco_compra") VALUES
 ('KG', 1000.00),
 ('UN', 1.00),
 ('L', 1.00);
-
-INSERT INTO "user" ("id","nome", "telefone") VALUES
-('1','Alice Smith', '987654321'),
-('2','Bob Johnson', '555123456'),
-('3','Carlos Oliveira', '11998765432');
 
 INSERT INTO "admin" ("username", "email", "password", "role") VALUES
 ('admin_master', 'admin@email.com', '$2a$10$CKonyZomgg/CVkYBy.Ex9.stAr8SBerpSE8igTBlk5I..YRniz4ta', 'ROLE_OWNER');
