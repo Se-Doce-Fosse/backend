@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import com.sedocefosse.backend.configs.exceptions.ResourceNotFoundException;
+import com.sedocefosse.backend.service.aws.S3Service;
 import com.sedocefosse.backend.dto.CategoryDTO;
 import com.sedocefosse.backend.dto.ProductDTO;
 import com.sedocefosse.backend.dto.ProductDetailsDTO;
@@ -33,11 +34,22 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductSupplyService productSupplyService;
     private final OrderRepository orderRepository;
+    private final S3Service s3Service;
 
     @Override
     @Transactional
     public ProductDTO create(ProductDTO product) {        
         product.setSku(UUID.randomUUID().toString());
+
+        String imageUrl = product.getImageSrc();
+        if (imageUrl != null && isBase64Image(imageUrl)) {
+            try {
+                imageUrl = s3Service.uploadImageFromBase64(imageUrl, "produtos");
+                product.setImageSrc(imageUrl);
+            } catch (Exception e) {
+                System.err.println("Erro ao fazer upload da imagem para S3: " + e.getMessage());
+            }
+        }
 
         Product newProduct = new Product();
         newProduct.setSku(product.getSku());
@@ -45,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
         newProduct.setDescricao(product.getDescription());
         newProduct.setValor(product.getPrice());
         newProduct.setQuantidade(product.getQuantity());
-        newProduct.setImagemUrl(product.getImageSrc());
+        newProduct.setImagemUrl(imageUrl);
         newProduct.setAtivo(product.getIsActive());
 
         Product savedProduct = productRepository.save(newProduct);
@@ -219,7 +231,27 @@ public class ProductServiceImpl implements ProductService {
             product.setValor(productDto.getPrice().setScale(2, RoundingMode.HALF_UP));
         }
         if (productDto.getImageSrc() != null) {
-            product.setImagemUrl(productDto.getImageSrc());
+            String imageUrl = productDto.getImageSrc();
+            
+            if (isBase64Image(imageUrl)) {
+                try {
+                    // Deletar imagem antiga
+                    if (product.getImagemUrl() != null && product.getImagemUrl().contains("amazonaws.com")) {
+                        try {
+                            s3Service.deleteImage(product.getImagemUrl());
+                        } catch (Exception e) {
+                            System.err.println("Erro ao deletar imagem antiga: " + e.getMessage());
+                        }
+                    }
+                    
+                    imageUrl = s3Service.uploadImageFromBase64(imageUrl, "produtos/" + sku);
+                    productDto.setImageSrc(imageUrl);
+                } catch (Exception e) {
+                    System.err.println("Erro ao fazer upload da imagem para S3: " + e.getMessage());
+                }
+            }
+            
+            product.setImagemUrl(imageUrl);
         }
         if (productDto.getIsActive() != null) {
             product.setAtivo(productDto.getIsActive());
@@ -282,14 +314,21 @@ public class ProductServiceImpl implements ProductService {
         newCategory.setProdutos(produtos);
         categoryRepository.save(newCategory);
     }
+
+    private boolean isBase64Image(String imageSrc) {
+        if (imageSrc == null || imageSrc.isEmpty()) {
+            return false;
+        }
+        
+        if (imageSrc.startsWith("data:image/")) {
+            return true;
+        }
+        
+        if (imageSrc.startsWith("http://") || imageSrc.startsWith("https://")) {
+            return false;
+        }
+        
+        return false;
+    }
 }
 
-//Teste manual a ser feito no Postman
-//POST http://localhost:8080/api/products
-//Body (JSON):
-// {
-//     "name": "Produto Exemplo",
-//     "description": "Descrição do Produto Exemplo",
-//     "price": 19.99,
-//     "imageUrl": "http://exemplo.com/imagem.jpg",
-//     "restricaoAlimentar": "Sem glúten"

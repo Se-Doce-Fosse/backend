@@ -66,6 +66,7 @@ public class OrderServiceImpl {
         log.info("Pedido {} criado com sucesso", order.getOrderId());
 
         return OrderDTO.builder()
+                .orderId(order.getOrderId())
                 .clientId(order.getClientId())
                 .orderDate(order.getOrderDate())
                 .totalPrice(order.getTotalPrice())
