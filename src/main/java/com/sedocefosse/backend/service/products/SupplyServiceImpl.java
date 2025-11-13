@@ -13,8 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import com.sedocefosse.backend.configs.exceptions.ResourceNotFoundException;
-import com.sedocefosse.backend.dto.SupplyResponseDTO;
-import com.sedocefosse.backend.dto.SupplyUpdateDTO;
+import com.sedocefosse.backend.dto.SupplyDTO;
 
 @Service 
 public class SupplyServiceImpl implements SupplyService {
@@ -30,31 +29,26 @@ public class SupplyServiceImpl implements SupplyService {
     }
 
     @Override
-    @Transactional
-    public SupplyResponseDTO create(Supply supply) {
-        // Busca a unidade pelo ID se ela foi enviada
-        if (supply.getUnidade() != null && supply.getUnidade().getId() != null) {
-            Unit unit = unitRepository.findById(supply.getUnidade().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Unidade não encontrada com o id: " + supply.getUnidade().getId()));
-            supply.setUnidade(unit);
+    public SupplyDTO create(SupplyDTO supply) {
+
+        Supply newSupply = new Supply();
+
+         if (supply.getUnityId() != null) {
+            Unit unit = unitRepository.findById(supply.getUnityId())
+                .orElseThrow(() -> new ResourceNotFoundException("Unidade não encontrada com o id: " + supply.getUnityId()));
+            newSupply.setUnidade(unit);
         } else {
             throw new ResourceNotFoundException("Unidade é obrigatória para criar um supply");
         }
-        
-        Supply savedSupply = supplyRepository.save(supply);
-        
-        // Registra log de entrada quando cria um novo supply
-        supplyLogService.createLog(
-            savedSupply.getId(),
-            savedSupply.getNome(),
-            (int) savedSupply.getQuantidade(),
-            savedSupply.getPreco_compra(),
-            "entrada"
-        );
-        
-        return toResponseDTO(savedSupply);
-    }
 
+        newSupply.setNome(supply.getName());
+        newSupply.setQuantidade(supply.getQuantity());
+        newSupply.setPreco_compra(supply.getPurchasePrice());
+        newSupply.setPonto_reposicao(supply.getReorderPoint());
+        newSupply.setEmbalagem(supply.getIsPackaging());
+
+        return toSupplyDTO(supplyRepository.save(newSupply));
+    }
 
     @Override
     public Optional<Supply> findSupplyById(Long id) {
@@ -62,28 +56,29 @@ public class SupplyServiceImpl implements SupplyService {
     }
     
     @Override
-    public List<SupplyResponseDTO> getAllSupplies() {
-        List<SupplyResponseDTO> supplies = supplyRepository.findAll().stream()
-            .map(this::toResponseDTO)
+    public List<SupplyDTO> getAllSupplies() {
+        List<SupplyDTO> supplies = supplyRepository.findAll().stream()
+            .map(this::toSupplyDTO)
             .collect(Collectors.toList());
         return supplies;
     }
 
-    public SupplyResponseDTO toResponseDTO(Supply supply) {
-        SupplyResponseDTO dto = new SupplyResponseDTO();
+    public SupplyDTO toSupplyDTO(Supply supply) {
+        SupplyDTO dto = new SupplyDTO();
         dto.setId(supply.getId());
-        dto.setNome(supply.getNome());
-        dto.setUnidadeId(supply.getUnidade().getId());
-        dto.setUnidadeNome(supply.getUnidade().getNome());
-        dto.setQuantidade(supply.getQuantidade());
-        dto.setPrecoCompra(supply.getPreco_compra());
-        dto.setPontoReposicao(supply.getPonto_reposicao());
+        dto.setName(supply.getNome());
+        dto.setUnityId(supply.getUnidade().getId());
+        dto.setUnityName(supply.getUnidade().getNome());
+        dto.setQuantity(supply.getQuantidade());
+        dto.setPurchasePrice(supply.getPreco_compra());
+        dto.setReorderPoint(supply.getPonto_reposicao());
+        dto.setIsPackaging(supply.getEmbalagem());
         return dto;
     }
 
     @Override
     @Transactional 
-    public SupplyResponseDTO update(Long id, SupplyUpdateDTO updateDTO) {
+    public SupplyDTO update(Long id, SupplyDTO updateDTO) {
         Supply existingSupply = supplyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Insumo não encontrado com o id: " + id));
 
@@ -92,11 +87,12 @@ public class SupplyServiceImpl implements SupplyService {
         double tolerancia = 0.0001; // Tolerância para comparação de double
 
         existingSupply.setNome(updateDTO.getName());
-        existingSupply.setQuantidade(updateDTO.getQuantidade());
-        existingSupply.setPreco_compra(updateDTO.getPrecoCompra());
-        existingSupply.setPonto_reposicao(updateDTO.getPontoReposicao());
+        existingSupply.setQuantidade(updateDTO.getQuantity());
+        existingSupply.setPreco_compra(updateDTO.getPurchasePrice());
+        existingSupply.setPonto_reposicao(updateDTO.getReorderPoint());
+        existingSupply.setEmbalagem(updateDTO.getIsPackaging());
 
-        Unit newUnit = unitRepository.findById(updateDTO.getUnidadeId())
+        Unit newUnit = unitRepository.findById(updateDTO.getUnityId())
             .orElseThrow(() -> new ResourceNotFoundException("Unidade não encontrado com o id: " + id));
         existingSupply.setUnidade(newUnit);
         
@@ -120,7 +116,7 @@ public class SupplyServiceImpl implements SupplyService {
             );
         }
 
-        return toResponseDTO(savedSupply); 
+        return toSupplyDTO(savedSupply); 
     }
 
     @Override

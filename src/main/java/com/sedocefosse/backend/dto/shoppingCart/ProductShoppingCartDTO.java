@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductShoppingCartDTO {
-    private String productId;
+    private String SKU;
     private Integer amount;
     private BigDecimal price;
     private String imageUrl;

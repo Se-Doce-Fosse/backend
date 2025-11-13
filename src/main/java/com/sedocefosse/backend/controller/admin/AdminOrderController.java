@@ -1,7 +1,8 @@
 package com.sedocefosse.backend.controller.admin;
 
 import com.sedocefosse.backend.dto.OrderDTO;
-import com.sedocefosse.backend.service.OrderService;
+import com.sedocefosse.backend.service.order.OrderService;
+import com.sedocefosse.backend.service.order.OrderServiceImpl;
 import com.sedocefosse.backend.utils.OrderStatusEnum;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ import java.util.List;
 @RequestMapping("/admin/order")
 public class AdminOrderController {
 
-    private final OrderService orderService;
+    private final OrderServiceImpl orderService;
 
     @GetMapping("/{status}")
     public ResponseEntity<List<OrderDTO>> getOrdersByStatus(@PathVariable String status) {

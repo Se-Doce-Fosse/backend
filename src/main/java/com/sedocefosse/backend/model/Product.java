@@ -34,10 +34,6 @@ public class Product {
     @Column(name = "ativo")
     private Boolean ativo;
 
-    @ManyToOne
-    @JoinColumn(name = "categoria_id")
-    private Category categoria;
-
     @Column(name = "quantidade")
     private Integer quantidade;
 

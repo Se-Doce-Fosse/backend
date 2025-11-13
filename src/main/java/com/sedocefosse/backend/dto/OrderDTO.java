@@ -20,14 +20,15 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderDTO {
 
+    private Long orderId;
     private String clientId;
     @Builder.Default
     private LocalDateTime orderDate = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
     private BigDecimal totalPrice;
     private OrderStatusEnum orderStatus;
     @Builder.Default
-    private List<String> products = new ArrayList<>();
+    private List<OrderItemDTO> items = new ArrayList<>();
     private Integer cupomId;
     @Builder.Default
-    private List<String> outOfStock = new ArrayList<>();
+    private List<OrderItemDTO> outOfStock = new ArrayList<>();
 }

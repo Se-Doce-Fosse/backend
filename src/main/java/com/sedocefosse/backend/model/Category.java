@@ -2,22 +2,27 @@ package com.sedocefosse.backend.model;
 
 import jakarta.persistence.*;
 import java.util.List;
+
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "categoria")
+@Document(collection = "categorias")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(name = "nome", nullable = false)
     private String nome;
 
-    @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY)
-    private List<Product> produtos;
+    private String descricao;
+
+    private List<String> produtos;
 }

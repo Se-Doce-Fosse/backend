@@ -1,14 +1,17 @@
 package com.sedocefosse.backend.dto;
+
 import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class SupplyResponseDTO {
+public class SupplyDTO {
     private Long id;
     private String name;
     private Long unityId;
@@ -18,4 +21,3 @@ public class SupplyResponseDTO {
     private double reorderPoint;
     private Boolean isPackaging;
 }
-

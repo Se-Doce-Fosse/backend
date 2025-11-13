@@ -36,4 +36,5 @@ public class Supply {
     private double quantidade;
     private BigDecimal preco_compra;
     private double ponto_reposicao;
+    private Boolean embalagem;
 }

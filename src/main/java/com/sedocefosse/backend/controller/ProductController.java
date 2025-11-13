@@ -1,6 +1,7 @@
 package com.sedocefosse.backend.controller;
 
 import com.sedocefosse.backend.dto.CategoryDTO;
+import com.sedocefosse.backend.dto.ProductDTO;
 import com.sedocefosse.backend.dto.ProductDetailsDTO;
 import com.sedocefosse.backend.dto.ProductsResponseDTO;
 import com.sedocefosse.backend.service.products.ProductService;
@@ -34,7 +35,6 @@ public class ProductController {
     @GetMapping("/{sku}")
     public ResponseEntity<ProductDetailsDTO> getProductBySku(@PathVariable String sku) {
         Optional<ProductDetailsDTO> productDto = productService.findProductDetailsBySku(sku);
-
         return productDto.map(ResponseEntity::ok)
                         .orElseGet(() -> ResponseEntity.notFound().build());
     }
