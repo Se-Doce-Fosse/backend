@@ -1,6 +1,7 @@
 package com.sedocefosse.backend.service.products;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,7 +43,7 @@ public class ProductServiceImpl implements ProductService {
         newProduct.setSku(product.getSku());
         newProduct.setNome(product.getName());
         newProduct.setDescricao(product.getDescription());
-        newProduct.setValor(new BigDecimal(product.getPrice()));
+        newProduct.setValor(product.getPrice());
         newProduct.setQuantidade(product.getQuantity());
         newProduct.setImagemUrl(product.getImageSrc());
         newProduct.setAtivo(product.getIsActive());
@@ -81,7 +82,8 @@ public class ProductServiceImpl implements ProductService {
         }
 
         ProductDTO dto = this.mapToProductDTO(product.get());
-        Category category = categoryRepository.findByProdutos(product.get().getSku());
+        Category category = Optional.ofNullable(categoryRepository.findByProdutos(product.get().getSku()))
+                .orElse(new Category());
         dto.setCategory(new CategoryDTO(category.getId(), category.getNome(), null));
         return Optional.of(dto);
     }
@@ -89,7 +91,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void deleteProductById(String sku) {
-        boolean referenced = orderRepository.existsByProductsContains(sku);
+        boolean referenced = orderRepository.existsSkuInAnyOrder(sku);
         System.out.println("Produto referenciado em pedidos: " + referenced);
         if (referenced) {
             throw new ResourceInUseException("Não é possível deletar o produto. Existem pedidos referenciando o SKU: " + sku);
@@ -138,7 +140,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private ProductDTO mapToProductDTO(Product product) {
-        String valorFormatado = "R$ " + product.getValor().toString().replace('.', ',');
+        BigDecimal valorFormatado = product.getValor().setScale(2, RoundingMode.HALF_UP);
 
         return ProductDTO.builder()
                 .sku(product.getSku())
@@ -214,7 +216,7 @@ public class ProductServiceImpl implements ProductService {
             product.setDescricao(productDto.getDescription());
         }
         if (productDto.getPrice() != null) {
-            product.setValor(new BigDecimal(productDto.getPrice().replace("R$ ", "").replace(",", ".")));
+            product.setValor(productDto.getPrice().setScale(2, RoundingMode.HALF_UP));
         }
         if (productDto.getImageSrc() != null) {
             product.setImagemUrl(productDto.getImageSrc());

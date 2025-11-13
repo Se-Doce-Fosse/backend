@@ -1,4 +1,4 @@
-package com.sedocefosse.backend.model;
+package com.sedocefosse.backend.model.order;
 
 import com.sedocefosse.backend.utils.OrderStatusEnum;
 import jakarta.persistence.*;
@@ -19,7 +19,7 @@ import java.util.List;
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
     private Long orderId;
 
@@ -40,7 +40,7 @@ public class Order {
     @CollectionTable(name = "pedido_item", joinColumns = @JoinColumn(name = "pedido_id"))
     @Column(name = "produto_sku", nullable = false)
     @Builder.Default
-    private List<String> products = new ArrayList<>();
+    private List<OrderItem> products = new ArrayList<>();
 
     @Column(name = "cupom_id")
     private Integer cupomId;

@@ -20,11 +20,31 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ResourceInUseException.class)
-    public ResponseEntity<Map<String, Object>> handleResourceInUse(ResourceInUseException ex, WebRequest request) {
+    public ResponseEntity<Map<String, Object>> handleResourceInUse(
+            ResourceInUseException ex, WebRequest request) {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, "Resource In Use", ex.getMessage(), request);
     }
-    
-    private ResponseEntity<Map<String, Object>> buildErrorResponse(HttpStatus status, String error, String message, WebRequest request) {
+
+    @ExceptionHandler(ProductException.class)
+    public ResponseEntity<Map<String, Object>> handleProductException(
+            ProductException ex, WebRequest request) {
+        return buildErrorResponse(HttpStatus.CONFLICT, "Produto fora de estoque", ex.getMessage(), request);
+    }
+
+    @ExceptionHandler(ShoppingCartException.class)
+    public ResponseEntity<Map<String, Object>> handleShoppingCartException(
+            ShoppingCartException ex, WebRequest request) {
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Erro no carrinho de compras", ex.getMessage(), request);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, Object>> handleGenericException(
+            Exception ex, WebRequest request) {
+        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Erro interno do servidor", ex.getMessage(), request);
+    }
+
+    private ResponseEntity<Map<String, Object>> buildErrorResponse(
+            HttpStatus status, String error, String message, WebRequest request) {
         Map<String, Object> response = new HashMap<>();
         response.put("timestamp", LocalDateTime.now());
         response.put("status", status.value());
