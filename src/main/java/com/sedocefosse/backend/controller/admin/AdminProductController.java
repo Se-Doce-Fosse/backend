@@ -6,6 +6,7 @@ import com.sedocefosse.backend.model.Product;
 import com.sedocefosse.backend.service.aws.S3Service;
 import com.sedocefosse.backend.service.products.ProductService;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,7 +61,7 @@ public class AdminProductController {
         ProductDTO.ProductDTOBuilder builder = ProductDTO.builder()
                 .name(name)
                 .description(description)
-                .price(price)
+                .price(price != null ? new BigDecimal(price) : null)
                 .quantity(quantity)
                 .isActive(isActive);
         
@@ -111,7 +112,7 @@ public class AdminProductController {
         ProductDTO.ProductDTOBuilder builder = ProductDTO.builder();
         if (name != null) builder.name(name);
         if (description != null) builder.description(description);
-        if (price != null) builder.price(price);
+        if (price != null) builder.price(new BigDecimal(price));
         if (quantity != null) builder.quantity(quantity);
         if (isActive != null) builder.isActive(isActive);
         

@@ -16,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ShoppingCartDTO {
     private String shoppingCartId;
+    private String clientId;
     private String name;
     private String cellphone;
     private String cupom;

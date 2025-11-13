@@ -1,97 +1,134 @@
 package com.sedocefosse.backend.service.order;
 
 import com.sedocefosse.backend.dto.OrderDTO;
+import com.sedocefosse.backend.dto.OrderItemDTO;
 import com.sedocefosse.backend.dto.ProductDTO;
-import com.sedocefosse.backend.model.Order;
+import com.sedocefosse.backend.model.order.Order;
+import com.sedocefosse.backend.model.order.OrderItem;
+import com.sedocefosse.backend.model.order.OrderItemId;
 import com.sedocefosse.backend.repository.order.OrderRepository;
 import com.sedocefosse.backend.service.products.ProductService;
+import com.sedocefosse.backend.utils.OrderStatusEnum;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-public class OrderServiceImpl implements OrderService {
+public class OrderServiceImpl {
 
     private final OrderRepository orderRepository;
     private final ProductService productService;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Transactional
-    public OrderDTO createOrder(OrderDTO order) {
-        UpdateResult result = updateProducts(order.getProducts());
-        order.setOutOfStock(result.outOfStock);
-        Order entity = mapToEntity(order);
-        entity.setProducts(result.fulfilledProducts);
-        Order saved = orderRepository.save(entity);
-        return mapToDTO(saved, result.outOfStock);
-    }
+    public OrderDTO createOrder(OrderDTO orderDTO) {
+        log.info("Criando pedido para cliente {}", orderDTO.getClientId());
 
-    @Override
-    public java.util.List<OrderDTO> findByStatus(com.sedocefosse.backend.utils.OrderStatusEnum status) {
-        java.util.List<Order> orders = orderRepository.findByOrderStatus(status);
-        return orders.stream()
-                .map(o -> mapToDTO(o, java.util.List.of()))
-                .collect(java.util.stream.Collectors.toList());
-    }
-
-    private UpdateResult updateProducts(List<String> requestedProducts) {
-        Map<String, Long> requestedCounts = requestedProducts.stream()
-                .collect(Collectors.groupingBy(p -> p, Collectors.counting()));
-
-        List<String> outOfStock = new ArrayList<>();
-        List<String> fulfilledProducts = new ArrayList<>();
-
-        for (var entry : requestedCounts.entrySet()) {
-            String sku = entry.getKey();
-            long requestedQty = entry.getValue();
-            ProductDTO product = productService.findProductBySku(sku).orElse(null);
-            int available = product == null ? 0 : product.getQuantity();
-            long fulfill = Math.min(available, requestedQty);
-            long missing = requestedQty - fulfill;
-
-            if (fulfill > 0 && Objects.nonNull(product)) {
-                product.setQuantity(available - (int) fulfill);
-                productService.updateProduct(product.getSku(), product);
-                for (int i = 0; i < fulfill; i++) fulfilledProducts.add(sku);
-            }
-            for (int i = 0; i < missing; i++) outOfStock.add(sku);
+        UpdateResult result = updateProducts(orderDTO.getItems());
+        if (!result.outOfStock.isEmpty()) {
+            var skus = result.outOfStock.stream()
+                    .map(OrderItemDTO::getProdutoSku)
+                    .collect(Collectors.toList());
+            throw new RuntimeException("Produtos fora de estoque: " + skus);
         }
 
-        return new UpdateResult(outOfStock, fulfilledProducts);
-    }
-
-    private Order mapToEntity(OrderDTO orderDTO) {
-        return Order.builder()
-                .orderStatus(orderDTO.getOrderStatus())
+        Order order = Order.builder()
+                .clientId(orderDTO.getClientId())
                 .orderDate(orderDTO.getOrderDate())
                 .totalPrice(orderDTO.getTotalPrice())
-                .products(orderDTO.getProducts())
+                .orderStatus(orderDTO.getOrderStatus())
                 .cupomId(orderDTO.getCupomId())
-                .clientId(orderDTO.getClientId())
                 .build();
-    }
+        order = orderRepository.save(order);
 
-    private OrderDTO mapToDTO(Order order, List<String> outOfStock) {
+        for (OrderItemDTO itemDTO : result.fulfilledProducts) {
+            var id = new OrderItemId(order.getOrderId(), itemDTO.getProdutoSku());
+            var item = OrderItem.builder()
+                    .id(id)
+                    .pedido(order)
+                    .quantidade(itemDTO.getQuantidade())
+                    .valorUnitario(itemDTO.getValorUnitario())
+                    .build();
+
+            entityManager.persist(item);
+        }
+
+        log.info("Pedido {} criado com sucesso", order.getOrderId());
+
         return OrderDTO.builder()
                 .orderId(order.getOrderId())
                 .clientId(order.getClientId())
                 .orderDate(order.getOrderDate())
                 .totalPrice(order.getTotalPrice())
                 .orderStatus(order.getOrderStatus())
-                .products(order.getProducts())
                 .cupomId(order.getCupomId())
-                .outOfStock(outOfStock != null ? outOfStock : List.of())
+                .items(result.fulfilledProducts)
+                .build();
+    }
+
+    private UpdateResult updateProducts(List<OrderItemDTO> requestedItems) {
+        List<OrderItemDTO> outOfStock = new java.util.ArrayList<>();
+        List<OrderItemDTO> fulfilled = new java.util.ArrayList<>();
+
+        for (OrderItemDTO item : requestedItems) {
+            String sku = item.getProdutoSku();
+            int requestedQty = item.getQuantidade();
+
+            ProductDTO product = productService.findProductBySku(sku).orElse(null);
+            int available = (product != null && product.getQuantity() != null) ? product.getQuantity() : 0;
+
+            if (product != null && available >= requestedQty) {
+                product.setQuantity(available - requestedQty);
+                productService.updateProduct(product.getSku(), product);
+                fulfilled.add(OrderItemDTO.builder()
+                        .produtoSku(sku)
+                        .quantidade(requestedQty)
+                        .valorUnitario(product.getPrice())
+                        .build());
+            } else {
+                outOfStock.add(OrderItemDTO.builder()
+                        .produtoSku(sku)
+                        .quantidade(requestedQty)
+                        .valorUnitario(product != null ? product.getPrice() : null)
+                        .build());
+            }
+        }
+
+        return new UpdateResult(outOfStock, fulfilled);
+    }
+
+    public List<OrderDTO> findByStatus(OrderStatusEnum status) {
+        return orderRepository.findByOrderStatus(status)
+                .stream()
+                .map(this::toDTO)
+                .toList();
+    }
+
+    private OrderDTO toDTO(Order order) {
+        return OrderDTO.builder()
+                .clientId(order.getClientId())
+                .orderDate(order.getOrderDate())
+                .totalPrice(order.getTotalPrice())
+                .orderStatus(order.getOrderStatus())
+                .cupomId(order.getCupomId())
                 .build();
     }
 
     private static class UpdateResult {
-        final List<String> outOfStock;
-        final List<String> fulfilledProducts;
+        final List<OrderItemDTO> outOfStock;
+        final List<OrderItemDTO> fulfilledProducts;
 
-        UpdateResult(List<String> outOfStock, List<String> fulfilledProducts) {
+        UpdateResult(List<OrderItemDTO> outOfStock, List<OrderItemDTO> fulfilledProducts) {
             this.outOfStock = outOfStock;
             this.fulfilledProducts = fulfilledProducts;
         }

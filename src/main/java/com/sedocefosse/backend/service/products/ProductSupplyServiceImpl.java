@@ -96,7 +96,7 @@ public class ProductSupplyServiceImpl implements ProductSupplyService {
     }
 
     public Product toEntity(ProductDTO productDTO) {
-        BigDecimal price = productDTO.getPrice() != null ? new BigDecimal(productDTO.getPrice()): new BigDecimal(0);
+        BigDecimal price = productDTO.getPrice() != null ? (productDTO.getPrice()): new BigDecimal(0);
         Product product = new Product();
         product.setSku(productDTO.getSku());
         product.setNome(productDTO.getName());

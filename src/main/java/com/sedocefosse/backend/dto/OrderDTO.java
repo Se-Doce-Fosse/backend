@@ -27,8 +27,8 @@ public class OrderDTO {
     private BigDecimal totalPrice;
     private OrderStatusEnum orderStatus;
     @Builder.Default
-    private List<String> products = new ArrayList<>();
+    private List<OrderItemDTO> items = new ArrayList<>();
     private Integer cupomId;
     @Builder.Default
-    private List<String> outOfStock = new ArrayList<>();
+    private List<OrderItemDTO> outOfStock = new ArrayList<>();
 }

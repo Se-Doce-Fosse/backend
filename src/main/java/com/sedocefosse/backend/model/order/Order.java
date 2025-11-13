@@ -1,4 +1,4 @@
-package com.sedocefosse.backend.model;
+package com.sedocefosse.backend.model.order;
 
 import com.sedocefosse.backend.utils.OrderStatusEnum;
 import jakarta.persistence.*;
@@ -19,12 +19,7 @@ import java.util.List;
 public class Order {
 
     @Id
-    @SequenceGenerator(
-        name = "pedido_id_seq_gen",
-        sequenceName = "pedido_id_seq",
-        allocationSize = 1
-    )
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pedido_id_seq_gen")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
     private Long orderId;
 
@@ -41,11 +36,9 @@ public class Order {
     @Column(name = "status", nullable = false, length = 20)
     private OrderStatusEnum orderStatus;
 
-    @ElementCollection
-    @CollectionTable(name = "pedido_item", joinColumns = @JoinColumn(name = "pedido_id"))
-    @Column(name = "produto_sku", nullable = false)
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private List<String> products = new ArrayList<>();
+    private List<OrderItem> products = new ArrayList<>();
 
     @Column(name = "cupom_id")
     private Integer cupomId;
