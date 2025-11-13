@@ -76,6 +76,7 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderDTO mapToDTO(Order order, List<String> outOfStock) {
         return OrderDTO.builder()
+                .orderId(order.getOrderId())
                 .clientId(order.getClientId())
                 .orderDate(order.getOrderDate())
                 .totalPrice(order.getTotalPrice())
