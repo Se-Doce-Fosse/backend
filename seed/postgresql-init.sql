@@ -8,7 +8,8 @@ DROP TABLE IF EXISTS "produto_ingrediente" CASCADE;
 DROP TABLE IF EXISTS "produto" CASCADE;
 DROP TABLE IF EXISTS "estoque_insumos" CASCADE;
 DROP TABLE IF EXISTS "unidade" CASCADE;
-drop table if exists "admin" cascade;
+DROP TABLE IF EXISTS "admin" cascade;
+DROP TABLE IF EXISTS "supply_log" cascade;
 
 CREATE TABLE "unidade" (
 "id" BIGSERIAL PRIMARY KEY,
@@ -68,11 +69,11 @@ CREATE TABLE "pedido" (
 );
 
 CREATE TABLE "pedido_item" (
-"pedido_id" int,
-"produto_sku" varchar,
-"quantidade" int,
-"valor_unitario" numeric,
-PRIMARY KEY ("pedido_id", "produto_sku")
+  "pedido_id" BIGINT,
+  "produto_sku" varchar,
+  "quantidade" int,
+  "valor_unitario" numeric,
+  PRIMARY KEY ("pedido_id", "produto_sku")
 );
 
 CREATE TABLE "admin" (
@@ -85,7 +86,7 @@ CREATE TABLE "admin" (
 
 CREATE TABLE "avaliacao" (
 "id" BIGSERIAL PRIMARY KEY,
-"pedido_id" int,
+"pedido_id" BIGINT,
 "cliente_id" varchar,
 "nota" int,
 "descricao" text,
@@ -100,6 +101,16 @@ CREATE TABLE "historico_compra" (
 "peco_unidade" DOUBLE PRECISION
 );
 
+CREATE TABLE "supply_log" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "id_insumo" int,
+  "nome_insumo" varchar,
+  "quantidade" numeric,
+  "preco_compra" numeric,
+  "status" varchar(10), -- "entrada" ou "saída"
+  "date_time" timestamp
+);
+
 ALTER TABLE "estoque_insumos" ADD FOREIGN KEY ("id_unidade") REFERENCES "unidade" ("id");
 ALTER TABLE "produto_ingrediente" ADD FOREIGN KEY ("produto_sku") REFERENCES "produto" ("sku");
 ALTER TABLE "produto_ingrediente" ADD FOREIGN KEY ("ingrediente_id") REFERENCES "estoque_insumos" ("id");
@@ -111,6 +122,7 @@ ALTER TABLE "pedido_item" ADD FOREIGN KEY ("produto_sku") REFERENCES "produto" (
 ALTER TABLE "avaliacao" ADD FOREIGN KEY ("pedido_id") REFERENCES "pedido" ("id");
 ALTER TABLE "historico_compra" ADD FOREIGN KEY ("id_insumo") REFERENCES "estoque_insumos" ("id");
 ALTER TABLE "historico_compra" ADD FOREIGN KEY ("id_unidade") REFERENCES "unidade" ("id");
+ALTER TABLE "supply_log" ADD FOREIGN KEY ("id_insumo") REFERENCES "estoque_insumos" ("id");
 
 -- inserts iniciais
 INSERT INTO "unidade" ("nome", "base_preco_compra") VALUES
@@ -139,6 +151,11 @@ INSERT INTO "estoque_insumos" ("nome", "id_unidade", "quantidade", "preco_compra
 ('Café em Grãos Moído', 1, 5, 50000, 1000, false),
 ('Embalagem Individual para Cookie', 2, 500, 0.50, 100, true),
 ('Caixa para Bolo Pequeno', 2, 50, 3.00, 10, true);
+
+INSERT INTO "supply_log" ("id_insumo", "nome_insumo", "quantidade", "preco_compra", "status", "date_time") VALUES
+(1, 'Farinha de Trigo', 5000, 4.0, 'entrada', '2025-10-26 14:00:00'),
+(2, 'Açúcar Mascavo', 1000, 8.0, 'saída', '2025-10-28 14:00:00'),
+(3, 'Manteiga Sem Sal', 2000, 37.0, 'entrada', '2025-10-29 14:00:00');
 
 INSERT INTO "produto" ("sku", "nome", "quantidade", "descricao", "valor", "imagem_url", "ativo") VALUES
 ('CK001', 'Cookie Clássico com Gotas de Chocolate',10, 'Massa amanteigada com baunilha e gotas de chocolate meio amargo.', 41.50, 'https://static.ifood-static.com.br/image/upload/t_medium/pratos/96aa4ce9-22d9-4993-8f81-01caf03c2d31/202506161754_8J5A_i.jpg', true),
@@ -181,4 +198,4 @@ INSERT INTO "pedido_item" ("pedido_id", "produto_sku", "quantidade", "valor_unit
 (3, 'CK002', 1, 7.00);
 
 INSERT INTO "avaliacao" ("pedido_id", "cliente_id", "nota", "descricao", "nome_exibicao") VALUES
-(1, '1', 5, 'Os melhores cookies que já comi! Chegou quentinho.', 'João S.');
+(1, 1, 5, 'Os melhores cookies que já comi! Chegou quentinho.', 'João S.');
