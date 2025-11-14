@@ -30,7 +30,7 @@ public class LoginService {
 
         if(passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             String token = this.tokenService.generateToken(user);
-            return new AuthResponse(user.getUsername(), token);
+            return new AuthResponse(user.getUsername(), token, user.getRole().name());
         }
         else throw new LoginException(LOGIN_FAILURE_MSG);
     }
@@ -42,7 +42,7 @@ public class LoginService {
             var newUser = mapToEntity(signupRequest);
             this.repository.save(newUser);
 
-            return new AuthResponse(newUser.getUsername(), "User created");
+            return new AuthResponse(newUser.getUsername(), "User created", newUser.getRole().name());
         }
         else throw new SignupException(SIGNUP_FAILURE_MSG);
     }
