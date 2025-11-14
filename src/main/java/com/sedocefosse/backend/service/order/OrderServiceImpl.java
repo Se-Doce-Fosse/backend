@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -124,6 +125,17 @@ public class OrderServiceImpl {
                 .stream()
                 .map(this::toDTO)
                 .toList();
+    }
+
+    @Transactional
+    public Optional<OrderDTO> updateOrderStatus(Long orderId, OrderStatusEnum newStatus) {
+        return orderRepository.findById(orderId)
+                .map(order -> {
+                    order.setOrderStatus(newStatus);
+                    Order savedOrder = orderRepository.save(order);
+                    log.info("Pedido {} atualizado para status {}", orderId, newStatus);
+                    return toDTO(savedOrder);
+                });
     }
 
     private OrderDTO toDTO(Order order) {
