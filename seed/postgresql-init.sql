@@ -65,7 +65,9 @@ CREATE TABLE "pedido" (
 "data_criacao" timestamp,
 "valor_total" numeric,
 "status" varchar,
-"cupom_id" int
+"cupom_id" int,
+"endereco" varchar,
+"cupom_codigo" varchar
 );
 
 CREATE TABLE "pedido_item" (

@@ -43,6 +43,12 @@ public class Order {
     @Column(name = "cupom_id")
     private Integer cupomId;
 
+    @Column(name = "endereco", length = 255)
+    private String address;
+
+    @Column(name = "cupom_codigo")
+    private String couponCode;
+
     @PrePersist
     void prePersist() {
         if (orderDate == null) {
