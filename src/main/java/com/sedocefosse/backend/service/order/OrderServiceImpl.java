@@ -6,7 +6,9 @@ import com.sedocefosse.backend.dto.ProductDTO;
 import com.sedocefosse.backend.model.order.Order;
 import com.sedocefosse.backend.model.order.OrderItem;
 import com.sedocefosse.backend.model.order.OrderItemId;
+import com.sedocefosse.backend.repository.customer.CustomerRepository;
 import com.sedocefosse.backend.repository.order.OrderRepository;
+import com.sedocefosse.backend.repository.products.CouponRepository;
 import com.sedocefosse.backend.service.products.ProductService;
 import com.sedocefosse.backend.utils.OrderStatusEnum;
 import jakarta.persistence.EntityManager;
@@ -26,6 +28,8 @@ public class OrderServiceImpl {
 
     private final OrderRepository orderRepository;
     private final ProductService productService;
+    private final CustomerRepository customerRepository;
+    private final CouponRepository couponRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -48,6 +52,8 @@ public class OrderServiceImpl {
                 .totalPrice(orderDTO.getTotalPrice())
                 .orderStatus(orderDTO.getOrderStatus())
                 .cupomId(orderDTO.getCupomId())
+                .address(orderDTO.getAddress())
+                .couponCode(orderDTO.getCouponCode())
                 .build();
         order = orderRepository.save(order);
 
@@ -68,10 +74,13 @@ public class OrderServiceImpl {
         return OrderDTO.builder()
                 .orderId(order.getOrderId())
                 .clientId(order.getClientId())
+                .clientName(resolveClientName(order.getClientId()))
+                .address(order.getAddress())
                 .orderDate(order.getOrderDate())
                 .totalPrice(order.getTotalPrice())
                 .orderStatus(order.getOrderStatus())
                 .cupomId(order.getCupomId())
+                .couponCode(resolveCouponCode(order.getCupomId(), order.getCouponCode()))
                 .items(result.fulfilledProducts)
                 .build();
     }
@@ -92,12 +101,14 @@ public class OrderServiceImpl {
                 productService.updateProduct(product.getSku(), product);
                 fulfilled.add(OrderItemDTO.builder()
                         .produtoSku(sku)
+                        .produtoNome(product.getName())
                         .quantidade(requestedQty)
                         .valorUnitario(product.getPrice())
                         .build());
             } else {
                 outOfStock.add(OrderItemDTO.builder()
                         .produtoSku(sku)
+                        .produtoNome(product != null ? product.getName() : null)
                         .quantidade(requestedQty)
                         .valorUnitario(product != null ? product.getPrice() : null)
                         .build());
@@ -107,6 +118,7 @@ public class OrderServiceImpl {
         return new UpdateResult(outOfStock, fulfilled);
     }
 
+    @Transactional(readOnly = true)
     public List<OrderDTO> findByStatus(OrderStatusEnum status) {
         return orderRepository.findByOrderStatus(status)
                 .stream()
@@ -116,12 +128,58 @@ public class OrderServiceImpl {
 
     private OrderDTO toDTO(Order order) {
         return OrderDTO.builder()
+                .orderId(order.getOrderId())
                 .clientId(order.getClientId())
+                .clientName(resolveClientName(order.getClientId()))
+                .address(order.getAddress())
                 .orderDate(order.getOrderDate())
                 .totalPrice(order.getTotalPrice())
                 .orderStatus(order.getOrderStatus())
                 .cupomId(order.getCupomId())
+                .couponCode(resolveCouponCode(order.getCupomId(), order.getCouponCode()))
+                .items(order.getProducts().stream()
+                        .map(this::toItemDTO)
+                        .toList())
                 .build();
+    }
+
+    private OrderItemDTO toItemDTO(OrderItem orderItem) {
+        return OrderItemDTO.builder()
+                .produtoSku(orderItem.getId().getProdutoSku())
+                .produtoNome(resolveProductName(orderItem.getId().getProdutoSku()))
+                .quantidade(orderItem.getQuantidade())
+                .valorUnitario(orderItem.getValorUnitario())
+                .build();
+    }
+
+    private String resolveProductName(String sku) {
+        return productService.findProductBySku(sku)
+                .map(ProductDTO::getName)
+                .orElse(sku);
+    }
+
+    private String resolveClientName(String clientId) {
+        if (clientId == null) {
+            return null;
+        }
+
+        return customerRepository.findById(clientId)
+                .map(customer -> customer.getNome())
+                .orElse(clientId);
+    }
+
+    private String resolveCouponCode(Integer couponId, String fallbackCode) {
+        if (fallbackCode != null && !fallbackCode.isBlank()) {
+            return fallbackCode;
+        }
+
+        if (couponId == null) {
+            return null;
+        }
+
+        return couponRepository.findById(Long.valueOf(couponId))
+                .map(coupon -> coupon.getCodigo())
+                .orElse(null);
     }
 
     private static class UpdateResult {

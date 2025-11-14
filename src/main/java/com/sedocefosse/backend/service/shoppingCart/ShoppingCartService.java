@@ -178,11 +178,12 @@ public class ShoppingCartService {
                 .map(item -> {
                     var product = productService.findProductBySku(item.getSku())
                             .orElseThrow(() -> new ProductException("Produto não encontrado: " + item.getSku()));
-                    return new OrderItemDTO(
-                            product.getSku(),
-                            item.getAmount(),
-                            product.getPrice()
-                    );
+                    return OrderItemDTO.builder()
+                            .produtoSku(product.getSku())
+                            .produtoNome(product.getName())
+                            .quantidade(item.getAmount())
+                            .valorUnitario(product.getPrice())
+                            .build();
                 })
                 .collect(Collectors.toList());
 
@@ -191,6 +192,7 @@ public class ShoppingCartService {
                 .orderDate(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")))
                 .totalPrice(shoppingCart.getTotal())
                 .orderStatus(OrderStatusEnum.ACEITO)
+                .couponCode(shoppingCart.getCupom())
                 .items(orderItems)
                 .cupomId(parseCupom(shoppingCart.getCupom()))
                 .build();

@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class OrderItemDTO {
     private String produtoSku;
+    private String produtoNome;
     private Integer quantidade;
     private BigDecimal valorUnitario;
 }

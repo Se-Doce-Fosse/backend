@@ -22,6 +22,8 @@ public class OrderDTO {
 
     private Long orderId;
     private String clientId;
+    private String clientName;
+    private String address;
     @Builder.Default
     private LocalDateTime orderDate = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
     private BigDecimal totalPrice;
@@ -29,6 +31,7 @@ public class OrderDTO {
     @Builder.Default
     private List<OrderItemDTO> items = new ArrayList<>();
     private Integer cupomId;
+    private String couponCode;
     @Builder.Default
     private List<OrderItemDTO> outOfStock = new ArrayList<>();
 }
