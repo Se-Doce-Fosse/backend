@@ -3,19 +3,18 @@ package com.sedocefosse.backend.service.products;
 import com.sedocefosse.backend.configs.exceptions.InsufficientSupplyException;
 import com.sedocefosse.backend.configs.exceptions.ResourceNotFoundException;
 import com.sedocefosse.backend.dto.ProductDTO;
-import com.sedocefosse.backend.dto.ProductDetailsDTO;
 import com.sedocefosse.backend.dto.ProductSupplyDTO;
 import com.sedocefosse.backend.model.Product;
 import com.sedocefosse.backend.model.ProductSupply;
 import com.sedocefosse.backend.model.Supply;
 import com.sedocefosse.backend.repository.products.ProductSupplyRepository;
 import com.sedocefosse.backend.repository.products.SupplyRepository;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -93,6 +92,21 @@ public class ProductSupplyServiceImpl implements ProductSupplyService {
                 }
             }
         }
+    }
+
+    @Override
+    public List<ProductSupplyDTO> getAllBySku(String productSku) {
+        List<ProductSupply> productSupplyList = productSupplyRepository.findByProductSku(productSku);
+        return toProductSupplyDTO(productSupplyList);
+    }
+
+    private List<ProductSupplyDTO> toProductSupplyDTO(List<ProductSupply> productSupplyList) {
+       return productSupplyList.stream()
+                .map(productSupply -> new ProductSupplyDTO(
+                        productSupply.getSupply().getId(),
+                        productSupply.getQuantidade(), null
+                ))
+                .collect(Collectors.toList());
     }
 
     public Product toEntity(ProductDTO productDTO) {

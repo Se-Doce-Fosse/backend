@@ -121,6 +121,7 @@ public class ProductServiceImpl implements ProductService {
             if (category != null) {
                 dto.setCategory(new CategoryDTO(category.getId(), category.getNome(), null));
             }
+            dto.setProductSupply(productSupplyService.getAllBySku(product.getSku()));
             return dto;
         }).collect(Collectors.toList());
     }

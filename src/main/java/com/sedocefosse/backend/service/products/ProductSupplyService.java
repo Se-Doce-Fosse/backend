@@ -9,4 +9,6 @@ public interface ProductSupplyService {
 
     void productSupplyRelation(List<ProductSupplyDTO> supplyDTOList, ProductDTO productDTO);
 
+    List<ProductSupplyDTO> getAllBySku(String productSku);
+
 }
