@@ -120,6 +120,13 @@ public class OrderServiceImpl {
                 .orderDate(order.getOrderDate())
                 .totalPrice(order.getTotalPrice())
                 .orderStatus(order.getOrderStatus())
+                .items(order.getProducts().stream()
+                        .map(item -> OrderItemDTO.builder()
+                                .produtoSku(item.getId().getProdutoSku())
+                                .quantidade(item.getQuantidade())
+                                .valorUnitario(item.getValorUnitario())
+                                .build())
+                        .collect(Collectors.toList()))
                 .cupomId(order.getCupomId())
                 .build();
     }
