@@ -1,0 +1,58 @@
+package com.sedocefosse.backend.model.order;
+
+import com.sedocefosse.backend.utils.OrderStatusEnum;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+@Entity
+@Builder
+@Table(name = "pedido")
+@NoArgsConstructor
+@AllArgsConstructor
+public class Order {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true)
+    private Long orderId;
+
+    @Column(name = "cliente_id", nullable = false)
+    private String clientId;
+
+    @Column(name = "data_criacao", nullable = false)
+    private LocalDateTime orderDate;
+
+    @Column(name = "valor_total", nullable = false, precision = 19, scale = 2)
+    private BigDecimal totalPrice;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, length = 20)
+    private OrderStatusEnum orderStatus;
+
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<OrderItem> products = new ArrayList<>();
+
+    @Column(name = "cupom_id")
+    private Integer cupomId;
+
+    @Column(name = "endereco", length = 255)
+    private String address;
+
+    @Column(name = "cupom_codigo")
+    private String couponCode;
+
+    @PrePersist
+    void prePersist() {
+        if (orderDate == null) {
+            orderDate = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
+        }
+    }
+}

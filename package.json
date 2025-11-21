@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "prepare": "husky install",
-    "test": "mvnw test",
-    "test:coverage": "mvnw test jacoco:report",
-    "build": "mvnw clean compile",
+    "test": "./mvnw test",
+    "test:coverage": "./mvnw test jacoco:report",
+    "build": "./mvnw clean compile",
     "format:check": "echo \"Formatação de código verificada\""
   },
   "repository": {
